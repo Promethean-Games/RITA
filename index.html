@@ -11,7 +11,9 @@
       --bg-soft: #e5e7eb;
       --text: #111827;
       --muted: #6b7280;
-      --accent: #f97316;
+      --accentA: #f97316;
+      --accentB: #facc15;
+      --accent: var(--accentA);
       --accent-soft: rgba(249,115,22,0.1);
       --border: #d1d5db;
       --danger: #b91c1c;
@@ -53,6 +55,7 @@
       background: var(--bg);
       display: flex;
       flex-direction: column;
+      position: relative;
     }
 
     header {
@@ -166,7 +169,7 @@
       border-radius: 999px;
       font-size: 0.7rem;
       background: var(--accent-soft);
-      color: var(--accent);
+      color: var(--accentA);
       font-weight: 500;
       margin-bottom: 0.35rem;
     }
@@ -194,7 +197,7 @@
 
     .progress-fill {
       height: 100%;
-      background: linear-gradient(90deg, #f97316, #facc15);
+      background: linear-gradient(90deg, var(--accentA), var(--accentB));
       width: 0%;
       transition: width 0.2s ease-out;
     }
@@ -252,7 +255,6 @@
       color: var(--muted);
     }
 
-    /* Cognitive offloading colors */
     .list-item.status-required {
       background: rgba(249,115,22,0.06);
       border-color: rgba(249,115,22,0.4);
@@ -287,15 +289,21 @@
     }
 
     .btn-primary {
-      background: linear-gradient(135deg, #f97316, #facc15);
+      background: linear-gradient(135deg, var(--accentA), var(--accentB));
       color: #111827;
       font-weight: 600;
       width: 100%;
+      transition: background 0.15s ease, opacity 0.15s ease;
     }
 
     .btn-primary[disabled] {
       opacity: 0.6;
       cursor: default;
+    }
+
+    .btn-primary.completed {
+      background: linear-gradient(135deg, #22c55e, #4ade80);
+      color: #022c22;
     }
 
     .btn-outline {
@@ -315,6 +323,7 @@
       background: var(--bg-elevated);
       position: sticky;
       bottom: 0;
+      z-index: 5;
     }
 
     .tabbar {
@@ -346,12 +355,12 @@
     }
 
     .tab-btn.active {
-      color: var(--accent);
+      color: var(--accentA);
       font-weight: 600;
     }
 
     .tab-btn.active span.dot {
-      background: var(--accent);
+      background: var(--accentA);
     }
 
     .view {
@@ -397,6 +406,11 @@
       justify-content: space-between;
       border-bottom: 1px solid var(--border);
       font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    .settings-item.no-click {
+      cursor: default;
     }
 
     .toggle {
@@ -422,12 +436,12 @@
 
     .toggle.on {
       background: var(--accent-soft);
-      border-color: var(--accent);
+      border-color: var(--accentA);
     }
 
     .toggle.on .toggle-thumb {
       transform: translateX(14px);
-      background: var(--accent);
+      background: var(--accentA);
     }
 
     .empty-state {
@@ -464,6 +478,101 @@
       color: var(--muted);
       padding: 0.5rem;
       text-align: center;
+    }
+
+    /* Style guide controls */
+    .style-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      margin-top: 0.4rem;
+    }
+
+    .style-row label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      min-width: 90px;
+    }
+
+    .style-select {
+      flex: 1;
+      padding: 0.32rem 0.4rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--bg-elevated);
+      color: var(--text);
+      font-size: 0.8rem;
+    }
+
+    .theme-preview {
+      margin-top: 0.6rem;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 0.55rem;
+    }
+
+    .theme-preview-swatch {
+      border-radius: 10px;
+      padding: 0.6rem 0.7rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.7rem;
+    }
+
+    .theme-preview-labels {
+      font-size: 0.78rem;
+    }
+
+    .theme-preview-labels div:first-child {
+      font-weight: 600;
+      margin-bottom: 0.1rem;
+    }
+
+    .theme-preview-button {
+      border-radius: 999px;
+      padding: 0.4rem 0.9rem;
+      border: none;
+      font-size: 0.8rem;
+      cursor: default;
+      white-space: nowrap;
+    }
+
+    .style-guide-note {
+      margin-top: 0.4rem;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 76px;
+      background: var(--bg-elevated);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 0.55rem 0.9rem;
+      font-size: 0.8rem;
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 30px rgba(15,23,42,0.4);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+      transform-origin: center;
+      z-index: 20;
+      white-space: nowrap;
+      max-width: 90%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .toast.show {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(-50%) translateY(-4px);
     }
   </style>
 </head>
@@ -571,21 +680,75 @@
         <div class="card">
           <h2>Settings</h2>
           <div class="settings-group">
-            <div class="settings-item">
-              <span>Profile</span>
-              <span class="muted" style="font-size:0.8rem;">Fname Lname</span>
+            <div class="settings-item" id="profileFirstNameRow">
+              <span>First Name</span>
+              <span class="muted" id="profileFirstNameValue" style="font-size:0.8rem;">Fname</span>
             </div>
-            <div class="settings-item">
+            <div class="settings-item" id="profileLastNameRow">
+              <span>Last Name</span>
+              <span class="muted" id="profileLastNameValue" style="font-size:0.8rem;">Lname</span>
+            </div>
+            <div class="settings-item" id="profileCommonNameRow">
+              <span>Common Name</span>
+              <span class="muted" id="profileCommonNameValue" style="font-size:0.8rem;">Optional</span>
+            </div>
+            <div class="settings-item" id="profileLocationRow">
+              <span>Location</span>
+              <span class="muted" id="profileLocationValue" style="font-size:0.8rem;">Kyle</span>
+            </div>
+            <div class="settings-item" id="profileEmployeeIdRow">
+              <span>Employee ID</span>
+              <span class="muted" id="profileEmployeeIdValue" style="font-size:0.8rem;">Not set</span>
+            </div>
+            <div class="settings-item no-click">
               <span>Dark Mode</span>
               <div id="darkToggle" class="toggle">
                 <div class="toggle-thumb"></div>
               </div>
             </div>
-            <div class="settings-item">
+            <div class="settings-item no-click">
               <span>Notifications</span>
               <span class="muted" style="font-size:0.8rem;">Coming later</span>
             </div>
           </div>
+        </div>
+
+        <!-- STYLE GUIDE CARD -->
+        <div class="card">
+          <h3>Style Guide</h3>
+          <p class="muted" style="font-size:0.8rem;">
+            Choose two high-contrast colors to define your accent theme. These colors are used for highlights, pills, and primary actions.
+          </p>
+
+          <div class="style-row">
+            <label for="primaryColorSelect">Primary Accent</label>
+            <select id="primaryColorSelect" class="style-select"></select>
+          </div>
+
+          <div class="style-row">
+            <label for="secondaryColorSelect">Secondary Accent</label>
+            <select id="secondaryColorSelect" class="style-select"></select>
+          </div>
+
+          <div class="theme-preview" id="stylePreview">
+            <div class="theme-preview-swatch" id="stylePreviewSwatch">
+              <div class="theme-preview-labels">
+                <div id="stylePreviewTitle">Preview: Button & Card</div>
+                <div id="stylePreviewSubtitle">Primary + Secondary accents</div>
+              </div>
+              <button class="theme-preview-button" id="stylePreviewButton" type="button">
+                Sample Action
+              </button>
+            </div>
+          </div>
+
+          <p class="style-guide-note">
+            When you tap <strong>Save Theme</strong>, the selected colors will update the app’s accent styling. Dark mode still applies on top of your theme.
+          </p>
+
+          <button class="btn btn-primary" id="saveThemeBtn">
+            Save Theme
+          </button>
         </div>
       </section>
 
@@ -614,9 +777,45 @@
         </button>
       </div>
     </footer>
+
+    <!-- Toast -->
+    <div id="toast" class="toast"></div>
   </div>
 
   <script>
+    // ----- Style Guide / Color Palette --------------------------------------
+
+    const COLOR_OPTIONS = [
+      { key: "white", label: "White", value: "#ffffff" },
+      { key: "black", label: "Black", value: "#000000" },
+      { key: "cowboys-blue", label: "Cowboys Blue", value: "#003594" },
+      { key: "silver", label: "Silver", value: "#7f8185" },
+      { key: "promethean-red", label: "Promethean Red", value: "#d11111" },
+      { key: "deep-slate", label: "Deep Slate", value: "#1e293b" },
+      { key: "teal", label: "Teal", value: "#0f766e" },
+      { key: "gold", label: "Gold", value: "#eab308" }
+    ];
+
+    function hexToRgb(hex) {
+      const clean = hex.replace("#", "");
+      if (clean.length !== 6) return { r: 0, g: 0, b: 0 };
+      const r = parseInt(clean.slice(0, 2), 16);
+      const g = parseInt(clean.slice(2, 4), 16);
+      const b = parseInt(clean.slice(4, 6), 16);
+      return { r, g, b };
+    }
+
+    function hexToRgba(hex, alpha) {
+      const { r, g, b } = hexToRgb(hex);
+      return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }
+
+    function pickTextColorForBackground(hex) {
+      const { r, g, b } = hexToRgb(hex);
+      const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+      return brightness > 150 ? "#000000" : "#ffffff";
+    }
+
     // ----- Data Model -------------------------------------------------------
 
     const MODULES = [
@@ -742,22 +941,39 @@
 
     // ----- State ------------------------------------------------------------
 
-    const STORAGE_KEY = "expoTrainingMvpState_v4";
+    const STORAGE_KEY = "expoTrainingMvpState_v7";
+    const PROFILE_NAME_KEY = "expoTrainingName"; // legacy full name
+    const PROFILE_FIRST_NAME_KEY = "expoTrainingFirstName";
+    const PROFILE_LAST_NAME_KEY = "expoTrainingLastName";
+    const PROFILE_COMMON_NAME_KEY = "expoTrainingCommonName";
+    const PROFILE_LOCATION_KEY = "expoTrainingLocation";
+    const PROFILE_EMPLOYEE_ID_KEY = "expoTrainingEmployeeId";
+    const CLIENT_ID_KEY = "expoTrainingClientId";
 
     function loadState() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) return { completed: {}, dark: true };
+        if (!raw)
+          return {
+            completed: {},
+            dark: true,
+            primaryColor: "#f97316",
+            secondaryColor: "#facc15"
+          };
         const parsed = JSON.parse(raw);
         return {
           completed: parsed.completed || {},
-          dark:
-            typeof parsed.dark === "boolean"
-              ? parsed.dark
-              : true
+          dark: typeof parsed.dark === "boolean" ? parsed.dark : true,
+          primaryColor: parsed.primaryColor || "#f97316",
+          secondaryColor: parsed.secondaryColor || "#facc15"
         };
       } catch {
-        return { completed: {}, dark: true };
+        return {
+          completed: {},
+          dark: true,
+          primaryColor: "#f97316",
+          secondaryColor: "#facc15"
+        };
       }
     }
 
@@ -765,6 +981,120 @@
 
     function saveState() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function getClientId() {
+      let id = localStorage.getItem(CLIENT_ID_KEY);
+      if (!id) {
+        id = "client_" + Math.random().toString(36).slice(2);
+        localStorage.setItem(CLIENT_ID_KEY, id);
+      }
+      return id;
+    }
+
+    function getProfile() {
+      const firstName =
+        localStorage.getItem(PROFILE_FIRST_NAME_KEY) || "";
+      const lastName =
+        localStorage.getItem(PROFILE_LAST_NAME_KEY) || "";
+      const commonName =
+        localStorage.getItem(PROFILE_COMMON_NAME_KEY) || "";
+      const fallbackFull =
+        localStorage.getItem(PROFILE_NAME_KEY) || "Fname Lname";
+
+      let displayName = fallbackFull;
+      if (firstName || lastName) {
+        displayName = (firstName + " " + lastName).trim();
+      }
+      if (commonName && commonName.trim()) {
+        displayName = commonName.trim();
+      }
+
+      const location =
+        localStorage.getItem(PROFILE_LOCATION_KEY) || "Kyle";
+      const employee_id =
+        localStorage.getItem(PROFILE_EMPLOYEE_ID_KEY) || "";
+      const role = "Expo";
+
+      return {
+        firstName,
+        lastName,
+        commonName,
+        displayName,
+        employee_name: displayName,
+        location,
+        employee_id,
+        role,
+        client_id: getClientId()
+      };
+    }
+
+    function refreshHeaderFromProfile() {
+      const profile = getProfile();
+      headerSub.textContent = profile.displayName;
+    }
+
+    function updateSettingsProfileUI() {
+      const profile = getProfile();
+      document.getElementById("profileFirstNameValue").textContent =
+        profile.firstName || "Fname";
+      document.getElementById("profileLastNameValue").textContent =
+        profile.lastName || "Lname";
+      document.getElementById("profileCommonNameValue").textContent =
+        profile.commonName || "Optional";
+      document.getElementById("profileLocationValue").textContent =
+        profile.location || "Location";
+      document.getElementById("profileEmployeeIdValue").textContent =
+        profile.employee_id || "Not set";
+    }
+
+    // ----- Backend sync (Google Sheets) -------------------------------------
+
+    const SHEETS_ENDPOINT =
+      "https://script.google.com/macros/s/AKfycbykPwcIulm6Tjo8JynUyviawqEDAQA7fqBMIN9I8jukZ9PrzYVO4dECESbh2GnEy9QyCw/exec";
+
+    function syncCompletionToSheet(module, completionPct) {
+      const profile = getProfile();
+
+      const payload = {
+        timestamp: new Date().toISOString(),
+        employee_name: profile.employee_name,
+        employee_id: profile.employee_id,
+        location: profile.location,
+        role: profile.role,
+        module_id: module.id,
+        module_title: module.title,
+        event_type: "MODULE_COMPLETED",
+        completion_pct: completionPct,
+        client_id: profile.client_id
+      };
+
+      fetch(SHEETS_ENDPOINT, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      }).catch((err) => {
+        console.error("Sync to Sheets failed:", err);
+      });
+    }
+
+    // ----- Toast ------------------------------------------------------------
+
+    const toastEl = document.getElementById("toast");
+    let toastTimeoutId = null;
+
+    function showToast(message) {
+      toastEl.textContent = message;
+      toastEl.classList.add("show");
+      if (toastTimeoutId) {
+        clearTimeout(toastTimeoutId);
+      }
+      toastTimeoutId = setTimeout(() => {
+        toastEl.classList.remove("show");
+      }, 3200);
     }
 
     // ----- View & Nav Helpers ----------------------------------------------
@@ -785,7 +1115,11 @@
     let lastView = "home";
 
     function updateBackButton() {
-      if (currentView === "settings" || currentView === "assigned" || currentView === "moduleDetail") {
+      if (
+        currentView === "settings" ||
+        currentView === "assigned" ||
+        currentView === "moduleDetail"
+      ) {
         backButton.style.display = "inline-flex";
       } else {
         backButton.style.display = "none";
@@ -812,9 +1146,13 @@
         .forEach((btn) => btn.classList.remove("active"));
 
       if (viewKey === "home") {
-        document.querySelector('.tab-btn[data-tab="home"]').classList.add("active");
+        document
+          .querySelector('.tab-btn[data-tab="home"]')
+          .classList.add("active");
       } else if (viewKey === "modules" || viewKey === "moduleDetail") {
-        document.querySelector('.tab-btn[data-tab="modules"]').classList.add("active");
+        document
+          .querySelector('.tab-btn[data-tab="modules"]')
+          .classList.add("active");
       }
 
       updateBackButton();
@@ -835,7 +1173,6 @@
     // ----- Home Rendering ---------------------------------------------------
 
     function getAssignedModules() {
-      // All modules required in this MVP
       return MODULES;
     }
 
@@ -875,7 +1212,6 @@
       }
       alertContainer.appendChild(alert);
 
-      // Home quick modules (first 3)
       const homeList = document.getElementById("homeModuleList");
       homeList.innerHTML = "";
       MODULES.slice(0, 3).forEach((m) => {
@@ -889,7 +1225,6 @@
         homeList.appendChild(item);
       });
 
-      // Home assigned list (all modules)
       const homeAssigned = document.getElementById("homeAssignedList");
       homeAssigned.innerHTML = "";
       if (assigned.length === 0) {
@@ -956,6 +1291,7 @@
 
     function updateCompleteButtonState() {
       const btn = document.getElementById("completeModuleBtn");
+      btn.classList.remove("completed");
       if (!currentModuleId) {
         btn.disabled = true;
         return;
@@ -965,6 +1301,7 @@
       if (completedAlready) {
         btn.disabled = true;
         btn.textContent = "Module Completed";
+        btn.classList.add("completed");
         return;
       }
 
@@ -995,7 +1332,6 @@
       document.getElementById("detailDescription").textContent =
         module.description;
 
-      // Image handling (always show frame)
       const imgContainer = document.getElementById("detailImageContainer");
       imgContainer.innerHTML = "";
       const wrapper = document.createElement("div");
@@ -1015,7 +1351,6 @@
 
       imgContainer.appendChild(wrapper);
 
-      // Steps / checkboxes
       const stepsContainer = document.getElementById("detailSteps");
       stepsContainer.innerHTML = "";
       module.steps.forEach((step, index) => {
@@ -1042,10 +1377,12 @@
         : "Work through each step, then check all boxes to enable completion.";
 
       const btn = document.getElementById("completeModuleBtn");
-      btn.disabled = true; // gated by checkboxes
+      btn.disabled = true;
+      btn.classList.remove("completed");
       if (completed) {
         btn.disabled = true;
         btn.textContent = "Module Completed";
+        btn.classList.add("completed");
       } else {
         btn.textContent = "Check all steps to complete";
       }
@@ -1061,11 +1398,32 @@
         const btn = document.getElementById("completeModuleBtn");
         if (btn.disabled) return;
 
+        const module = MODULES.find((m) => m.id === currentModuleId);
+        if (!module) return;
+
         state.completed[currentModuleId] = true;
         saveState();
+
         renderHome();
         renderModulesList();
-        openModuleDetail(currentModuleId);
+
+        const assigned = getAssignedModules();
+        const completedCount = getCompletedAssignedCount();
+        const pct =
+          assigned.length === 0
+            ? 0
+            : Math.round((completedCount / assigned.length) * 100);
+
+        syncCompletionToSheet(module, pct);
+
+        btn.classList.add("completed");
+        btn.textContent = "Module Completed";
+        btn.disabled = true;
+
+        setView("home");
+        showToast(
+          `Completed: ${module.title} • ${pct}% of required training done`
+        );
       });
 
     // ----- Assigned View ----------------------------------------------------
@@ -1096,9 +1454,22 @@
       }
     }
 
-    // ----- Dark Mode --------------------------------------------------------
+    // ----- Dark Mode & Theme Application -----------------------------------
 
     const darkToggle = document.getElementById("darkToggle");
+
+    function applyAccentTheme() {
+      const primary = state.primaryColor || "#f97316";
+      const secondary = state.secondaryColor || "#facc15";
+
+      document.documentElement.style.setProperty("--accentA", primary);
+      document.documentElement.style.setProperty("--accentB", secondary);
+      document.documentElement.style.setProperty("--accent", primary);
+      document.documentElement.style.setProperty(
+        "--accent-soft",
+        hexToRgba(primary, 0.12)
+      );
+    }
 
     function applyDarkMode() {
       if (state.dark) {
@@ -1115,6 +1486,140 @@
       saveState();
       applyDarkMode();
     });
+
+    // ----- Style Guide UI ---------------------------------------------------
+
+    const primarySelect = document.getElementById("primaryColorSelect");
+    const secondarySelect = document.getElementById("secondaryColorSelect");
+    const previewSwatch = document.getElementById("stylePreviewSwatch");
+    const previewButton = document.getElementById("stylePreviewButton");
+    const previewTitle = document.getElementById("stylePreviewTitle");
+    const previewSubtitle = document.getElementById("stylePreviewSubtitle");
+    const saveThemeBtn = document.getElementById("saveThemeBtn");
+
+    function populateStyleSelect(selectEl, selectedValue) {
+      selectEl.innerHTML = "";
+      COLOR_OPTIONS.forEach((opt) => {
+        const o = document.createElement("option");
+        o.value = opt.value;
+        o.textContent = opt.label;
+        if (opt.value.toLowerCase() === selectedValue.toLowerCase()) {
+          o.selected = true;
+        }
+        selectEl.appendChild(o);
+      });
+    }
+
+    function renderStylePreview(primary, secondary) {
+      const textColor = pickTextColorForBackground(primary);
+      previewSwatch.style.background = primary;
+      previewSwatch.style.color = textColor;
+      previewSwatch.style.borderColor = hexToRgba(textColor, 0.1);
+
+      previewButton.style.backgroundImage = `linear-gradient(135deg, ${primary}, ${secondary})`;
+      previewButton.style.color = pickTextColorForBackground(secondary);
+      previewTitle.textContent = "Preview: Button & Card";
+      previewSubtitle.textContent = "Primary: " + primary + " • Secondary: " + secondary;
+    }
+
+    function initStyleGuideControls() {
+      populateStyleSelect(primarySelect, state.primaryColor);
+      populateStyleSelect(secondarySelect, state.secondaryColor);
+      renderStylePreview(state.primaryColor, state.secondaryColor);
+    }
+
+    primarySelect.addEventListener("change", () => {
+      const primary = primarySelect.value;
+      const secondary = secondarySelect.value;
+      renderStylePreview(primary, secondary);
+    });
+
+    secondarySelect.addEventListener("change", () => {
+      const primary = primarySelect.value;
+      const secondary = secondarySelect.value;
+      renderStylePreview(primary, secondary);
+    });
+
+    saveThemeBtn.addEventListener("click", () => {
+      const primary = primarySelect.value;
+      const secondary = secondarySelect.value;
+      state.primaryColor = primary;
+      state.secondaryColor = secondary;
+      saveState();
+      applyAccentTheme();
+      renderHome();
+      renderModulesList();
+      showToast("Theme updated.");
+    });
+
+    // ----- Settings: profile editing ---------------------------------------
+
+    document
+      .getElementById("profileFirstNameRow")
+      .addEventListener("click", () => {
+        const current = getProfile().firstName;
+        const value = prompt("Enter your first name", current || "");
+        if (value && value.trim()) {
+          localStorage.setItem(PROFILE_FIRST_NAME_KEY, value.trim());
+          refreshHeaderFromProfile();
+          updateSettingsProfileUI();
+        }
+      });
+
+    document
+      .getElementById("profileLastNameRow")
+      .addEventListener("click", () => {
+        const current = getProfile().lastName;
+        const value = prompt("Enter your last name", current || "");
+        if (value && value.trim()) {
+          localStorage.setItem(PROFILE_LAST_NAME_KEY, value.trim());
+          refreshHeaderFromProfile();
+          updateSettingsProfileUI();
+        }
+      });
+
+    document
+      .getElementById("profileCommonNameRow")
+      .addEventListener("click", () => {
+        const current = getProfile().commonName;
+        const value = prompt(
+          "Enter your common name (optional)",
+          current || ""
+        );
+        if (value !== null) {
+          localStorage.setItem(PROFILE_COMMON_NAME_KEY, value.trim());
+          refreshHeaderFromProfile();
+          updateSettingsProfileUI();
+        }
+      });
+
+    document
+      .getElementById("profileLocationRow")
+      .addEventListener("click", () => {
+        const current = getProfile().location;
+        const value = prompt(
+          "Enter your location (e.g. Kyle, Manchaca)",
+          current || ""
+        );
+        if (value && value.trim()) {
+          localStorage.setItem(PROFILE_LOCATION_KEY, value.trim());
+          updateSettingsProfileUI();
+        }
+      });
+
+    document
+      .getElementById("profileEmployeeIdRow")
+      .addEventListener("click", () => {
+        const current = getProfile().employee_id;
+        const value = prompt(
+          "Enter your employee ID (optional)",
+          current || ""
+        );
+        if (value !== null) {
+          localStorage.setItem(PROFILE_EMPLOYEE_ID_KEY, value.trim());
+          updateSettingsProfileUI();
+        }
+      });
 
     // ----- Navigation Wiring -----------------------------------------------
 
@@ -1136,6 +1641,8 @@
     document
       .getElementById("settingsButton")
       .addEventListener("click", () => {
+        updateSettingsProfileUI();
+        initStyleGuideControls();
         setView("settings");
       });
 
@@ -1151,7 +1658,11 @@
 
     // ----- Initial Render ---------------------------------------------------
 
+    applyAccentTheme();
     applyDarkMode();
+    refreshHeaderFromProfile();
+    updateSettingsProfileUI();
+    initStyleGuideControls();
     renderHome();
     renderModulesList();
   </script>
