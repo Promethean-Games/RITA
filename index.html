@@ -413,6 +413,15 @@
       cursor: default;
     }
 
+    .settings-select {
+      font-size: 0.8rem;
+      padding: 0.2rem 0.4rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--bg-elevated);
+      color: var(--text);
+    }
+
     .toggle {
       position: relative;
       width: 34px;
@@ -450,7 +459,6 @@
       padding: 0.4rem 0;
     }
 
-    /* Module detail image */
     .module-image-wrapper {
       width: 100%;
       border-radius: 12px;
@@ -480,28 +488,66 @@
       text-align: center;
     }
 
-    /* Style guide controls */
-    .style-row {
+    .style-guide-note {
+      margin-top: 0.4rem;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .preset-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.4rem;
+      margin: 0.5rem 0 0.4rem;
+    }
+
+    .preset-btn {
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 0.3rem 0.35rem;
+      background: var(--bg-elevated);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      font-size: 0.7rem;
+      align-items: flex-start;
+      transition: border-color 0.16s ease, box-shadow 0.16s ease,
+        background 0.16s ease;
+    }
+
+    .preset-btn.active {
+      border-color: var(--accentA);
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.04);
+      background: rgba(0,0,0,0.02);
+    }
+
+    body.dark .preset-btn.active {
+      background: rgba(255,255,255,0.03);
+    }
+
+    .preset-name {
+      font-weight: 500;
+    }
+
+    .preset-swatch {
+      display: flex;
+      width: 100%;
+      border-radius: 999px;
+      overflow: hidden;
+      height: 14px;
+    }
+
+    .preset-swatch span {
+      flex: 1;
+    }
+
+    .style-row-toggle {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 0.5rem;
       margin-top: 0.4rem;
-    }
-
-    .style-row label {
-      font-size: 0.8rem;
-      color: var(--muted);
-      min-width: 90px;
-    }
-
-    .style-select {
-      flex: 1;
-      padding: 0.32rem 0.4rem;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background: var(--bg-elevated);
-      color: var(--text);
       font-size: 0.8rem;
     }
 
@@ -539,13 +585,6 @@
       white-space: nowrap;
     }
 
-    .style-guide-note {
-      margin-top: 0.4rem;
-      font-size: 0.75rem;
-      color: var(--muted);
-    }
-
-    /* Toast */
     .toast {
       position: fixed;
       left: 50%;
@@ -692,9 +731,12 @@
               <span>Common Name</span>
               <span class="muted" id="profileCommonNameValue" style="font-size:0.8rem;">Optional</span>
             </div>
-            <div class="settings-item" id="profileLocationRow">
+            <div class="settings-item no-click">
               <span>Location</span>
-              <span class="muted" id="profileLocationValue" style="font-size:0.8rem;">Kyle</span>
+              <select id="profileLocationSelect" class="settings-select">
+                <option value="Kyle">Kyle</option>
+                <option value="Other">Other...</option>
+              </select>
             </div>
             <div class="settings-item" id="profileEmployeeIdRow">
               <span>Employee ID</span>
@@ -713,28 +755,26 @@
           </div>
         </div>
 
-        <!-- STYLE GUIDE CARD -->
         <div class="card">
           <h3>Style Guide</h3>
           <p class="muted" style="font-size:0.8rem;">
-            Choose two high-contrast colors to define your accent theme. These colors are used for highlights, pills, and primary actions.
+            Choose a preset accent theme. These colors are used for highlights and primary actions. Swapping accents flips primary and secondary.
           </p>
 
-          <div class="style-row">
-            <label for="primaryColorSelect">Primary Accent</label>
-            <select id="primaryColorSelect" class="style-select"></select>
-          </div>
+          <div class="preset-grid" id="presetGrid"></div>
 
-          <div class="style-row">
-            <label for="secondaryColorSelect">Secondary Accent</label>
-            <select id="secondaryColorSelect" class="style-select"></select>
+          <div class="style-row-toggle">
+            <span>Swap accents (primary ⇄ secondary)</span>
+            <div id="swapToggle" class="toggle">
+              <div class="toggle-thumb"></div>
+            </div>
           </div>
 
           <div class="theme-preview" id="stylePreview">
             <div class="theme-preview-swatch" id="stylePreviewSwatch">
               <div class="theme-preview-labels">
                 <div id="stylePreviewTitle">Preview: Button & Card</div>
-                <div id="stylePreviewSubtitle">Primary + Secondary accents</div>
+                <div id="stylePreviewSubtitle">Accent pair</div>
               </div>
               <button class="theme-preview-button" id="stylePreviewButton" type="button">
                 Sample Action
@@ -743,7 +783,7 @@
           </div>
 
           <p class="style-guide-note">
-            When you tap <strong>Save Theme</strong>, the selected colors will update the app’s accent styling. Dark mode still applies on top of your theme.
+            Tap <strong>Save Theme</strong> to apply your selection across the app. Dark Mode still stacks on top of your theme.
           </p>
 
           <button class="btn btn-primary" id="saveThemeBtn">
@@ -778,22 +818,33 @@
       </div>
     </footer>
 
-    <!-- Toast -->
     <div id="toast" class="toast"></div>
   </div>
 
   <script>
-    // ----- Style Guide / Color Palette --------------------------------------
+    // ---------- Theme Presets -----------------------------------------------
+    const THEME_PRESETS = [
+      { id: "house_default", name: "House Default", primary: "#f97316", secondary: "#facc15" },
 
-    const COLOR_OPTIONS = [
-      { key: "white", label: "White", value: "#ffffff" },
-      { key: "black", label: "Black", value: "#000000" },
-      { key: "cowboys-blue", label: "Cowboys Blue", value: "#003594" },
-      { key: "silver", label: "Silver", value: "#7f8185" },
-      { key: "promethean-red", label: "Promethean Red", value: "#d11111" },
-      { key: "deep-slate", label: "Deep Slate", value: "#1e293b" },
-      { key: "teal", label: "Teal", value: "#0f766e" },
-      { key: "gold", label: "Gold", value: "#eab308" }
+      { id: "white_black", name: "White / Black", primary: "#ffffff", secondary: "#000000" },
+      { id: "white_blue", name: "White / Blue", primary: "#ffffff", secondary: "#003594" },
+      { id: "white_red", name: "White / Red", primary: "#ffffff", secondary: "#d11111" },
+      { id: "white_green", name: "White / Green", primary: "#ffffff", secondary: "#15803d" },
+      { id: "white_purple", name: "White / Purple", primary: "#ffffff", secondary: "#6d28d9" },
+      { id: "white_cyan", name: "White / Cyan", primary: "#ffffff", secondary: "#0891b2" },
+      { id: "white_yellow", name: "White / Yellow", primary: "#ffffff", secondary: "#eab308" },
+
+      { id: "black_white", name: "Black / White", primary: "#000000", secondary: "#ffffff" },
+      { id: "black_blue", name: "Black / Blue", primary: "#000000", secondary: "#003594" },
+      { id: "black_red", name: "Black / Red", primary: "#000000", secondary: "#d11111" },
+      { id: "black_green", name: "Black / Green", primary: "#000000", secondary: "#15803d" },
+      { id: "black_purple", name: "Black / Purple", primary: "#000000", secondary: "#6d28d9" },
+      { id: "black_cyan", name: "Black / Cyan", primary: "#000000", secondary: "#0891b2" },
+      { id: "black_yellow", name: "Black / Yellow", primary: "#000000", secondary: "#eab308" },
+
+      { id: "purple_yellow", name: "Purple / Yellow", primary: "#6d28d9", secondary: "#eab308" },
+      { id: "green_red", name: "Green / Red", primary: "#15803d", secondary: "#d11111" },
+      { id: "cyan_blue", name: "Cyan / Blue", primary: "#0891b2", secondary: "#003594" }
     ];
 
     function hexToRgb(hex) {
@@ -816,8 +867,7 @@
       return brightness > 150 ? "#000000" : "#ffffff";
     }
 
-    // ----- Data Model -------------------------------------------------------
-
+    // ---------- Modules -----------------------------------------------------
     const MODULES = [
       {
         id: "prep_ice_cream_balls",
@@ -939,10 +989,9 @@
       }
     ];
 
-    // ----- State ------------------------------------------------------------
-
-    const STORAGE_KEY = "expoTrainingMvpState_v7";
-    const PROFILE_NAME_KEY = "expoTrainingName"; // legacy full name
+    // ---------- State & Profile ---------------------------------------------
+    const STORAGE_KEY = "expoTrainingMvpState_v8";
+    const PROFILE_NAME_KEY = "expoTrainingName"; // legacy fallback
     const PROFILE_FIRST_NAME_KEY = "expoTrainingFirstName";
     const PROFILE_LAST_NAME_KEY = "expoTrainingLastName";
     const PROFILE_COMMON_NAME_KEY = "expoTrainingCommonName";
@@ -958,21 +1007,27 @@
             completed: {},
             dark: true,
             primaryColor: "#f97316",
-            secondaryColor: "#facc15"
+            secondaryColor: "#facc15",
+            selectedThemeId: "house_default",
+            swapAccents: false
           };
         const parsed = JSON.parse(raw);
         return {
           completed: parsed.completed || {},
           dark: typeof parsed.dark === "boolean" ? parsed.dark : true,
           primaryColor: parsed.primaryColor || "#f97316",
-          secondaryColor: parsed.secondaryColor || "#facc15"
+          secondaryColor: parsed.secondaryColor || "#facc15",
+          selectedThemeId: parsed.selectedThemeId || "house_default",
+          swapAccents: !!parsed.swapAccents
         };
       } catch {
         return {
           completed: {},
           dark: true,
           primaryColor: "#f97316",
-          secondaryColor: "#facc15"
+          secondaryColor: "#facc15",
+          selectedThemeId: "house_default",
+          swapAccents: false
         };
       }
     }
@@ -993,19 +1048,21 @@
     }
 
     function getProfile() {
-      const firstName =
-        localStorage.getItem(PROFILE_FIRST_NAME_KEY) || "";
-      const lastName =
-        localStorage.getItem(PROFILE_LAST_NAME_KEY) || "";
-      const commonName =
-        localStorage.getItem(PROFILE_COMMON_NAME_KEY) || "";
-      const fallbackFull =
+      const firstName = localStorage.getItem(PROFILE_FIRST_NAME_KEY) || "";
+      const lastName = localStorage.getItem(PROFILE_LAST_NAME_KEY) || "";
+      const commonName = localStorage.getItem(PROFILE_COMMON_NAME_KEY) || "";
+
+      const legacyFull =
         localStorage.getItem(PROFILE_NAME_KEY) || "Fname Lname";
 
-      let displayName = fallbackFull;
-      if (firstName || lastName) {
-        displayName = (firstName + " " + lastName).trim();
+      // Legal name: First + Last if available, else legacy full name.
+      let legalName = (firstName + " " + lastName).trim();
+      if (!legalName) {
+        legalName = legacyFull;
       }
+
+      // Display name: Common name if set, else legal name.
+      let displayName = legalName;
       if (commonName && commonName.trim()) {
         displayName = commonName.trim();
       }
@@ -1020,8 +1077,9 @@
         firstName,
         lastName,
         commonName,
+        legalName,
         displayName,
-        employee_name: displayName,
+        employee_name: legalName, // used for Sheets / reporting
         location,
         employee_id,
         role,
@@ -1042,14 +1100,14 @@
         profile.lastName || "Lname";
       document.getElementById("profileCommonNameValue").textContent =
         profile.commonName || "Optional";
-      document.getElementById("profileLocationValue").textContent =
-        profile.location || "Location";
       document.getElementById("profileEmployeeIdValue").textContent =
         profile.employee_id || "Not set";
+
+      const locationSelect = document.getElementById("profileLocationSelect");
+      locationSelect.value = profile.location === "Other" ? "Other" : "Kyle";
     }
 
-    // ----- Backend sync (Google Sheets) -------------------------------------
-
+    // ---------- Backend sync (Google Sheets) --------------------------------
     const SHEETS_ENDPOINT =
       "https://script.google.com/macros/s/AKfycbykPwcIulm6Tjo8JynUyviawqEDAQA7fqBMIN9I8jukZ9PrzYVO4dECESbh2GnEy9QyCw/exec";
 
@@ -1058,7 +1116,8 @@
 
       const payload = {
         timestamp: new Date().toISOString(),
-        employee_name: profile.employee_name,
+        employee_name: profile.employee_name,   // legal
+        display_name: profile.displayName,      // UI/common
         employee_id: profile.employee_id,
         location: profile.location,
         role: profile.role,
@@ -1081,8 +1140,7 @@
       });
     }
 
-    // ----- Toast ------------------------------------------------------------
-
+    // ---------- Toast -------------------------------------------------------
     const toastEl = document.getElementById("toast");
     let toastTimeoutId = null;
 
@@ -1097,8 +1155,7 @@
       }, 3200);
     }
 
-    // ----- View & Nav Helpers ----------------------------------------------
-
+    // ---------- Views & Nav -------------------------------------------------
     const views = {
       home: document.getElementById("view-home"),
       modules: document.getElementById("view-modules"),
@@ -1170,8 +1227,7 @@
       }
     });
 
-    // ----- Home Rendering ---------------------------------------------------
-
+    // ---------- Home & Modules Rendering -----------------------------------
     function getAssignedModules() {
       return MODULES;
     }
@@ -1246,8 +1302,6 @@
       }
     }
 
-    // ----- Modules List Rendering ------------------------------------------
-
     function renderModulesList() {
       const container = document.getElementById("modulesList");
       container.innerHTML = "";
@@ -1285,8 +1339,7 @@
         });
     }
 
-    // ----- Module Detail Rendering + Gating --------------------------------
-
+    // ---------- Module Detail & Completion Gating ---------------------------
     let currentModuleId = null;
 
     function updateCompleteButtonState() {
@@ -1426,8 +1479,7 @@
         );
       });
 
-    // ----- Assigned View ----------------------------------------------------
-
+    // ---------- Assigned View -----------------------------------------------
     function renderAssignedView() {
       const container = document.getElementById("assignedList");
       container.innerHTML = "";
@@ -1454,14 +1506,22 @@
       }
     }
 
-    // ----- Dark Mode & Theme Application -----------------------------------
-
+    // ---------- Dark Mode & Accent Theme -----------------------------------
     const darkToggle = document.getElementById("darkToggle");
 
-    function applyAccentTheme() {
-      const primary = state.primaryColor || "#f97316";
-      const secondary = state.secondaryColor || "#facc15";
+    function getEffectiveAccentPair() {
+      let primary = state.primaryColor || "#f97316";
+      let secondary = state.secondaryColor || "#facc15";
+      if (state.swapAccents) {
+        const tmp = primary;
+        primary = secondary;
+        secondary = tmp;
+      }
+      return { primary, secondary };
+    }
 
+    function applyAccentTheme() {
+      const { primary, secondary } = getEffectiveAccentPair();
       document.documentElement.style.setProperty("--accentA", primary);
       document.documentElement.style.setProperty("--accentB", secondary);
       document.documentElement.style.setProperty("--accent", primary);
@@ -1487,26 +1547,67 @@
       applyDarkMode();
     });
 
-    // ----- Style Guide UI ---------------------------------------------------
-
-    const primarySelect = document.getElementById("primaryColorSelect");
-    const secondarySelect = document.getElementById("secondaryColorSelect");
+    // ---------- Style Guide Controls ----------------------------------------
+    const presetGrid = document.getElementById("presetGrid");
+    const swapToggle = document.getElementById("swapToggle");
     const previewSwatch = document.getElementById("stylePreviewSwatch");
     const previewButton = document.getElementById("stylePreviewButton");
     const previewTitle = document.getElementById("stylePreviewTitle");
     const previewSubtitle = document.getElementById("stylePreviewSubtitle");
     const saveThemeBtn = document.getElementById("saveThemeBtn");
 
-    function populateStyleSelect(selectEl, selectedValue) {
-      selectEl.innerHTML = "";
-      COLOR_OPTIONS.forEach((opt) => {
-        const o = document.createElement("option");
-        o.value = opt.value;
-        o.textContent = opt.label;
-        if (opt.value.toLowerCase() === selectedValue.toLowerCase()) {
-          o.selected = true;
+    function renderPresetGrid() {
+      presetGrid.innerHTML = "";
+      THEME_PRESETS.forEach((preset) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "preset-btn";
+        btn.dataset.presetId = preset.id;
+
+        if (preset.id === state.selectedThemeId) {
+          btn.classList.add("active");
         }
-        selectEl.appendChild(o);
+
+        const name = document.createElement("div");
+        name.className = "preset-name";
+        name.textContent = preset.name;
+
+        const swatch = document.createElement("div");
+        swatch.className = "preset-swatch";
+
+        const left = document.createElement("span");
+        left.style.background = preset.primary;
+
+        const right = document.createElement("span");
+        right.style.background = preset.secondary;
+
+        swatch.appendChild(left);
+        swatch.appendChild(right);
+
+        btn.appendChild(name);
+        btn.appendChild(swatch);
+
+        btn.addEventListener("click", () => {
+          state.selectedThemeId = preset.id;
+          state.primaryColor = preset.primary;
+          state.secondaryColor = preset.secondary;
+          saveState();
+          highlightActivePreset();
+          renderStylePreviewWithState();
+        });
+
+        presetGrid.appendChild(btn);
+      });
+    }
+
+    function highlightActivePreset() {
+      const buttons = presetGrid.querySelectorAll(".preset-btn");
+      buttons.forEach((btn) => {
+        if (btn.dataset.presetId === state.selectedThemeId) {
+          btn.classList.add("active");
+        } else {
+          btn.classList.remove("active");
+        }
       });
     }
 
@@ -1519,41 +1620,57 @@
       previewButton.style.backgroundImage = `linear-gradient(135deg, ${primary}, ${secondary})`;
       previewButton.style.color = pickTextColorForBackground(secondary);
       previewTitle.textContent = "Preview: Button & Card";
-      previewSubtitle.textContent = "Primary: " + primary + " • Secondary: " + secondary;
+      previewSubtitle.textContent = `Primary: ${primary} • Secondary: ${secondary}`;
+    }
+
+    function renderStylePreviewWithState() {
+      const { primary, secondary } = getEffectiveAccentPair();
+      renderStylePreview(primary, secondary);
+      if (state.swapAccents) {
+        previewSubtitle.textContent += " • Swapped";
+      }
+      if (state.selectedThemeId === "house_default") {
+        previewSubtitle.textContent += " • House Default";
+      }
     }
 
     function initStyleGuideControls() {
-      populateStyleSelect(primarySelect, state.primaryColor);
-      populateStyleSelect(secondarySelect, state.secondaryColor);
-      renderStylePreview(state.primaryColor, state.secondaryColor);
+      renderPresetGrid();
+      highlightActivePreset();
+
+      if (state.swapAccents) {
+        swapToggle.classList.add("on");
+      } else {
+        swapToggle.classList.remove("on");
+      }
+
+      renderStylePreviewWithState();
     }
 
-    primarySelect.addEventListener("change", () => {
-      const primary = primarySelect.value;
-      const secondary = secondarySelect.value;
-      renderStylePreview(primary, secondary);
-    });
-
-    secondarySelect.addEventListener("change", () => {
-      const primary = primarySelect.value;
-      const secondary = secondarySelect.value;
-      renderStylePreview(primary, secondary);
+    swapToggle.addEventListener("click", () => {
+      state.swapAccents = !state.swapAccents;
+      saveState();
+      if (state.swapAccents) {
+        swapToggle.classList.add("on");
+      } else {
+        swapToggle.classList.remove("on");
+      }
+      renderStylePreviewWithState();
     });
 
     saveThemeBtn.addEventListener("click", () => {
-      const primary = primarySelect.value;
-      const secondary = secondarySelect.value;
-      state.primaryColor = primary;
-      state.secondaryColor = secondary;
-      saveState();
       applyAccentTheme();
       renderHome();
       renderModulesList();
-      showToast("Theme updated.");
+
+      const activePreset =
+        THEME_PRESETS.find((p) => p.id === state.selectedThemeId) || null;
+      const label = activePreset ? activePreset.name : "Custom Theme";
+      showToast(`Theme updated — ${label}`);
+      saveState();
     });
 
-    // ----- Settings: profile editing ---------------------------------------
-
+    // ---------- Settings: Profile Editing -----------------------------------
     document
       .getElementById("profileFirstNameRow")
       .addEventListener("click", () => {
@@ -1594,20 +1711,6 @@
       });
 
     document
-      .getElementById("profileLocationRow")
-      .addEventListener("click", () => {
-        const current = getProfile().location;
-        const value = prompt(
-          "Enter your location (e.g. Kyle, Manchaca)",
-          current || ""
-        );
-        if (value && value.trim()) {
-          localStorage.setItem(PROFILE_LOCATION_KEY, value.trim());
-          updateSettingsProfileUI();
-        }
-      });
-
-    document
       .getElementById("profileEmployeeIdRow")
       .addEventListener("click", () => {
         const current = getProfile().employee_id;
@@ -1621,8 +1724,15 @@
         }
       });
 
-    // ----- Navigation Wiring -----------------------------------------------
+    document
+      .getElementById("profileLocationSelect")
+      .addEventListener("change", (e) => {
+        const value = e.target.value === "Other" ? "Other" : "Kyle";
+        localStorage.setItem(PROFILE_LOCATION_KEY, value);
+        updateSettingsProfileUI();
+      });
 
+    // ---------- Navigation Wiring -------------------------------------------
     document
       .querySelectorAll(".tab-btn")
       .forEach((btn) =>
@@ -1656,8 +1766,7 @@
       setView("assigned");
     });
 
-    // ----- Initial Render ---------------------------------------------------
-
+    // ---------- Initial Render ----------------------------------------------
     applyAccentTheme();
     applyDarkMode();
     refreshHeaderFromProfile();
