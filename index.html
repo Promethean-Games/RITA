@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     :root {
+      /* Neutral defaults – will be overridden by theme at runtime */
       --bg: #f3f4f6;
       --bg-elevated: #ffffff;
       --bg-soft: #e5e7eb;
@@ -255,14 +256,15 @@
       color: var(--muted);
     }
 
+    /* Required modules now fully theme-driven */
     .list-item.status-required {
-      background: rgba(249,115,22,0.06);
-      border-color: rgba(249,115,22,0.4);
+      background: var(--accent-soft);
+      border-color: var(--accentA);
     }
 
     body.dark .list-item.status-required {
-      background: rgba(249,115,22,0.14);
-      border-color: rgba(249,115,22,0.6);
+      background: var(--accent-soft);
+      border-color: var(--accentA);
     }
 
     .list-item.status-complete {
@@ -556,6 +558,7 @@
       border-radius: 12px;
       border: 1px solid var(--border);
       padding: 0.55rem;
+      background: var(--bg-elevated);
     }
 
     .theme-preview-swatch {
@@ -990,7 +993,7 @@
     ];
 
     // ---------- State & Profile ---------------------------------------------
-    const STORAGE_KEY = "expoTrainingMvpState_v8";
+    const STORAGE_KEY = "expoTrainingMvpState_v9";
     const PROFILE_NAME_KEY = "expoTrainingName"; // legacy fallback
     const PROFILE_FIRST_NAME_KEY = "expoTrainingFirstName";
     const PROFILE_LAST_NAME_KEY = "expoTrainingLastName";
@@ -1005,7 +1008,7 @@
         if (!raw)
           return {
             completed: {},
-            dark: true,
+            dark: false,
             primaryColor: "#f97316",
             secondaryColor: "#facc15",
             selectedThemeId: "house_default",
@@ -1014,7 +1017,7 @@
         const parsed = JSON.parse(raw);
         return {
           completed: parsed.completed || {},
-          dark: typeof parsed.dark === "boolean" ? parsed.dark : true,
+          dark: typeof parsed.dark === "boolean" ? parsed.dark : false,
           primaryColor: parsed.primaryColor || "#f97316",
           secondaryColor: parsed.secondaryColor || "#facc15",
           selectedThemeId: parsed.selectedThemeId || "house_default",
@@ -1023,7 +1026,7 @@
       } catch {
         return {
           completed: {},
-          dark: true,
+          dark: false,
           primaryColor: "#f97316",
           secondaryColor: "#facc15",
           selectedThemeId: "house_default",
@@ -1055,13 +1058,11 @@
       const legacyFull =
         localStorage.getItem(PROFILE_NAME_KEY) || "Fname Lname";
 
-      // Legal name: First + Last if available, else legacy full name.
       let legalName = (firstName + " " + lastName).trim();
       if (!legalName) {
         legalName = legacyFull;
       }
 
-      // Display name: Common name if set, else legal name.
       let displayName = legalName;
       if (commonName && commonName.trim()) {
         displayName = commonName.trim();
@@ -1079,7 +1080,7 @@
         commonName,
         legalName,
         displayName,
-        employee_name: legalName, // used for Sheets / reporting
+        employee_name: legalName,
         location,
         employee_id,
         role,
@@ -1116,8 +1117,8 @@
 
       const payload = {
         timestamp: new Date().toISOString(),
-        employee_name: profile.employee_name,   // legal
-        display_name: profile.displayName,      // UI/common
+        employee_name: profile.employee_name,
+        display_name: profile.displayName,
         employee_id: profile.employee_id,
         location: profile.location,
         role: profile.role,
@@ -1522,13 +1523,21 @@
 
     function applyAccentTheme() {
       const { primary, secondary } = getEffectiveAccentPair();
-      document.documentElement.style.setProperty("--accentA", primary);
-      document.documentElement.style.setProperty("--accentB", secondary);
-      document.documentElement.style.setProperty("--accent", primary);
-      document.documentElement.style.setProperty(
-        "--accent-soft",
-        hexToRgba(primary, 0.12)
-      );
+      const rootStyle = document.documentElement.style;
+
+      rootStyle.setProperty("--accentA", primary);
+      rootStyle.setProperty("--accentB", secondary);
+      rootStyle.setProperty("--accent", primary);
+      rootStyle.setProperty("--accent-soft", hexToRgba(primary, 0.12));
+
+      // For light mode, also tint backgrounds and borders
+      if (!state.dark) {
+        rootStyle.setProperty("--bg", hexToRgba(primary, 0.03));
+        rootStyle.setProperty("--bg-elevated", "#ffffff");
+        rootStyle.setProperty("--bg-soft", hexToRgba(primary, 0.08));
+        rootStyle.setProperty("--border", hexToRgba(primary, 0.25));
+      }
+      // In dark mode, bg vars come from body.dark; accent still updates.
     }
 
     function applyDarkMode() {
@@ -1545,6 +1554,8 @@
       state.dark = !state.dark;
       saveState();
       applyDarkMode();
+      // Re-apply theme so any light-mode BG tint is recalculated when toggling back
+      applyAccentTheme();
     });
 
     // ---------- Style Guide Controls ----------------------------------------
@@ -1767,8 +1778,8 @@
     });
 
     // ---------- Initial Render ----------------------------------------------
-    applyAccentTheme();
     applyDarkMode();
+    applyAccentTheme();
     refreshHeaderFromProfile();
     updateSettingsProfileUI();
     initStyleGuideControls();
