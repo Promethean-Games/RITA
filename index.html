@@ -385,10 +385,16 @@
       align-items: flex-start;
       gap: 0.5rem;
       font-size: 0.85rem;
+      cursor: pointer;
     }
 
-    .step-row input {
+    .step-row input[type="checkbox"] {
       margin-top: 0.1rem;
+      flex-shrink: 0;
+    }
+
+    .step-row span {
+      flex: 1;
     }
 
     .hint {
@@ -465,7 +471,6 @@
       width: 100%;
       border-radius: 12px;
       overflow: hidden;
-      margin: 0.4rem 0 0.6rem;
       border: 1px solid var(--border);
       background: var(--bg-soft);
     }
@@ -488,6 +493,55 @@
       color: var(--muted);
       padding: 0.5rem;
       text-align: center;
+    }
+
+    .module-carousel {
+      margin: 0.4rem 0 0.6rem;
+    }
+
+    .carousel-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.4rem;
+      padding: 0.25rem 0.1rem 0;
+      font-size: 0.75rem;
+    }
+
+    .carousel-btn {
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      padding: 0.15rem 0.4rem;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .carousel-btn:disabled {
+      opacity: 0.35;
+      cursor: default;
+    }
+
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.25rem;
+      flex: 1;
+    }
+
+    .carousel-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      border: none;
+      padding: 0;
+      background: var(--bg-soft);
+      cursor: pointer;
+    }
+
+    .carousel-dot.active {
+      background: var(--accentA);
     }
 
     .style-guide-note {
@@ -878,27 +932,39 @@
         category: "Prep",
         description:
           "Prepare and restock Ice Cream Balls during prep so servers can plate desserts quickly.",
+        images: [
+          "assets/rita/icb-setup.png",
+          "assets/rita/icb-weight.png",
+          "assets/rita/icb-label.png",
+          "assets/rita/icb-cleanup.png"
+        ],
         steps: [
           "Verify you have ice cream, corn flakes, and storage containers.",
           "Scoop six ice cream balls on weekdays, eight on Fri/Sat.",
           "Roll each scoop in corn flakes until coated.",
-          "Place balls onto tray or into container for freezing.",
-          "Label and store the tray in the correct freezer."
+          "Wrap and label each ball, then place onto tray or into container for freezing.",
+          "Wipe up any spills and store the tray in the correct freezer."
         ]
       },
       {
         id: "prep_tortilla_trays",
         title: "Prep — Tortilla Trays",
         category: "Prep",
-        imageUrl: "https://prometheangamescom.wordpress.com/wp-content/uploads/2025/11/screenshot-2025-11-24-141147.png",
         description:
           "Press and stage tortillas so the line never runs out during service.",
+        images: [
+          "assets/rita/tt-setup.png",
+          "assets/rita/tt-count.png",
+          "assets/rita/tt-cover.png",
+          "assets/rita/tt-label.png",
+          "assets/rita/tt-tie.png"
+        ],
         steps: [
           "Gather tortilla dough balls and clean trays.",
-          "Press dough balls into flat tortillas.",
-          "Stack tortillas neatly on trays.",
-          "Cover trays to prevent drying out.",
-          "Store in the correct cooler or staging area."
+          "Load tortillas onto trays and count to the correct par.",
+          "Cover trays completely with a plastic liner or bag.",
+          "Fill out a date label with product name, prep date, and use-by date.",
+          "Tie off the bag and store trays in the correct cooler or staging area."
         ]
       },
       {
@@ -926,6 +992,21 @@
           "Whisk or blend until smooth.",
           "Transfer to labeled containers.",
           "Store in the correct cooler or line well."
+        ]
+      },
+      {
+        id: "sauces_ketchup_portioning",
+        title: "Sauces — Ketchup Portion Cups",
+        category: "Sauces",
+        description:
+          "Portion ketchup cups ahead of service so Expo and servers can grab-and-go quickly.",
+        images: ["assets/rita/ketchup.png"],
+        steps: [
+          "Set out clean 2 oz portion cups on a tray.",
+          "Shake the ketchup container and prime the pump if needed.",
+          "Pump ketchup into each cup to a consistent fill line without overflowing.",
+          "Wipe any spills from the tray and lids.",
+          "Stage the tray in the designated cooler or Expo area."
         ]
       },
       {
@@ -975,7 +1056,8 @@
         id: "closing_tortilla_machine",
         title: "Closing Duties — Tortilla Machine",
         category: "Closing Duties",
-        imageUrl: "https://prometheangamescom.wordpress.com/wp-content/uploads/2025/11/closing-duties_tortilla-machine.jpg",
+        imageUrl:
+          "https://prometheangamescom.wordpress.com/wp-content/uploads/2025/11/closing-duties_tortilla-machine.jpg",
         description:
           "Shut down, clean, and reset the tortilla machine so it’s safe, sanitary, and ready for the next shift.",
         steps: [
@@ -1340,8 +1422,93 @@
         });
     }
 
-    // ---------- Module Detail & Completion Gating ---------------------------
+    // ---------- Module Detail & Image Carousel ------------------------------
     let currentModuleId = null;
+    let currentModuleImages = [];
+    let currentImageIndex = 0;
+    let currentModuleTitle = "";
+
+    function renderCarousel() {
+      const imgContainer = document.getElementById("detailImageContainer");
+      imgContainer.innerHTML = "";
+
+      if (!currentModuleImages || currentModuleImages.length === 0) {
+        const wrapper = document.createElement("div");
+        wrapper.className = "module-carousel";
+        const inner = document.createElement("div");
+        inner.className = "module-image-wrapper";
+        const placeholder = document.createElement("div");
+        placeholder.className = "module-image-placeholder";
+        placeholder.textContent = "Training image coming soon.";
+        inner.appendChild(placeholder);
+        wrapper.appendChild(inner);
+        imgContainer.appendChild(wrapper);
+        return;
+      }
+
+      const carousel = document.createElement("div");
+      carousel.className = "module-carousel";
+
+      const imgWrapper = document.createElement("div");
+      imgWrapper.className = "module-image-wrapper";
+      const img = document.createElement("img");
+      img.src = currentModuleImages[currentImageIndex];
+      img.alt = currentModuleTitle + " training photo";
+      imgWrapper.appendChild(img);
+      carousel.appendChild(imgWrapper);
+
+      if (currentModuleImages.length > 1) {
+        const controls = document.createElement("div");
+        controls.className = "carousel-controls";
+
+        const prevBtn = document.createElement("button");
+        prevBtn.type = "button";
+        prevBtn.className = "carousel-btn";
+        prevBtn.textContent = "‹";
+        prevBtn.disabled = currentImageIndex === 0;
+        prevBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          if (currentImageIndex > 0) {
+            currentImageIndex -= 1;
+            renderCarousel();
+          }
+        });
+
+        const dotsWrap = document.createElement("div");
+        dotsWrap.className = "carousel-dots";
+        currentModuleImages.forEach((_, idx) => {
+          const dot = document.createElement("button");
+          dot.type = "button";
+          dot.className = "carousel-dot" + (idx === currentImageIndex ? " active" : "");
+          dot.addEventListener("click", (e) => {
+            e.stopPropagation();
+            currentImageIndex = idx;
+            renderCarousel();
+          });
+          dotsWrap.appendChild(dot);
+        });
+
+        const nextBtn = document.createElement("button");
+        nextBtn.type = "button";
+        nextBtn.className = "carousel-btn";
+        nextBtn.textContent = "›";
+        nextBtn.disabled = currentImageIndex === currentModuleImages.length - 1;
+        nextBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          if (currentImageIndex < currentModuleImages.length - 1) {
+            currentImageIndex += 1;
+            renderCarousel();
+          }
+        });
+
+        controls.appendChild(prevBtn);
+        controls.appendChild(dotsWrap);
+        controls.appendChild(nextBtn);
+        carousel.appendChild(controls);
+      }
+
+      imgContainer.appendChild(carousel);
+    }
 
     function updateCompleteButtonState() {
       const btn = document.getElementById("completeModuleBtn");
@@ -1380,35 +1547,27 @@
       if (!module) return;
 
       currentModuleId = id;
+      currentModuleTitle = module.title;
       document.getElementById("detailCategoryPill").textContent =
         module.category;
       document.getElementById("detailTitle").textContent = module.title;
       document.getElementById("detailDescription").textContent =
         module.description;
 
-      const imgContainer = document.getElementById("detailImageContainer");
-      imgContainer.innerHTML = "";
-      const wrapper = document.createElement("div");
-      wrapper.className = "module-image-wrapper";
+      const imageList = Array.isArray(module.images) && module.images.length
+        ? module.images
+        : module.imageUrl
+        ? [module.imageUrl]
+        : [];
 
-      if (module.imageUrl) {
-        const img = document.createElement("img");
-        img.src = module.imageUrl;
-        img.alt = module.title;
-        wrapper.appendChild(img);
-      } else {
-        const placeholder = document.createElement("div");
-        placeholder.className = "module-image-placeholder";
-        placeholder.textContent = "Training image coming soon.";
-        wrapper.appendChild(placeholder);
-      }
-
-      imgContainer.appendChild(wrapper);
+      currentModuleImages = imageList;
+      currentImageIndex = 0;
+      renderCarousel();
 
       const stepsContainer = document.getElementById("detailSteps");
       stepsContainer.innerHTML = "";
       module.steps.forEach((step, index) => {
-        const row = document.createElement("div");
+        const row = document.createElement("label");
         row.className = "step-row";
 
         const checkbox = document.createElement("input");
@@ -1416,11 +1575,11 @@
         checkbox.dataset.stepIndex = index;
         checkbox.addEventListener("change", updateCompleteButtonState);
 
-        const label = document.createElement("label");
-        label.textContent = step;
+        const span = document.createElement("span");
+        span.textContent = step;
 
         row.appendChild(checkbox);
-        row.appendChild(label);
+        row.appendChild(span);
         stepsContainer.appendChild(row);
       });
 
@@ -1589,11 +1748,11 @@
         const left = document.createElement("span");
         left.style.background = preset.primary;
 
-        const right = document.createElement("span");
-        right.style.background = preset.secondary;
+        theRight = document.createElement("span");
+        theRight.style.background = preset.secondary;
 
         swatch.appendChild(left);
-        swatch.appendChild(right);
+        swatch.appendChild(theRight);
 
         btn.appendChild(name);
         btn.appendChild(swatch);
