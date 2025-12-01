@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     :root {
-      /* Neutral defaults – will be overridden by theme at runtime */
       --bg: #f3f4f6;
       --bg-elevated: #ffffff;
       --bg-soft: #e5e7eb;
@@ -256,7 +255,6 @@
       color: var(--muted);
     }
 
-    /* Required modules now fully theme-driven */
     .list-item.status-required {
       background: var(--accent-soft);
       border-color: var(--accentA);
@@ -421,6 +419,10 @@
       cursor: default;
     }
 
+    .settings-item.no-click > span {
+      pointer-events: none;
+    }
+
     .settings-select {
       font-size: 0.8rem;
       padding: 0.2rem 0.4rem;
@@ -467,15 +469,23 @@
       padding: 0.4rem 0;
     }
 
+    /* Module image / carousel */
     .module-image-wrapper {
       width: 100%;
       border-radius: 12px;
       overflow: hidden;
+      margin: 0.4rem 0 0.6rem;
       border: 1px solid var(--border);
       background: var(--bg-soft);
+      display: flex;
+      flex-direction: column;
     }
 
-    .module-image-wrapper img {
+    .module-image-main {
+      width: 100%;
+    }
+
+    .module-image-main img {
       width: 100%;
       height: auto;
       aspect-ratio: 16 / 9;
@@ -495,151 +505,36 @@
       text-align: center;
     }
 
-    .module-carousel {
-      margin: 0.4rem 0 0.6rem;
-    }
-
-    .carousel-controls {
+    .module-carousel-controls {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 0.4rem;
-      padding: 0.25rem 0.1rem 0;
-      font-size: 0.75rem;
-    }
-
-    .carousel-btn {
-      border: none;
-      background: transparent;
-      color: var(--muted);
-      padding: 0.15rem 0.4rem;
-      cursor: pointer;
-      font-size: 1rem;
-    }
-
-    .carousel-btn:disabled {
-      opacity: 0.35;
-      cursor: default;
-    }
-
-    .carousel-dots {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 0.25rem;
-      flex: 1;
-    }
-
-    .carousel-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      border: none;
-      padding: 0;
-      background: var(--bg-soft);
-      cursor: pointer;
-    }
-
-    .carousel-dot.active {
-      background: var(--accentA);
-    }
-
-    .style-guide-note {
-      margin-top: 0.4rem;
-      font-size: 0.75rem;
-      color: var(--muted);
-    }
-
-    .preset-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 0.4rem;
-      margin: 0.5rem 0 0.4rem;
-    }
-
-    .preset-btn {
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      padding: 0.3rem 0.35rem;
+      padding: 0.3rem 0.6rem;
       background: var(--bg-elevated);
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      gap: 0.2rem;
-      font-size: 0.7rem;
-      align-items: flex-start;
-      transition: border-color 0.16s ease, box-shadow 0.16s ease,
-        background 0.16s ease;
-    }
-
-    .preset-btn.active {
-      border-color: var(--accentA);
-      box-shadow: 0 0 0 1px rgba(0,0,0,0.04);
-      background: rgba(0,0,0,0.02);
-    }
-
-    body.dark .preset-btn.active {
-      background: rgba(255,255,255,0.03);
-    }
-
-    .preset-name {
-      font-weight: 500;
-    }
-
-    .preset-swatch {
-      display: flex;
-      width: 100%;
-      border-radius: 999px;
-      overflow: hidden;
-      height: 14px;
-    }
-
-    .preset-swatch span {
-      flex: 1;
-    }
-
-    .style-row-toggle {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.5rem;
-      margin-top: 0.4rem;
-      font-size: 0.8rem;
-    }
-
-    .theme-preview {
-      margin-top: 0.6rem;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      padding: 0.55rem;
-      background: var(--bg-elevated);
-    }
-
-    .theme-preview-swatch {
-      border-radius: 10px;
-      padding: 0.6rem 0.7rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.7rem;
-    }
-
-    .theme-preview-labels {
+      border-top: 1px solid var(--border);
       font-size: 0.78rem;
     }
 
-    .theme-preview-labels div:first-child {
-      font-weight: 600;
-      margin-bottom: 0.1rem;
+    .module-carousel-btn {
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      padding: 0.2rem 0.4rem;
+      border-radius: 999px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.2rem;
     }
 
-    .theme-preview-button {
-      border-radius: 999px;
-      padding: 0.4rem 0.9rem;
-      border: none;
-      font-size: 0.8rem;
-      cursor: default;
-      white-space: nowrap;
+    .module-carousel-btn:hover {
+      background: var(--bg-soft);
+      color: var(--text);
+    }
+
+    .module-carousel-counter {
+      font-size: 0.78rem;
+      color: var(--muted);
     }
 
     .toast {
@@ -693,7 +588,7 @@
           <span class="icon">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="3"></circle>
-              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 8.9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 8.9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 8.9 4.6 1.65 1.65 0 0 0 10.41 3.1V3a2 2 0 0 1 4 0v.09A1.65 1.65 0 0 0 15.1 4.6a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 8.9 1.65 1.65 0 0 0 20.9 10.41H21a2 2 0 0 1 0 4h-.09A1.65 1.65 0 0 0 19.4 15z"></path>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 8.9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 8.9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1-2.83-2.83l.06.06A1.65 1.65 0 0 0 8.9 4.6 1.65 1.65 0 0 0 10.41 3.1V3a2 2 0 0 1 4 0v.09A1.65 1.65 0 0 0 15.1 4.6a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 8.9 1.65 1.65 0 0 0 20.9 10.41H21a2 2 0 0 1 0 4h-.09A1.65 1.65 0 0 0 19.4 15z"></path>
             </svg>
           </span>
         </button>
@@ -811,42 +706,6 @@
             </div>
           </div>
         </div>
-
-        <div class="card">
-          <h3>Style Guide</h3>
-          <p class="muted" style="font-size:0.8rem;">
-            Choose a preset accent theme. These colors are used for highlights and primary actions. Swapping accents flips primary and secondary.
-          </p>
-
-          <div class="preset-grid" id="presetGrid"></div>
-
-          <div class="style-row-toggle">
-            <span>Swap accents (primary ⇄ secondary)</span>
-            <div id="swapToggle" class="toggle">
-              <div class="toggle-thumb"></div>
-            </div>
-          </div>
-
-          <div class="theme-preview" id="stylePreview">
-            <div class="theme-preview-swatch" id="stylePreviewSwatch">
-              <div class="theme-preview-labels">
-                <div id="stylePreviewTitle">Preview: Button & Card</div>
-                <div id="stylePreviewSubtitle">Accent pair</div>
-              </div>
-              <button class="theme-preview-button" id="stylePreviewButton" type="button">
-                Sample Action
-              </button>
-            </div>
-          </div>
-
-          <p class="style-guide-note">
-            Tap <strong>Save Theme</strong> to apply your selection across the app. Dark Mode still stacks on top of your theme.
-          </p>
-
-          <button class="btn btn-primary" id="saveThemeBtn">
-            Save Theme
-          </button>
-        </div>
       </section>
 
       <!-- ASSIGNED MODULES VIEW -->
@@ -879,51 +738,6 @@
   </div>
 
   <script>
-    // ---------- Theme Presets -----------------------------------------------
-    const THEME_PRESETS = [
-      { id: "house_default", name: "House Default", primary: "#f97316", secondary: "#facc15" },
-
-      { id: "white_black", name: "White / Black", primary: "#ffffff", secondary: "#000000" },
-      { id: "white_blue", name: "White / Blue", primary: "#ffffff", secondary: "#003594" },
-      { id: "white_red", name: "White / Red", primary: "#ffffff", secondary: "#d11111" },
-      { id: "white_green", name: "White / Green", primary: "#ffffff", secondary: "#15803d" },
-      { id: "white_purple", name: "White / Purple", primary: "#ffffff", secondary: "#6d28d9" },
-      { id: "white_cyan", name: "White / Cyan", primary: "#ffffff", secondary: "#0891b2" },
-      { id: "white_yellow", name: "White / Yellow", primary: "#ffffff", secondary: "#eab308" },
-
-      { id: "black_white", name: "Black / White", primary: "#000000", secondary: "#ffffff" },
-      { id: "black_blue", name: "Black / Blue", primary: "#000000", secondary: "#003594" },
-      { id: "black_red", name: "Black / Red", primary: "#000000", secondary: "#d11111" },
-      { id: "black_green", name: "Black / Green", primary: "#000000", secondary: "#15803d" },
-      { id: "black_purple", name: "Black / Purple", primary: "#000000", secondary: "#6d28d9" },
-      { id: "black_cyan", name: "Black / Cyan", primary: "#000000", secondary: "#0891b2" },
-      { id: "black_yellow", name: "Black / Yellow", primary: "#000000", secondary: "#eab308" },
-
-      { id: "purple_yellow", name: "Purple / Yellow", primary: "#6d28d9", secondary: "#eab308" },
-      { id: "green_red", name: "Green / Red", primary: "#15803d", secondary: "#d11111" },
-      { id: "cyan_blue", name: "Cyan / Blue", primary: "#0891b2", secondary: "#003594" }
-    ];
-
-    function hexToRgb(hex) {
-      const clean = hex.replace("#", "");
-      if (clean.length !== 6) return { r: 0, g: 0, b: 0 };
-      const r = parseInt(clean.slice(0, 2), 16);
-      const g = parseInt(clean.slice(2, 4), 16);
-      const b = parseInt(clean.slice(4, 6), 16);
-      return { r, g, b };
-    }
-
-    function hexToRgba(hex, alpha) {
-      const { r, g, b } = hexToRgb(hex);
-      return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-    }
-
-    function pickTextColorForBackground(hex) {
-      const { r, g, b } = hexToRgb(hex);
-      const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-      return brightness > 150 ? "#000000" : "#ffffff";
-    }
-
     // ---------- Modules -----------------------------------------------------
     const MODULES = [
       {
@@ -933,17 +747,17 @@
         description:
           "Prepare and restock Ice Cream Balls during prep so servers can plate desserts quickly.",
         images: [
-          "assets/rita/icb-setup.png",
-          "assets/rita/icb-weight.png",
-          "assets/rita/icb-label.png",
-          "assets/rita/icb-cleanup.png"
+          "icb-setup.png",
+          "icb-weight.png",
+          "icb-label.png",
+          "icb-cleanup.png"
         ],
         steps: [
           "Verify you have ice cream, corn flakes, and storage containers.",
           "Scoop six ice cream balls on weekdays, eight on Fri/Sat.",
           "Roll each scoop in corn flakes until coated.",
-          "Wrap and label each ball, then place onto tray or into container for freezing.",
-          "Wipe up any spills and store the tray in the correct freezer."
+          "Place balls onto tray or into container for freezing.",
+          "Label and store the tray in the correct freezer."
         ]
       },
       {
@@ -953,18 +767,18 @@
         description:
           "Press and stage tortillas so the line never runs out during service.",
         images: [
-          "assets/rita/tt-setup.png",
-          "assets/rita/tt-count.png",
-          "assets/rita/tt-cover.png",
-          "assets/rita/tt-label.png",
-          "assets/rita/tt-tie.png"
+          "tt-setup.png",
+          "tt-count.png",
+          "tt-label.png",
+          "tt-cover.png",
+          "tt-tie.png"
         ],
         steps: [
           "Gather tortilla dough balls and clean trays.",
-          "Load tortillas onto trays and count to the correct par.",
-          "Cover trays completely with a plastic liner or bag.",
-          "Fill out a date label with product name, prep date, and use-by date.",
-          "Tie off the bag and store trays in the correct cooler or staging area."
+          "Press dough balls into flat tortillas.",
+          "Stack tortillas neatly on trays.",
+          "Cover trays to prevent drying out.",
+          "Store in the correct cooler or staging area."
         ]
       },
       {
@@ -995,26 +809,14 @@
         ]
       },
       {
-        id: "sauces_ketchup_portioning",
-        title: "Sauces — Ketchup Portion Cups",
-        category: "Sauces",
-        description:
-          "Portion ketchup cups ahead of service so Expo and servers can grab-and-go quickly.",
-        images: ["assets/rita/ketchup.png"],
-        steps: [
-          "Set out clean 2 oz portion cups on a tray.",
-          "Shake the ketchup container and prime the pump if needed.",
-          "Pump ketchup into each cup to a consistent fill line without overflowing.",
-          "Wipe any spills from the tray and lids.",
-          "Stage the tray in the designated cooler or Expo area."
-        ]
-      },
-      {
         id: "sauces_overview",
         title: "Sauces Overview",
         category: "Sauces",
         description:
           "Know which sauces pair with which dishes and where they are stored.",
+        images: [
+          "ketchup.png"
+        ],
         steps: [
           "Review each house sauce and its primary dishes.",
           "Locate each sauce on the line and in backup storage.",
@@ -1056,8 +858,6 @@
         id: "closing_tortilla_machine",
         title: "Closing Duties — Tortilla Machine",
         category: "Closing Duties",
-        imageUrl:
-          "https://prometheangamescom.wordpress.com/wp-content/uploads/2025/11/closing-duties_tortilla-machine.jpg",
         description:
           "Shut down, clean, and reset the tortilla machine so it’s safe, sanitary, and ready for the next shift.",
         steps: [
@@ -1075,7 +875,7 @@
     ];
 
     // ---------- State & Profile ---------------------------------------------
-    const STORAGE_KEY = "expoTrainingMvpState_v9";
+    const STORAGE_KEY = "expoTrainingMvpState_v10";
     const PROFILE_NAME_KEY = "expoTrainingName"; // legacy fallback
     const PROFILE_FIRST_NAME_KEY = "expoTrainingFirstName";
     const PROFILE_LAST_NAME_KEY = "expoTrainingLastName";
@@ -1087,32 +887,21 @@
     function loadState() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw)
+        if (!raw) {
           return {
             completed: {},
-            dark: false,
-            primaryColor: "#f97316",
-            secondaryColor: "#facc15",
-            selectedThemeId: "house_default",
-            swapAccents: false
+            dark: false
           };
+        }
         const parsed = JSON.parse(raw);
         return {
           completed: parsed.completed || {},
-          dark: typeof parsed.dark === "boolean" ? parsed.dark : false,
-          primaryColor: parsed.primaryColor || "#f97316",
-          secondaryColor: parsed.secondaryColor || "#facc15",
-          selectedThemeId: parsed.selectedThemeId || "house_default",
-          swapAccents: !!parsed.swapAccents
+          dark: typeof parsed.dark === "boolean" ? parsed.dark : false
         };
-      } catch {
+      } catch (e) {
         return {
           completed: {},
-          dark: false,
-          primaryColor: "#f97316",
-          secondaryColor: "#facc15",
-          selectedThemeId: "house_default",
-          swapAccents: false
+          dark: false
         };
       }
     }
@@ -1422,92 +1211,90 @@
         });
     }
 
-    // ---------- Module Detail & Image Carousel ------------------------------
+    // ---------- Module Detail & Completion Gating ---------------------------
     let currentModuleId = null;
-    let currentModuleImages = [];
-    let currentImageIndex = 0;
-    let currentModuleTitle = "";
+    let currentCarouselIndex = 0;
+    let currentCarouselImages = [];
 
-    function renderCarousel() {
+    function updateCarouselDisplay() {
+      const mainImg = document.getElementById("moduleMainImage");
+      const counterEl = document.getElementById("moduleCarouselCounter");
+      if (!mainImg || !counterEl || !currentCarouselImages.length) return;
+      mainImg.src = currentCarouselImages[currentCarouselIndex];
+      counterEl.textContent = `${currentCarouselIndex + 1} / ${currentCarouselImages.length}`;
+    }
+
+    function renderModuleImages(module) {
       const imgContainer = document.getElementById("detailImageContainer");
       imgContainer.innerHTML = "";
 
-      if (!currentModuleImages || currentModuleImages.length === 0) {
-        const wrapper = document.createElement("div");
-        wrapper.className = "module-carousel";
-        const inner = document.createElement("div");
-        inner.className = "module-image-wrapper";
+      const wrapper = document.createElement("div");
+      wrapper.className = "module-image-wrapper";
+
+      const main = document.createElement("div");
+      main.className = "module-image-main";
+
+      const hasImages = Array.isArray(module.images) && module.images.length > 0;
+
+      if (hasImages) {
+        const img = document.createElement("img");
+        img.id = "moduleMainImage";
+        img.src = module.images[0];
+        img.alt = module.title;
+        main.appendChild(img);
+      } else {
         const placeholder = document.createElement("div");
         placeholder.className = "module-image-placeholder";
         placeholder.textContent = "Training image coming soon.";
-        inner.appendChild(placeholder);
-        wrapper.appendChild(inner);
-        imgContainer.appendChild(wrapper);
-        return;
+        main.appendChild(placeholder);
       }
 
-      const carousel = document.createElement("div");
-      carousel.className = "module-carousel";
+      wrapper.appendChild(main);
 
-      const imgWrapper = document.createElement("div");
-      imgWrapper.className = "module-image-wrapper";
-      const img = document.createElement("img");
-      img.src = currentModuleImages[currentImageIndex];
-      img.alt = currentModuleTitle + " training photo";
-      imgWrapper.appendChild(img);
-      carousel.appendChild(imgWrapper);
-
-      if (currentModuleImages.length > 1) {
+      if (hasImages) {
         const controls = document.createElement("div");
-        controls.className = "carousel-controls";
+        controls.className = "module-carousel-controls";
 
         const prevBtn = document.createElement("button");
         prevBtn.type = "button";
-        prevBtn.className = "carousel-btn";
-        prevBtn.textContent = "‹";
-        prevBtn.disabled = currentImageIndex === 0;
-        prevBtn.addEventListener("click", (e) => {
-          e.stopPropagation();
-          if (currentImageIndex > 0) {
-            currentImageIndex -= 1;
-            renderCarousel();
-          }
-        });
+        prevBtn.className = "module-carousel-btn";
+        prevBtn.textContent = "◀ Prev";
 
-        const dotsWrap = document.createElement("div");
-        dotsWrap.className = "carousel-dots";
-        currentModuleImages.forEach((_, idx) => {
-          const dot = document.createElement("button");
-          dot.type = "button";
-          dot.className = "carousel-dot" + (idx === currentImageIndex ? " active" : "");
-          dot.addEventListener("click", (e) => {
-            e.stopPropagation();
-            currentImageIndex = idx;
-            renderCarousel();
-          });
-          dotsWrap.appendChild(dot);
-        });
+        const counter = document.createElement("div");
+        counter.className = "module-carousel-counter";
+        counter.id = "moduleCarouselCounter";
+        counter.textContent = `1 / ${module.images.length}`;
 
         const nextBtn = document.createElement("button");
         nextBtn.type = "button";
-        nextBtn.className = "carousel-btn";
-        nextBtn.textContent = "›";
-        nextBtn.disabled = currentImageIndex === currentModuleImages.length - 1;
-        nextBtn.addEventListener("click", (e) => {
-          e.stopPropagation();
-          if (currentImageIndex < currentModuleImages.length - 1) {
-            currentImageIndex += 1;
-            renderCarousel();
-          }
+        nextBtn.className = "module-carousel-btn";
+        nextBtn.textContent = "Next ▶";
+
+        prevBtn.addEventListener("click", () => {
+          if (!currentCarouselImages.length) return;
+          currentCarouselIndex =
+            (currentCarouselIndex - 1 + currentCarouselImages.length) %
+            currentCarouselImages.length;
+          updateCarouselDisplay();
+        });
+
+        nextBtn.addEventListener("click", () => {
+          if (!currentCarouselImages.length) return;
+          currentCarouselIndex =
+            (currentCarouselIndex + 1) % currentCarouselImages.length;
+          updateCarouselDisplay();
         });
 
         controls.appendChild(prevBtn);
-        controls.appendChild(dotsWrap);
+        controls.appendChild(counter);
         controls.appendChild(nextBtn);
-        carousel.appendChild(controls);
+        wrapper.appendChild(controls);
       }
 
-      imgContainer.appendChild(carousel);
+      imgContainer.appendChild(wrapper);
+
+      currentCarouselImages = hasImages ? module.images.slice() : [];
+      currentCarouselIndex = 0;
     }
 
     function updateCompleteButtonState() {
@@ -1547,39 +1334,37 @@
       if (!module) return;
 
       currentModuleId = id;
-      currentModuleTitle = module.title;
       document.getElementById("detailCategoryPill").textContent =
         module.category;
       document.getElementById("detailTitle").textContent = module.title;
       document.getElementById("detailDescription").textContent =
         module.description;
 
-      const imageList = Array.isArray(module.images) && module.images.length
-        ? module.images
-        : module.imageUrl
-        ? [module.imageUrl]
-        : [];
-
-      currentModuleImages = imageList;
-      currentImageIndex = 0;
-      renderCarousel();
+      renderModuleImages(module);
 
       const stepsContainer = document.getElementById("detailSteps");
       stepsContainer.innerHTML = "";
       module.steps.forEach((step, index) => {
-        const row = document.createElement("label");
+        const row = document.createElement("div");
         row.className = "step-row";
 
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
         checkbox.dataset.stepIndex = index;
+
+        const textSpan = document.createElement("span");
+        textSpan.textContent = step;
+
         checkbox.addEventListener("change", updateCompleteButtonState);
 
-        const span = document.createElement("span");
-        span.textContent = step;
+        row.addEventListener("click", (e) => {
+          if (e.target === checkbox) return;
+          checkbox.checked = !checkbox.checked;
+          updateCompleteButtonState();
+        });
 
         row.appendChild(checkbox);
-        row.appendChild(span);
+        row.appendChild(textSpan);
         stepsContainer.appendChild(row);
       });
 
@@ -1666,38 +1451,8 @@
       }
     }
 
-    // ---------- Dark Mode & Accent Theme -----------------------------------
+    // ---------- Dark Mode Only ----------------------------------------------
     const darkToggle = document.getElementById("darkToggle");
-
-    function getEffectiveAccentPair() {
-      let primary = state.primaryColor || "#f97316";
-      let secondary = state.secondaryColor || "#facc15";
-      if (state.swapAccents) {
-        const tmp = primary;
-        primary = secondary;
-        secondary = tmp;
-      }
-      return { primary, secondary };
-    }
-
-    function applyAccentTheme() {
-      const { primary, secondary } = getEffectiveAccentPair();
-      const rootStyle = document.documentElement.style;
-
-      rootStyle.setProperty("--accentA", primary);
-      rootStyle.setProperty("--accentB", secondary);
-      rootStyle.setProperty("--accent", primary);
-      rootStyle.setProperty("--accent-soft", hexToRgba(primary, 0.12));
-
-      // For light mode, also tint backgrounds and borders
-      if (!state.dark) {
-        rootStyle.setProperty("--bg", hexToRgba(primary, 0.03));
-        rootStyle.setProperty("--bg-elevated", "#ffffff");
-        rootStyle.setProperty("--bg-soft", hexToRgba(primary, 0.08));
-        rootStyle.setProperty("--border", hexToRgba(primary, 0.25));
-      }
-      // In dark mode, bg vars come from body.dark; accent still updates.
-    }
 
     function applyDarkMode() {
       if (state.dark) {
@@ -1713,131 +1468,6 @@
       state.dark = !state.dark;
       saveState();
       applyDarkMode();
-      // Re-apply theme so any light-mode BG tint is recalculated when toggling back
-      applyAccentTheme();
-    });
-
-    // ---------- Style Guide Controls ----------------------------------------
-    const presetGrid = document.getElementById("presetGrid");
-    const swapToggle = document.getElementById("swapToggle");
-    const previewSwatch = document.getElementById("stylePreviewSwatch");
-    const previewButton = document.getElementById("stylePreviewButton");
-    const previewTitle = document.getElementById("stylePreviewTitle");
-    const previewSubtitle = document.getElementById("stylePreviewSubtitle");
-    const saveThemeBtn = document.getElementById("saveThemeBtn");
-
-    function renderPresetGrid() {
-      presetGrid.innerHTML = "";
-      THEME_PRESETS.forEach((preset) => {
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "preset-btn";
-        btn.dataset.presetId = preset.id;
-
-        if (preset.id === state.selectedThemeId) {
-          btn.classList.add("active");
-        }
-
-        const name = document.createElement("div");
-        name.className = "preset-name";
-        name.textContent = preset.name;
-
-        const swatch = document.createElement("div");
-        swatch.className = "preset-swatch";
-
-        const left = document.createElement("span");
-        left.style.background = preset.primary;
-
-        theRight = document.createElement("span");
-        theRight.style.background = preset.secondary;
-
-        swatch.appendChild(left);
-        swatch.appendChild(theRight);
-
-        btn.appendChild(name);
-        btn.appendChild(swatch);
-
-        btn.addEventListener("click", () => {
-          state.selectedThemeId = preset.id;
-          state.primaryColor = preset.primary;
-          state.secondaryColor = preset.secondary;
-          saveState();
-          highlightActivePreset();
-          renderStylePreviewWithState();
-        });
-
-        presetGrid.appendChild(btn);
-      });
-    }
-
-    function highlightActivePreset() {
-      const buttons = presetGrid.querySelectorAll(".preset-btn");
-      buttons.forEach((btn) => {
-        if (btn.dataset.presetId === state.selectedThemeId) {
-          btn.classList.add("active");
-        } else {
-          btn.classList.remove("active");
-        }
-      });
-    }
-
-    function renderStylePreview(primary, secondary) {
-      const textColor = pickTextColorForBackground(primary);
-      previewSwatch.style.background = primary;
-      previewSwatch.style.color = textColor;
-      previewSwatch.style.borderColor = hexToRgba(textColor, 0.1);
-
-      previewButton.style.backgroundImage = `linear-gradient(135deg, ${primary}, ${secondary})`;
-      previewButton.style.color = pickTextColorForBackground(secondary);
-      previewTitle.textContent = "Preview: Button & Card";
-      previewSubtitle.textContent = `Primary: ${primary} • Secondary: ${secondary}`;
-    }
-
-    function renderStylePreviewWithState() {
-      const { primary, secondary } = getEffectiveAccentPair();
-      renderStylePreview(primary, secondary);
-      if (state.swapAccents) {
-        previewSubtitle.textContent += " • Swapped";
-      }
-      if (state.selectedThemeId === "house_default") {
-        previewSubtitle.textContent += " • House Default";
-      }
-    }
-
-    function initStyleGuideControls() {
-      renderPresetGrid();
-      highlightActivePreset();
-
-      if (state.swapAccents) {
-        swapToggle.classList.add("on");
-      } else {
-        swapToggle.classList.remove("on");
-      }
-
-      renderStylePreviewWithState();
-    }
-
-    swapToggle.addEventListener("click", () => {
-      state.swapAccents = !state.swapAccents;
-      saveState();
-      if (state.swapAccents) {
-        swapToggle.classList.add("on");
-      } else {
-        swapToggle.classList.remove("on");
-      }
-      renderStylePreviewWithState();
-    });
-
-    saveThemeBtn.addEventListener("click", () => {
-      applyAccentTheme();
-      renderHome();
-      renderModulesList();
-
-      const activePreset =
-        THEME_PRESETS.find((p) => p.id === state.selectedThemeId) || null;
-      const label = activePreset ? activePreset.name : "Custom Theme";
-      showToast(`Theme updated — ${label}`);
-      saveState();
     });
 
     // ---------- Settings: Profile Editing -----------------------------------
@@ -1922,7 +1552,6 @@
       .getElementById("settingsButton")
       .addEventListener("click", () => {
         updateSettingsProfileUI();
-        initStyleGuideControls();
         setView("settings");
       });
 
@@ -1938,10 +1567,8 @@
 
     // ---------- Initial Render ----------------------------------------------
     applyDarkMode();
-    applyAccentTheme();
     refreshHeaderFromProfile();
     updateSettingsProfileUI();
-    initStyleGuideControls();
     renderHome();
     renderModulesList();
   </script>
