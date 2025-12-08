@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Expo Training MVP</title>
+  <title>Expo Training v0.2.0</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     :root {
@@ -785,7 +785,7 @@
         </div>
       </section>
 
-      <!-- ASSIGNED MODULES VIEW (same accordion pattern if you ever route here) -->
+      <!-- ASSIGNED MODULES VIEW -->
       <section id="view-assigned" class="view">
         <div class="card">
           <h2>Assigned Modules</h2>
@@ -987,6 +987,10 @@
       { id: "Kitchen", label: "Kitchen" }
     ];
 
+    // All modules go through this variable so we can later swap to API-backed data.
+    let allModules = MODULES.slice();
+    let currentEmployee = null;
+
     // ---------- State & Profile ---------------------------------------------
     const STORAGE_KEY = "expoTrainingMvpState_v12";
     const PROFILE_NAME_KEY = "expoTrainingName"; // legacy fallback
@@ -1121,6 +1125,50 @@
       });
     }
 
+    // ---------- apiClient (local mock, future API layer) --------------------
+    const apiClient = {
+      async loginWithLocalProfile() {
+        const profile = getProfile();
+        return {
+          access_token: "local-dev-token",
+          employee: {
+            id: profile.employee_id || profile.client_id || ("local-" + Math.random().toString(36).slice(2)),
+            first_name: profile.firstName || "Fname",
+            last_name: profile.lastName || "Lname",
+            preferred_name: profile.commonName || profile.firstName || "Fname",
+            home_location_id: profile.location === "Other" ? "other" : "kyle",
+            current_location_id: profile.location === "Other" ? "other" : "kyle",
+            roles: ["Expo"],
+            app_role: "employee"
+          }
+        };
+      },
+
+      async getModules({ locationId = "kyle", role = "Expo" } = {}) {
+        // For now, ignore location/role filters and just return the local MODULES array.
+        return MODULES.slice();
+      },
+
+      async postEvent(eventPayload) {
+        // For now, route MODULE_COMPLETED events to the existing Sheets sync.
+        try {
+          if (eventPayload && eventPayload.type === "MODULE_COMPLETED") {
+            const module = MODULES.find((m) => m.id === eventPayload.module_id);
+            if (module) {
+              const pct = typeof eventPayload.completion_pct === "number"
+                ? eventPayload.completion_pct
+                : 0;
+              syncCompletionToSheet(module, pct);
+            }
+          }
+          return { status: "ok" };
+        } catch (err) {
+          console.error("apiClient.postEvent failed:", err);
+          throw err;
+        }
+      }
+    };
+
     // ---------- Toast -------------------------------------------------------
     const toastEl = document.getElementById("toast");
     let toastTimeoutId = null;
@@ -1209,8 +1257,9 @@
     // ---------- Helpers: Assigned & Progress --------------------------------
     function getAssignedModules() {
       const profile = getProfile();
+      const modulesSource = (allModules && allModules.length) ? allModules : MODULES;
       if (profile.role === "Expo") {
-        return MODULES.filter((m) => m.role === "Expo");
+        return modulesSource.filter((m) => m.role === "Expo");
       }
       return [];
     }
@@ -1347,9 +1396,10 @@
       const accordion = document.createElement("div");
       accordion.className = "accordion";
 
-      const expoModules = MODULES.filter((m) => m.role === "Expo");
+      const modulesSource = (allModules && allModules.length) ? allModules : MODULES;
+      const expoModules = modulesSource.filter((m) => m.role === "Expo");
 
-      ROLES.forEach((roleObj, idx) => {
+      ROLES.forEach((roleObj) => {
         const item = document.createElement("div");
         item.className = "accordion-item";
         if (roleObj.id === "Expo") {
@@ -1567,7 +1617,8 @@
     }
 
     function openModuleDetail(id) {
-      const module = MODULES.find((m) => m.id === id);
+      const modulesSource = (allModules && allModules.length) ? allModules : MODULES;
+      const module = modulesSource.find((m) => m.id === id);
       if (!module) return;
 
       currentModuleId = id;
@@ -1663,7 +1714,8 @@
         };
       }
 
-      const moduleIndex = MODULES.findIndex((m) => m.id === module.id);
+      const modulesSource = (allModules && allModules.length) ? allModules : MODULES;
+      const moduleIndex = modulesSource.findIndex((m) => m.id === module.id);
       const useMultipleChoice = moduleIndex % 2 === 0; // even = MC, odd = numeric
 
       if (useMultipleChoice) {
@@ -1760,7 +1812,8 @@
         }
         const value = selected.value;
         if (value === quizState.correct) {
-          const module = MODULES.find((m) => m.id === quizState.moduleId);
+          const modulesSource = (allModules && allModules.length) ? allModules : MODULES;
+          const module = modulesSource.find((m) => m.id === quizState.moduleId);
           closeQuiz();
           if (module) finalizeModuleCompletion(module);
         } else {
@@ -1778,7 +1831,8 @@
           return;
         }
         if (num === quizState.correct) {
-          const module = MODULES.find((m) => m.id === quizState.moduleId);
+          const modulesSource = (allModules && allModules.length) ? allModules : MODULES;
+          const module = modulesSource.find((m) => m.id === quizState.moduleId);
           closeQuiz();
           if (module) finalizeModuleCompletion(module);
         } else {
@@ -1804,7 +1858,16 @@
           ? 0
           : Math.round((completedCount / assigned.length) * 100);
 
-      syncCompletionToSheet(module, pct);
+      // Send event via apiClient (which currently routes to Sheets)
+      apiClient
+        .postEvent({
+          type: "MODULE_COMPLETED",
+          module_id: module.id,
+          completion_pct: pct
+        })
+        .catch((err) => {
+          console.error("Event post failed:", err);
+        });
 
       const btn = document.getElementById("completeModuleBtn");
       if (btn) {
@@ -1826,7 +1889,8 @@
         const btn = document.getElementById("completeModuleBtn");
         if (btn.disabled) return;
 
-        const module = MODULES.find((m) => m.id === currentModuleId);
+        const modulesSource = (allModules && allModules.length) ? allModules : MODULES;
+        const module = modulesSource.find((m) => m.id === currentModuleId);
         if (!module) return;
 
         // Instead of directly completing, open the quiz.
@@ -1925,11 +1989,42 @@
         setView("settings");
       });
 
-    // ---------- Initial Render ----------------------------------------------
-    refreshHeaderFromProfile();
-    updateSettingsProfileUI();
-    renderHome();
-    renderModulesList();
+    // ---------- Initial Render via initApp ----------------------------------
+    (async function initApp() {
+      try {
+        const session = await apiClient.loginWithLocalProfile();
+        currentEmployee = session.employee || null;
+      } catch (e) {
+        console.error("Login simulation failed:", e);
+      }
+
+      refreshHeaderFromProfile();
+      updateSettingsProfileUI();
+
+      try {
+        const modulesFromApi = await apiClient.getModules({
+          locationId:
+            currentEmployee && currentEmployee.current_location_id
+              ? currentEmployee.current_location_id
+              : "kyle",
+          role: "Expo"
+        });
+        if (Array.isArray(modulesFromApi) && modulesFromApi.length) {
+          allModules = modulesFromApi;
+        } else {
+          allModules = MODULES.slice();
+        }
+      } catch (e) {
+        console.error(
+          "Loading modules from apiClient failed, using local MODULES.",
+          e
+        );
+        allModules = MODULES.slice();
+      }
+
+      renderHome();
+      renderModulesList();
+    })();
   </script>
 </body>
 </html>
