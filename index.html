@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Expo Training v0.3.0</title>
+  <title>Expo Training MVP</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     :root {
@@ -129,15 +129,8 @@
       margin-top: 0.25rem;
     }
 
-    h1, h2 {
-      margin: 0 0 0.4rem;
-    }
-
-    h1 {
-      font-size: 1.1rem;
-    }
-
     h2 {
+      margin: 0 0 0.4rem;
       font-size: 1rem;
     }
 
@@ -294,11 +287,6 @@
       border: 1px solid var(--border);
       background: transparent;
       color: var(--text);
-    }
-
-    .btn-danger-outline {
-      border-color: var(--danger);
-      color: var(--danger);
     }
 
     .divider {
@@ -676,38 +664,6 @@
       min-height: 1em;
       margin-bottom: 0.2rem;
     }
-
-    /* Login view */
-    .login-form {
-      display: flex;
-      flex-direction: column;
-      gap: 0.55rem;
-      margin-top: 0.4rem;
-    }
-
-    .login-field {
-      display: flex;
-      flex-direction: column;
-      gap: 0.15rem;
-      font-size: 0.85rem;
-    }
-
-    .login-input,
-    .login-select {
-      font-size: 0.85rem;
-      padding: 0.4rem 0.5rem;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background: var(--bg-elevated);
-      color: var(--text);
-    }
-
-    .login-error {
-      font-size: 0.78rem;
-      color: var(--danger);
-      min-height: 1em;
-      margin-top: 0.25rem;
-    }
   </style>
 </head>
 <body>
@@ -733,50 +689,8 @@
     </header>
 
     <main>
-      <!-- LOGIN VIEW -->
-      <section id="view-login" class="view active">
-        <div class="card">
-          <h1>Sign in to Training</h1>
-          <p class="muted" style="font-size:0.8rem;">
-            Use your real info so your training records stay accurate across locations.
-          </p>
-
-          <form id="loginForm" class="login-form">
-            <div class="login-field">
-              <label for="loginLocationSelect">Location</label>
-              <select id="loginLocationSelect" class="login-select">
-                <option value="Kyle">Kyle</option>
-                <option value="Manchaca">Manchaca</option>
-                <option value="Lakeline">Lakeline</option>
-              </select>
-            </div>
-
-            <div class="login-field">
-              <label for="loginFirstNameInput">First Name</label>
-              <input id="loginFirstNameInput" class="login-input" type="text" autocomplete="given-name" />
-            </div>
-
-            <div class="login-field">
-              <label for="loginLastNameInput">Last Name</label>
-              <input id="loginLastNameInput" class="login-input" type="text" autocomplete="family-name" />
-            </div>
-
-            <div class="login-field">
-              <label for="loginEmployeeIdInput">Employee ID</label>
-              <input id="loginEmployeeIdInput" class="login-input" type="text" autocomplete="off" />
-            </div>
-
-            <div id="loginError" class="login-error"></div>
-
-            <button type="submit" class="btn btn-primary">
-              Continue
-            </button>
-          </form>
-        </div>
-      </section>
-
       <!-- HOME VIEW -->
-      <section id="view-home" class="view">
+      <section id="view-home" class="view active">
         <div class="card">
           <div class="pill">Dashboard</div>
           <div class="progress-row">
@@ -856,8 +770,6 @@
               <span>Location</span>
               <select id="profileLocationSelect" class="settings-select">
                 <option value="Kyle">Kyle</option>
-                <option value="Manchaca">Manchaca</option>
-                <option value="Lakeline">Lakeline</option>
                 <option value="Other">Other...</option>
               </select>
             </div>
@@ -870,15 +782,10 @@
               <span class="muted" style="font-size:0.8rem;">Coming later</span>
             </div>
           </div>
-
-          <div class="divider"></div>
-          <button id="logoutButton" class="btn btn-outline btn-danger-outline" type="button">
-            Log out on this device
-          </button>
         </div>
       </section>
 
-      <!-- ASSIGNED MODULES VIEW -->
+      <!-- ASSIGNED MODULES VIEW (same accordion pattern if you ever route here) -->
       <section id="view-assigned" class="view">
         <div class="card">
           <h2>Assigned Modules</h2>
@@ -977,6 +884,9 @@
         role: "Expo",
         description:
           "Polish and stage utensils so servers can roll silverware quickly.",
+        images: [
+          "polish-utensils.png"
+        ],
         steps: [
           "Sort utensils from dish (steak knives and spoons only).",
           "Place utensils in plastic pitcher filled with hot water.",
@@ -1080,10 +990,6 @@
       { id: "Kitchen", label: "Kitchen" }
     ];
 
-    // All modules go through this variable so we can later swap to API-backed data.
-    let allModules = MODULES.slice();
-    let currentEmployee = null;
-
     // ---------- State & Profile ---------------------------------------------
     const STORAGE_KEY = "expoTrainingMvpState_v12";
     const PROFILE_NAME_KEY = "expoTrainingName"; // legacy fallback
@@ -1182,10 +1088,7 @@
         profile.employee_id || "Not set";
 
       const locationSelect = document.getElementById("profileLocationSelect");
-      const knownLocations = ["Kyle", "Manchaca", "Lakeline", "Other"];
-      locationSelect.value = knownLocations.includes(profile.location)
-        ? profile.location
-        : "Other";
+      locationSelect.value = profile.location === "Other" ? "Other" : "Kyle";
     }
 
     // ---------- Backend sync (Google Sheets) --------------------------------
@@ -1221,82 +1124,6 @@
       });
     }
 
-    // ---------- apiClient (local mock, future API layer) --------------------
-    function mapLocationId(name) {
-      const lower = (name || "").toLowerCase();
-      if (lower === "kyle") return "kyle";
-      if (lower === "manchaca") return "manchaca";
-      if (lower === "lakeline") return "lakeline";
-      return "other";
-    }
-
-    const apiClient = {
-      async loginWithLocalProfile() {
-        const profile = getProfile();
-        return {
-          access_token: "local-dev-token",
-          employee: {
-            id: profile.employee_id || profile.client_id || ("local-" + Math.random().toString(36).slice(2)),
-            first_name: profile.firstName || "Fname",
-            last_name: profile.lastName || "Lname",
-            preferred_name: profile.commonName || profile.firstName || "Fname",
-            home_location_id: mapLocationId(profile.location),
-            current_location_id: mapLocationId(profile.location),
-            roles: ["Expo"],
-            app_role: "employee"
-          }
-        };
-      },
-
-      async getModules({ locationId = "kyle", role = "Expo" } = {}) {
-        // For now, ignore location/role filters and just return the local MODULES array.
-        return MODULES.slice();
-      },
-
-      async postEvent(eventPayload) {
-        // For now, route MODULE_COMPLETED events to the existing Sheets sync.
-        try {
-          if (eventPayload && eventPayload.type === "MODULE_COMPLETED") {
-            const module = MODULES.find((m) => m.id === eventPayload.module_id);
-            if (module) {
-              const pct = typeof eventPayload.completion_pct === "number"
-                ? eventPayload.completion_pct
-                : 0;
-              syncCompletionToSheet(module, pct);
-            }
-          }
-          return { status: "ok" };
-        } catch (err) {
-          console.error("apiClient.postEvent failed:", err);
-          throw err;
-        }
-      }
-    };
-
-    async function loadModulesForCurrentEmployee() {
-      const locId =
-        currentEmployee && currentEmployee.current_location_id
-          ? currentEmployee.current_location_id
-          : "kyle";
-      try {
-        const modulesFromApi = await apiClient.getModules({
-          locationId: locId,
-          role: "Expo"
-        });
-        if (Array.isArray(modulesFromApi) && modulesFromApi.length) {
-          allModules = modulesFromApi;
-        } else {
-          allModules = MODULES.slice();
-        }
-      } catch (e) {
-        console.error(
-          "Loading modules from apiClient failed, using local MODULES.",
-          e
-        );
-        allModules = MODULES.slice();
-      }
-    }
-
     // ---------- Toast -------------------------------------------------------
     const toastEl = document.getElementById("toast");
     let toastTimeoutId = null;
@@ -1314,7 +1141,6 @@
 
     // ---------- Views & Nav -------------------------------------------------
     const views = {
-      login: document.getElementById("view-login"),
       home: document.getElementById("view-home"),
       modules: document.getElementById("view-modules"),
       moduleDetail: document.getElementById("view-module-detail"),
@@ -1324,11 +1150,9 @@
 
     const headerTitle = document.getElementById("headerTitle");
     const backButton = document.getElementById("backButton");
-    const settingsButton = document.getElementById("settingsButton");
-    const footerEl = document.querySelector("footer");
 
-    let currentView = "login";
-    let lastView = "login";
+    let currentView = "home";
+    let lastView = "home";
 
     function updateBackButton() {
       if (
@@ -1356,10 +1180,10 @@
         headerTitle.textContent = "Texican Logo";
       }
 
-      // Tabs active state
       document
         .querySelectorAll(".tab-btn")
         .forEach((btn) => btn.classList.remove("active"));
+
       if (viewKey === "home") {
         document
           .querySelector('.tab-btn[data-tab="home"]')
@@ -1368,15 +1192,6 @@
         document
           .querySelector('.tab-btn[data-tab="modules"]')
           .classList.add("active");
-      }
-
-      // Show/hide footer & settings based on view
-      if (viewKey === "login") {
-        if (footerEl) footerEl.style.display = "none";
-        if (settingsButton) settingsButton.style.visibility = "hidden";
-      } else {
-        if (footerEl) footerEl.style.display = "block";
-        if (settingsButton) settingsButton.style.visibility = "visible";
       }
 
       updateBackButton();
@@ -1394,12 +1209,49 @@
       }
     });
 
+    // ---------- Secret Handshake: reset completions ------------------------
+    let secretTapCount = 0;
+    let secretTapTimer = null;
+
+    function handleSecretTap() {
+      secretTapCount += 1;
+
+      if (secretTapTimer) {
+        clearTimeout(secretTapTimer);
+      }
+
+      // Reset window after 4 seconds of inactivity
+      secretTapTimer = setTimeout(() => {
+        secretTapCount = 0;
+      }, 4000);
+
+      if (secretTapCount >= 5) {
+        secretTapCount = 0;
+        clearTimeout(secretTapTimer);
+        secretTapTimer = null;
+
+        const confirmed = confirm(
+          "Reset all completed modules on this device?\n\nThis will clear progress for all roles."
+        );
+        if (confirmed) {
+          state.completed = {};
+          saveState();
+          renderHome();
+          renderModulesList();
+          showToast("All module completions have been cleared.");
+        }
+      }
+    }
+
+    if (headerTitle) {
+      headerTitle.addEventListener("click", handleSecretTap);
+    }
+
     // ---------- Helpers: Assigned & Progress --------------------------------
     function getAssignedModules() {
       const profile = getProfile();
-      const modulesSource = (allModules && allModules.length) ? allModules : MODULES;
       if (profile.role === "Expo") {
-        return modulesSource.filter((m) => m.role === "Expo");
+        return MODULES.filter((m) => m.role === "Expo");
       }
       return [];
     }
@@ -1536,10 +1388,9 @@
       const accordion = document.createElement("div");
       accordion.className = "accordion";
 
-      const modulesSource = (allModules && allModules.length) ? allModules : MODULES;
-      const expoModules = modulesSource.filter((m) => m.role === "Expo");
+      const expoModules = MODULES.filter((m) => m.role === "Expo");
 
-      ROLES.forEach((roleObj) => {
+      ROLES.forEach((roleObj, idx) => {
         const item = document.createElement("div");
         item.className = "accordion-item";
         if (roleObj.id === "Expo") {
@@ -1757,8 +1608,7 @@
     }
 
     function openModuleDetail(id) {
-      const modulesSource = (allModules && allModules.length) ? allModules : MODULES;
-      const module = modulesSource.find((m) => m.id === id);
+      const module = MODULES.find((m) => m.id === id);
       if (!module) return;
 
       currentModuleId = id;
@@ -1854,8 +1704,7 @@
         };
       }
 
-      const modulesSource = (allModules && allModules.length) ? allModules : MODULES;
-      const moduleIndex = modulesSource.findIndex((m) => m.id === module.id);
+      const moduleIndex = MODULES.findIndex((m) => m.id === module.id);
       const useMultipleChoice = moduleIndex % 2 === 0; // even = MC, odd = numeric
 
       if (useMultipleChoice) {
@@ -1952,8 +1801,7 @@
         }
         const value = selected.value;
         if (value === quizState.correct) {
-          const modulesSource = (allModules && allModules.length) ? allModules : MODULES;
-          const module = modulesSource.find((m) => m.id === quizState.moduleId);
+          const module = MODULES.find((m) => m.id === quizState.moduleId);
           closeQuiz();
           if (module) finalizeModuleCompletion(module);
         } else {
@@ -1971,8 +1819,7 @@
           return;
         }
         if (num === quizState.correct) {
-          const modulesSource = (allModules && allModules.length) ? allModules : MODULES;
-          const module = modulesSource.find((m) => m.id === quizState.moduleId);
+          const module = MODULES.find((m) => m.id === quizState.moduleId);
           closeQuiz();
           if (module) finalizeModuleCompletion(module);
         } else {
@@ -1998,16 +1845,7 @@
           ? 0
           : Math.round((completedCount / assigned.length) * 100);
 
-      // Send event via apiClient (which currently routes to Sheets)
-      apiClient
-        .postEvent({
-          type: "MODULE_COMPLETED",
-          module_id: module.id,
-          completion_pct: pct
-        })
-        .catch((err) => {
-          console.error("Event post failed:", err);
-        });
+      syncCompletionToSheet(module, pct);
 
       const btn = document.getElementById("completeModuleBtn");
       if (btn) {
@@ -2029,8 +1867,7 @@
         const btn = document.getElementById("completeModuleBtn");
         if (btn.disabled) return;
 
-        const modulesSource = (allModules && allModules.length) ? allModules : MODULES;
-        const module = modulesSource.find((m) => m.id === currentModuleId);
+        const module = MODULES.find((m) => m.id === currentModuleId);
         if (!module) return;
 
         // Instead of directly completing, open the quiz.
@@ -2044,7 +1881,7 @@
       renderAssignedAccordion(container, assigned);
     }
 
-    // ---------- Settings: Profile Editing & Logout --------------------------
+    // ---------- Settings: Profile Editing -----------------------------------
     document
       .getElementById("profileFirstNameRow")
       .addEventListener("click", () => {
@@ -2101,80 +1938,16 @@
     document
       .getElementById("profileLocationSelect")
       .addEventListener("change", (e) => {
-        const value = e.target.value;
+        const value = e.target.value === "Other" ? "Other" : "Kyle";
         localStorage.setItem(PROFILE_LOCATION_KEY, value);
         updateSettingsProfileUI();
       });
-
-    document.getElementById("logoutButton").addEventListener("click", () => {
-      if (!confirm("Log out on this device? You can sign back in anytime.")) {
-        return;
-      }
-      localStorage.removeItem(PROFILE_FIRST_NAME_KEY);
-      localStorage.removeItem(PROFILE_LAST_NAME_KEY);
-      localStorage.removeItem(PROFILE_COMMON_NAME_KEY);
-      localStorage.removeItem(PROFILE_LOCATION_KEY);
-      localStorage.removeItem(PROFILE_EMPLOYEE_ID_KEY);
-      // Do NOT clear training completions so their history stays on this device.
-      currentEmployee = null;
-      setView("login");
-      showToast("Signed out on this device");
-    });
-
-    // ---------- Login wiring -----------------------------------------------
-    const loginForm = document.getElementById("loginForm");
-    const loginLocationSelect = document.getElementById("loginLocationSelect");
-    const loginFirstNameInput = document.getElementById("loginFirstNameInput");
-    const loginLastNameInput = document.getElementById("loginLastNameInput");
-    const loginEmployeeIdInput = document.getElementById("loginEmployeeIdInput");
-    const loginErrorEl = document.getElementById("loginError");
-
-    async function handleLoginSubmit(event) {
-      event.preventDefault();
-      loginErrorEl.textContent = "";
-
-      const location = loginLocationSelect.value || "Kyle";
-      const firstName = (loginFirstNameInput.value || "").trim();
-      const lastName = (loginLastNameInput.value || "").trim();
-      const employeeId = (loginEmployeeIdInput.value || "").trim();
-
-      if (!firstName || !lastName || !employeeId) {
-        loginErrorEl.textContent =
-          "Please enter your first name, last name, and employee ID.";
-        return;
-      }
-
-      // Store into local profile
-      localStorage.setItem(PROFILE_FIRST_NAME_KEY, firstName);
-      localStorage.setItem(PROFILE_LAST_NAME_KEY, lastName);
-      localStorage.setItem(PROFILE_LOCATION_KEY, location);
-      localStorage.setItem(PROFILE_EMPLOYEE_ID_KEY, employeeId);
-
-      updateSettingsProfileUI();
-
-      try {
-        const session = await apiClient.loginWithLocalProfile();
-        currentEmployee = session.employee || null;
-        await loadModulesForCurrentEmployee();
-        renderHome();
-        renderModulesList();
-        setView("home");
-        showToast(`Welcome, ${firstName}!`);
-      } catch (e) {
-        console.error("Login failed:", e);
-        loginErrorEl.textContent =
-          "Something went wrong while signing in. Please try again.";
-      }
-    }
-
-    loginForm.addEventListener("submit", handleLoginSubmit);
 
     // ---------- Navigation Wiring -------------------------------------------
     document
       .querySelectorAll(".tab-btn")
       .forEach((btn) =>
         btn.addEventListener("click", () => {
-          if (currentView === "login") return; // ignore tabs on login
           const tab = btn.dataset.tab;
           if (tab === "home") {
             setView("home");
@@ -2189,39 +1962,15 @@
     document
       .getElementById("settingsButton")
       .addEventListener("click", () => {
-        if (currentView === "login") return;
         updateSettingsProfileUI();
         setView("settings");
       });
 
-    // ---------- Initial Render via initApp ----------------------------------
-    (async function initApp() {
-      try {
-        const storedId = localStorage.getItem(PROFILE_EMPLOYEE_ID_KEY);
-        const storedLast = localStorage.getItem(PROFILE_LAST_NAME_KEY);
-
-        if (storedId && storedLast) {
-          // Auto-login path
-          const session = await apiClient.loginWithLocalProfile();
-          currentEmployee = session.employee || null;
-          refreshHeaderFromProfile();
-          updateSettingsProfileUI();
-          await loadModulesForCurrentEmployee();
-          renderHome();
-          renderModulesList();
-          setView("home");
-        } else {
-          // Fresh device / no saved profile
-          refreshHeaderFromProfile();
-          updateSettingsProfileUI();
-          setView("login");
-        }
-      } catch (e) {
-        console.error("Init app failed:", e);
-        setView("login");
-      }
-    })();
+    // ---------- Initial Render ----------------------------------------------
+    refreshHeaderFromProfile();
+    updateSettingsProfileUI();
+    renderHome();
+    renderModulesList();
   </script>
 </body>
 </html>
-
