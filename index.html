@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Expo Training MVP</title>
+  <title>RITA Training MVP</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     :root {
@@ -17,15 +17,10 @@
       --accent-soft: rgba(249, 115, 22, 0.1);
       --border: #d1d5db;
       --danger: #b91c1c;
-
-      --warn: #b45309;
-      --warn-soft: rgba(180, 83, 9, 0.10);
-
       --radius-lg: 16px;
       --radius-md: 10px;
       --shadow-soft: 0 14px 30px rgba(15, 23, 42, 0.12);
-      --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-        sans-serif;
+      --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
     * { box-sizing: border-box; }
@@ -68,11 +63,7 @@
       gap: 0.75rem;
     }
 
-    .header-logo {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-    }
+    .header-logo { flex: 1; display: flex; justify-content: center; }
 
     .header-logo-text {
       border: 1px solid var(--border);
@@ -100,14 +91,7 @@
 
     .icon-btn:hover { background: var(--bg-soft); color: var(--text); }
 
-    .icon {
-      width: 18px;
-      height: 18px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-    }
+    .icon { width: 18px; height: 18px; display: inline-flex; align-items: center; justify-content: center; font-size: 18px; }
 
     main {
       flex: 1;
@@ -126,13 +110,10 @@
       padding: 0.85rem 0.9rem;
     }
 
-    .card + .card { margin-top: 0.25rem; }
-
     h2 { margin: 0 0 0.4rem; font-size: 1rem; }
     h3 { margin: 0 0 0.3rem; font-size: 0.95rem; }
 
     p { margin: 0; font-size: 0.85rem; line-height: 1.4; }
-
     .muted { color: var(--muted); }
 
     .pill {
@@ -192,12 +173,7 @@
 
     .alert strong { display: block; margin-bottom: 0.15rem; }
 
-    .list {
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-      margin-top: 0.3rem;
-    }
+    .list { display: flex; flex-direction: column; gap: 0.4rem; margin-top: 0.3rem; }
 
     .list-item {
       border-radius: var(--radius-md);
@@ -218,25 +194,7 @@
 
     .list-item.status-required { background: var(--accent-soft); border-color: var(--accentA); }
     .list-item.status-complete { background: rgba(34, 197, 94, 0.08); border-color: rgba(34, 197, 94, 0.45); }
-    .list-item.status-overdue { background: var(--warn-soft); border-color: rgba(180, 83, 9, 0.55); }
-
-    .meta-badge {
-      font-size: 0.72rem;
-      color: var(--muted);
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      padding: 0.08rem 0.45rem;
-      background: var(--bg-elevated);
-      margin-left: 0.4rem;
-      white-space: nowrap;
-    }
-
-    .meta-badge.overdue {
-      color: var(--warn);
-      border-color: rgba(180, 83, 9, 0.55);
-      background: var(--warn-soft);
-      font-weight: 600;
-    }
+    .list-item.status-overdue { background: rgba(185, 28, 28, 0.06); border-color: rgba(185, 28, 28, 0.45); }
 
     .btn {
       border-radius: 999px;
@@ -249,13 +207,13 @@
       justify-content: center;
       gap: 0.3rem;
       margin-top: 0.4rem;
+      width: 100%;
     }
 
     .btn-primary {
       background: linear-gradient(135deg, var(--accentA), var(--accentB));
       color: #111827;
       font-weight: 600;
-      width: 100%;
       transition: background 0.15s ease, opacity 0.15s ease;
     }
 
@@ -300,41 +258,22 @@
       gap: 0.15rem;
     }
 
-    .tab-btn span.dot {
-      width: 4px;
-      height: 4px;
-      border-radius: 999px;
-      background: transparent;
-    }
-
+    .tab-btn span.dot { width: 4px; height: 4px; border-radius: 999px; background: transparent; }
     .tab-btn.active { color: var(--accentA); font-weight: 600; }
     .tab-btn.active span.dot { background: var(--accentA); }
 
     .view { display: none; }
     .view.active { display: block; }
 
-    .steps {
-      display: flex;
-      flex-direction: column;
-      gap: 0.35rem;
-      margin-top: 0.4rem;
-    }
+    .steps { display: flex; flex-direction: column; gap: 0.35rem; margin-top: 0.4rem; }
 
-    .step-row {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.5rem;
-      font-size: 0.85rem;
-      cursor: pointer;
-    }
-
+    .step-row { display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.85rem; cursor: pointer; }
     .step-row input[type="checkbox"] { margin-top: 0.1rem; flex-shrink: 0; }
     .step-row span { flex: 1; }
 
     .hint { font-size: 0.8rem; color: var(--muted); margin-top: 0.25rem; }
 
     .settings-group { margin-top: 0.3rem; }
-
     .settings-item {
       padding: 0.55rem 0;
       display: flex;
@@ -344,7 +283,6 @@
       font-size: 0.85rem;
       cursor: pointer;
     }
-
     .settings-item.no-click { cursor: default; }
     .settings-item.no-click > span { pointer-events: none; }
 
@@ -372,7 +310,6 @@
     }
 
     .module-image-main { width: 100%; }
-
     .module-image-main img {
       width: 100%;
       height: auto;
@@ -414,7 +351,6 @@
       align-items: center;
       gap: 0.2rem;
     }
-
     .module-carousel-btn:hover { background: var(--bg-soft); color: var(--text); }
 
     .module-carousel-counter { font-size: 0.78rem; color: var(--muted); }
@@ -449,12 +385,7 @@
     }
 
     /* Accordion */
-    .accordion {
-      display: flex;
-      flex-direction: column;
-      gap: 0.35rem;
-      margin-top: 0.35rem;
-    }
+    .accordion { display: flex; flex-direction: column; gap: 0.35rem; margin-top: 0.35rem; }
 
     .accordion-item {
       border-radius: var(--radius-md);
@@ -476,23 +407,11 @@
     }
 
     .accordion-title { font-weight: 600; font-size: 0.86rem; }
-
     .accordion-meta { font-size: 0.75rem; color: var(--muted); margin-left: 0.4rem; }
+    .accordion-chevron { font-size: 0.8rem; margin-left: 0.5rem; transition: transform 0.15s ease-out; }
 
-    .accordion-chevron {
-      font-size: 0.8rem;
-      margin-left: 0.5rem;
-      transition: transform 0.15s ease-out;
-    }
-
-    .accordion-body {
-      padding: 0 0.6rem 0.55rem;
-      border-top: 1px solid var(--border);
-      display: none;
-    }
-
+    .accordion-body { padding: 0 0.6rem 0.55rem; border-top: 1px solid var(--border); display: none; }
     .accordion-item.open .accordion-body { display: block; }
-
     .accordion-item.open .accordion-chevron { transform: rotate(180deg); }
 
     /* Quiz modal */
@@ -505,7 +424,6 @@
       justify-content: center;
       z-index: 50;
     }
-
     .quiz-overlay.show { display: flex; }
 
     .quiz-card {
@@ -521,12 +439,7 @@
     .quiz-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.3rem; }
     .quiz-question { font-size: 0.85rem; margin-bottom: 0.6rem; }
 
-    .quiz-options {
-      display: flex;
-      flex-direction: column;
-      gap: 0.35rem;
-      margin-bottom: 0.6rem;
-    }
+    .quiz-options { display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 0.6rem; }
 
     .quiz-option-row { display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; }
     .quiz-option-row input[type="radio"] { flex-shrink: 0; }
@@ -562,11 +475,21 @@
 
     .quiz-error { font-size: 0.78rem; color: var(--danger); min-height: 1em; margin-bottom: 0.2rem; }
 
-    /* Block screen */
-    .block-wrap {
-      padding: 1.2rem;
+    /* Manager UI */
+    .field { margin-top: 0.5rem; }
+    .field label { display: block; font-size: 0.78rem; color: var(--muted); margin-bottom: 0.2rem; }
+    .input, .select {
+      width: 100%;
+      font-size: 0.86rem;
+      padding: 0.55rem 0.6rem;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg-elevated);
+      color: var(--text);
     }
-    .block-title { margin: 0 0 0.35rem; font-size: 1.05rem; }
+    .row { display: flex; gap: 0.5rem; }
+    .row > * { flex: 1; }
+    .mini { font-size: 0.76rem; color: var(--muted); margin-top: 0.25rem; }
   </style>
 </head>
 <body>
@@ -603,12 +526,8 @@
           <div class="pill">Dashboard</div>
           <div class="progress-row">
             <div>
-              <div class="progress-label" id="progressLabel">
-                0 / 0 Modules Completed
-              </div>
-              <div class="muted" style="font-size:0.78rem;">
-                Assigned modules are due in 14 days.
-              </div>
+              <div class="progress-label" id="progressLabel">0 / 0 Assigned Completed</div>
+              <div class="muted" style="font-size:0.78rem;">Assignments are due in 14 days unless re-assigned.</div>
             </div>
           </div>
           <div class="progress-bar">
@@ -619,9 +538,7 @@
 
         <div class="card">
           <h3>Assigned Training</h3>
-          <p class="muted" style="font-size:0.8rem;">
-            Your assignments show up here immediately.
-          </p>
+          <p class="muted" style="font-size:0.8rem;">Your assignments update immediately when a manager assigns training.</p>
           <div id="homeAssignedAccordion"></div>
         </div>
       </section>
@@ -630,9 +547,7 @@
       <section id="view-modules" class="view">
         <div class="card">
           <h2>Modules by Role</h2>
-          <p class="muted" style="font-size:0.8rem;">
-            Modules are grouped by role for browsing. Assignments control what’s required.
-          </p>
+          <p class="muted" style="font-size:0.8rem;">Catalog view. Assignments live on Home.</p>
           <div class="divider"></div>
           <div id="modulesList"></div>
         </div>
@@ -641,18 +556,14 @@
       <!-- MODULE DETAIL VIEW -->
       <section id="view-module-detail" class="view">
         <div class="card">
-          <div class="pill" id="detailCategoryPill">Prep</div>
+          <div class="pill" id="detailCategoryPill">Category</div>
           <h2 id="detailTitle">Module Title</h2>
-          <p class="muted" id="detailDescription" style="font-size:0.8rem;">
-            Description goes here.
-          </p>
+          <p class="muted" id="detailDescription" style="font-size:0.8rem;">Description goes here.</p>
 
           <div id="detailImageContainer"></div>
 
           <div class="steps" id="detailSteps"></div>
-          <button class="btn btn-primary" id="completeModuleBtn" disabled>
-            Mark Module Complete
-          </button>
+          <button class="btn btn-primary" id="completeModuleBtn" disabled>Mark Module Complete</button>
           <p class="hint" id="detailHint"></p>
         </div>
       </section>
@@ -674,6 +585,7 @@
               <span>Common Name</span>
               <span class="muted" id="profileCommonNameValue" style="font-size:0.8rem;">Optional</span>
             </div>
+
             <div class="settings-item no-click">
               <span>Location</span>
               <select id="profileLocationSelect" class="settings-select">
@@ -681,27 +593,73 @@
                 <option value="Other">Other...</option>
               </select>
             </div>
+
             <div class="settings-item" id="profileEmployeeIdRow">
               <span>Employee ID</span>
               <span class="muted" id="profileEmployeeIdValue" style="font-size:0.8rem;">Not set</span>
             </div>
+
             <div class="settings-item no-click">
-              <span>Notifications</span>
-              <span class="muted" style="font-size:0.8rem;">Coming later</span>
+              <span>Dev Roles</span>
+              <span class="muted" style="font-size:0.8rem;">Expo + Cashier</span>
+            </div>
+
+            <div class="settings-item" id="managerToolsRow">
+              <span>Manager Tools</span>
+              <span class="muted" style="font-size:0.8rem;">PIN required</span>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- ASSIGNED MODULES VIEW (accordion pattern if you ever route here) -->
-      <section id="view-assigned" class="view">
+      <!-- MANAGER VIEW (2b) -->
+      <section id="view-manager" class="view">
         <div class="card">
-          <h2>Assigned Modules</h2>
+          <div class="pill">Manager Tools</div>
+          <h2>Assignments</h2>
           <p class="muted" style="font-size:0.8rem;">
-            All assigned training is required.
+            MVP is name-only and on-device. Assign to one employee or everyone. Default due date: 14 days.
           </p>
+
           <div class="divider"></div>
-          <div id="assignedAccordion"></div>
+
+          <div class="field">
+            <label>Employee (target)</label>
+            <select id="mgrEmployeeSelect" class="select"></select>
+            <div class="mini">Tip: “ALL EMPLOYEES” assigns to every saved name on this device.</div>
+          </div>
+
+          <div class="row">
+            <div class="field">
+              <label>Add employee name</label>
+              <input id="mgrNewEmployeeName" class="input" placeholder="e.g., Lauren" />
+            </div>
+            <div class="field">
+              <label>&nbsp;</label>
+              <button class="btn btn-outline" id="mgrAddEmployeeBtn" type="button">Add</button>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="field">
+            <label>Quick assign by role</label>
+            <div class="row">
+              <button class="btn btn-primary" id="mgrAssignExpoBtn" type="button">Assign Expo</button>
+              <button class="btn btn-primary" id="mgrAssignCashierBtn" type="button">Assign Cashier</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Assign a single module</label>
+            <select id="mgrModuleSelect" class="select"></select>
+            <button class="btn btn-outline" id="mgrAssignSingleBtn" type="button">Assign Selected Module</button>
+          </div>
+
+          <div class="divider"></div>
+
+          <h3>Snapshot</h3>
+          <div id="mgrSnapshot" class="empty-state">Select an employee to view status.</div>
         </div>
       </section>
     </main>
@@ -810,12 +768,7 @@
         role: "Expo",
         description:
           "Prepare and restock Ice Cream Balls during prep so servers can plate desserts quickly.",
-        images: [
-          "icb-setup.png",
-          "icb-weight.png",
-          "icb-label.png",
-          "icb-cleanup.png"
-        ],
+        images: ["icb-setup.png","icb-weight.png","icb-label.png","icb-cleanup.png"],
         steps: [
           "Gather ice cream, scale, plastic wrap, corn flakes, and gloves.",
           "Scoop 12 oz. ice cream balls using plastic wrap over scale surface.",
@@ -833,13 +786,7 @@
         role: "Expo",
         description:
           "Press and stage tortillas so the line never runs out during service.",
-        images: [
-          "tt-setup.png",
-          "tt-count.png",
-          "tt-label.png",
-          "tt-cover.png",
-          "tt-tie.png"
-        ],
+        images: ["tt-setup.png","tt-count.png","tt-label.png","tt-cover.png","tt-tie.png"],
         steps: [
           "Gather tortilla dough balls, clean trays, parchment sheets, and a scoop.",
           "Place parchment sheets on trays.",
@@ -855,9 +802,7 @@
         role: "Expo",
         description:
           "Polish and stage utensils so servers can roll silverware quickly.",
-        images: [
-          "polish-setup.png"
-        ],
+        images: ["polish-setup.png"],
         steps: [
           "Sort utensils from dish (steak knives and spoons only).",
           "Place utensils in plastic pitcher filled with hot water.",
@@ -888,9 +833,7 @@
         role: "Expo",
         description:
           "Know which sauces pair with which dishes and where they are stored.",
-        images: [
-          "ketchup.png"
-        ],
+        images: ["ketchup.png"],
         steps: [
           "Review each house sauce and its primary dishes.",
           "Locate each sauce on the line and in backup storage.",
@@ -961,8 +904,8 @@
       { id: "Kitchen", label: "Kitchen" }
     ];
 
-    // ---------- Legacy State & Profile ---------------------------------------------
-    const STORAGE_KEY = "expoTrainingMvpState_v12";
+    // ---------- Storage & State ---------------------------------------------
+    const STORAGE_KEY = "ritaTrainingState_v2b";
     const PROFILE_NAME_KEY = "expoTrainingName"; // legacy fallback
     const PROFILE_FIRST_NAME_KEY = "expoTrainingFirstName";
     const PROFILE_LAST_NAME_KEY = "expoTrainingLastName";
@@ -971,16 +914,29 @@
     const PROFILE_EMPLOYEE_ID_KEY = "expoTrainingEmployeeId";
     const CLIENT_ID_KEY = "expoTrainingClientId";
 
+    const EMPLOYEE_DIRECTORY_KEY = "ritaEmployeeDirectory_v1";
+
+    const ASSIGNMENT_DUE_DAYS = 14;
+    const MANAGER_PIN = "0856";
+
     function loadState() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (!raw) {
-          return { completed: {} };
+          return {
+            // legacy completed kept for compatibility only
+            completed: {},
+            // assignments are the source of truth going forward
+            assignments: {}
+          };
         }
         const parsed = JSON.parse(raw);
-        return { completed: parsed.completed || {} };
+        return {
+          completed: parsed.completed || {},
+          assignments: parsed.assignments || {}
+        };
       } catch (e) {
-        return { completed: {} };
+        return { completed: {}, assignments: {} };
       }
     }
 
@@ -1004,8 +960,7 @@
       const lastName = localStorage.getItem(PROFILE_LAST_NAME_KEY) || "";
       const commonName = localStorage.getItem(PROFILE_COMMON_NAME_KEY) || "";
 
-      const legacyFull =
-        localStorage.getItem(PROFILE_NAME_KEY) || "Fname Lname";
+      const legacyFull = localStorage.getItem(PROFILE_NAME_KEY) || "Fname Lname";
 
       let legalName = (firstName + " " + lastName).trim();
       if (!legalName) legalName = legacyFull;
@@ -1015,40 +970,183 @@
 
       const location = localStorage.getItem(PROFILE_LOCATION_KEY) || "Kyle";
       const employee_id = localStorage.getItem(PROFILE_EMPLOYEE_ID_KEY) || "";
-      const role = "Expo"; // legacy; assignments control requirements now
+
+      // Dev default: cross-trained Expo + Cashier
+      const roles = ["Expo", "Cashier"];
+      const primaryRole = "Expo";
 
       return {
-        firstName, lastName, commonName,
-        legalName, displayName,
+        firstName,
+        lastName,
+        commonName,
+        legalName,
+        displayName,
         employee_name: legalName,
-        location, employee_id, role,
+        location,
+        employee_id,
+        role: primaryRole,
+        roles,
         client_id: getClientId()
       };
     }
 
-    function refreshHeaderFromProfile() { /* reserved */ }
-
     function updateSettingsProfileUI() {
       const profile = getProfile();
-      document.getElementById("profileFirstNameValue").textContent =
-        profile.firstName || "Fname";
-      document.getElementById("profileLastNameValue").textContent =
-        profile.lastName || "Lname";
-      document.getElementById("profileCommonNameValue").textContent =
-        profile.commonName || "Optional";
-      document.getElementById("profileEmployeeIdValue").textContent =
-        profile.employee_id || "Not set";
-
+      document.getElementById("profileFirstNameValue").textContent = profile.firstName || "Fname";
+      document.getElementById("profileLastNameValue").textContent = profile.lastName || "Lname";
+      document.getElementById("profileCommonNameValue").textContent = profile.commonName || "Optional";
+      document.getElementById("profileEmployeeIdValue").textContent = profile.employee_id || "Not set";
       const locationSelect = document.getElementById("profileLocationSelect");
       locationSelect.value = profile.location === "Other" ? "Other" : "Kyle";
+    }
+
+    // ---------- Directory (name-only MVP) -----------------------------------
+    function loadEmployeeDirectory() {
+      try {
+        const raw = localStorage.getItem(EMPLOYEE_DIRECTORY_KEY);
+        if (!raw) return [];
+        const list = JSON.parse(raw);
+        return Array.isArray(list) ? list : [];
+      } catch {
+        return [];
+      }
+    }
+
+    function saveEmployeeDirectory(list) {
+      localStorage.setItem(EMPLOYEE_DIRECTORY_KEY, JSON.stringify(list));
+    }
+
+    function normalizeName(name) {
+      return (name || "").trim().replace(/\s+/g, " ");
+    }
+
+    function ensureCurrentUserInDirectory() {
+      const profile = getProfile();
+      const name = normalizeName(profile.displayName || profile.legalName);
+      if (!name) return;
+      const dir = loadEmployeeDirectory();
+      if (!dir.includes(name)) {
+        dir.push(name);
+        dir.sort((a,b)=>a.localeCompare(b));
+        saveEmployeeDirectory(dir);
+      }
+    }
+
+    // ---------- Assignment Engine ------------------------------------------
+    function employeeKey(name) {
+      return normalizeName(name || "");
+    }
+
+    function nowIso() {
+      return new Date().toISOString();
+    }
+
+    function addDaysIso(startIso, days) {
+      const d = startIso ? new Date(startIso) : new Date();
+      d.setDate(d.getDate() + days);
+      return d.toISOString();
+    }
+
+    function makeAssignmentId() {
+      return "asgn_" + Math.random().toString(36).slice(2) + "_" + Date.now();
+    }
+
+    function getAssignmentsForEmployee(name) {
+      const key = employeeKey(name);
+      if (!state.assignments[key]) state.assignments[key] = {};
+      return state.assignments[key];
+    }
+
+    function getActiveAssignment(name, moduleId) {
+      const map = getAssignmentsForEmployee(name);
+      return map[moduleId] || null;
+    }
+
+    function isAssigned(name, moduleId) {
+      return !!getActiveAssignment(name, moduleId);
+    }
+
+    function isCompleted(name, moduleId) {
+      const asn = getActiveAssignment(name, moduleId);
+      if (asn && asn.completed_at) return true;
+      // fallback to legacy completed map if present
+      return !!state.completed[moduleId];
+    }
+
+    function isOverdue(name, moduleId) {
+      const asn = getActiveAssignment(name, moduleId);
+      if (!asn || asn.completed_at) return false;
+      if (!asn.due_at) return false;
+      return new Date(asn.due_at).getTime() < Date.now();
+    }
+
+    function assignModuleToEmployee(name, moduleId) {
+      const key = employeeKey(name);
+      if (!key) return;
+
+      const map = getAssignmentsForEmployee(key);
+      const assigned_at = nowIso();
+      map[moduleId] = {
+        assignment_id: makeAssignmentId(),
+        module_id: moduleId,
+        assigned_at,
+        due_at: addDaysIso(assigned_at, ASSIGNMENT_DUE_DAYS),
+        completed_at: null
+      };
+
+      // clear legacy completion for that module on reassignment
+      state.completed[moduleId] = false;
+      saveState();
+    }
+
+    function assignRoleToEmployee(name, roleId) {
+      const mods = MODULES.filter(m => m.role === roleId);
+      mods.forEach(m => assignModuleToEmployee(name, m.id));
+    }
+
+    function seedDefaultAssignmentsForEmployee(name, roles) {
+      // Housekeeping assigned to all always
+      const allMods = MODULES.filter(m => m.role === "All");
+      allMods.forEach(m => {
+        if (!isAssigned(name, m.id)) assignModuleToEmployee(name, m.id);
+      });
+
+      // Role-based by default
+      (roles || []).forEach(r => {
+        const roleMods = MODULES.filter(m => m.role === r);
+        roleMods.forEach(m => {
+          if (!isAssigned(name, m.id)) assignModuleToEmployee(name, m.id);
+        });
+      });
+
+      saveState();
+    }
+
+    function getAssignedModulesForCurrentUser() {
+      const profile = getProfile();
+      const name = employeeKey(profile.displayName || profile.legalName);
+
+      // ensure assignments exist (role-based + housekeeping)
+      seedDefaultAssignmentsForEmployee(name, profile.roles);
+
+      const assignedMap = getAssignmentsForEmployee(name);
+      const assignedIds = Object.keys(assignedMap);
+
+      // show modules that are actively assigned (exist in map) and exist in catalog
+      const mods = MODULES.filter(m => assignedIds.includes(m.id));
+
+      return mods;
     }
 
     // ---------- Backend sync (Google Sheets) --------------------------------
     const SHEETS_ENDPOINT =
       "https://script.google.com/macros/s/AKfycbykPwcIulm6Tjo8JynUyviawqEDAQA7fqBMIN9I8jukZ9PrzYVO4dECESbh2GnEy9QyCw/exec";
 
-    function syncCompletionToSheet(module, completionPct, assignmentMeta) {
+    function syncCompletionToSheet(module, completionPct) {
       const profile = getProfile();
+
+      const asn = getActiveAssignment(employeeKey(profile.displayName || profile.legalName), module.id);
+
       const payload = {
         timestamp: new Date().toISOString(),
         employee_name: profile.employee_name,
@@ -1056,18 +1154,15 @@
         employee_id: profile.employee_id,
         location: profile.location,
         role: profile.role,
-
         module_id: module.id,
         module_title: module.title,
-
         event_type: "ASSIGNMENT_COMPLETED",
         completion_pct: completionPct,
         client_id: profile.client_id,
-
-        assignment_id: assignmentMeta?.assignment_id || "",
-        assigned_at: assignmentMeta?.assigned_at || "",
-        due_at: assignmentMeta?.due_at || "",
-        completion_status: assignmentMeta?.completion_status || ""
+        assignment_id: asn ? asn.assignment_id : null,
+        assigned_at: asn ? asn.assigned_at : null,
+        due_at: asn ? asn.due_at : null,
+        completed_at: asn ? asn.completed_at : null
       };
 
       fetch(SHEETS_ENDPOINT, {
@@ -1075,9 +1170,7 @@
         mode: "no-cors",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
-      }).catch((err) => {
-        console.error("Sync to Sheets failed:", err);
-      });
+      }).catch((err) => console.error("Sync to Sheets failed:", err));
     }
 
     // ---------- Toast -------------------------------------------------------
@@ -1097,7 +1190,7 @@
       modules: document.getElementById("view-modules"),
       moduleDetail: document.getElementById("view-module-detail"),
       settings: document.getElementById("view-settings"),
-      assigned: document.getElementById("view-assigned")
+      manager: document.getElementById("view-manager")
     };
 
     const headerTitle = document.getElementById("headerTitle");
@@ -1107,7 +1200,7 @@
     let lastView = "home";
 
     function updateBackButton() {
-      if (currentView === "settings" || currentView === "assigned" || currentView === "moduleDetail") {
+      if (currentView === "settings" || currentView === "moduleDetail" || currentView === "manager") {
         backButton.style.display = "inline-flex";
       } else {
         backButton.style.display = "none";
@@ -1125,7 +1218,6 @@
       if (headerTitle) headerTitle.textContent = "Texican Logo";
 
       document.querySelectorAll(".tab-btn").forEach((btn) => btn.classList.remove("active"));
-
       if (viewKey === "home") {
         document.querySelector('.tab-btn[data-tab="home"]').classList.add("active");
       } else if (viewKey === "modules" || viewKey === "moduleDetail") {
@@ -1140,311 +1232,40 @@
       setView(target, true);
       if (target === "home") renderHome();
       else if (target === "modules") renderModulesList();
-      else if (target === "assigned") renderAssignedView();
+      else if (target === "manager") renderManagerScreen();
     });
 
-    /* ============================================================
-       PHASE 2A — ASSIGNMENT ENGINE (local-first / role-based)
-       ============================================================ */
-    const STORE = {
-      employees: "rita_employees_v1",
-      settings:  "rita_settings_v1",
-      assignments: "rita_assignments_v1",
-      completions: "rita_assignment_completions_v1",
-      managerWhitelist: "rita_manager_whitelist_v1",
-      blocked: "rita_blocked_v1"
-    };
-
-    const DEFAULT_DUE_DAYS = 14;
-    const DUE_DAY_CHOICES = [7, 14, 21, 28];
-
-    function nowIso(){ return new Date().toISOString(); }
-    function addDaysIso(iso, days){
-      const d = new Date(iso);
-      d.setDate(d.getDate() + days);
-      return d.toISOString();
-    }
-    function safeJsonParse(raw, fallback){
-      try { return raw ? JSON.parse(raw) : fallback; } catch { return fallback; }
-    }
-    function loadStore(key, fallback){ return safeJsonParse(localStorage.getItem(key), fallback); }
-    function saveStore(key, value){ localStorage.setItem(key, JSON.stringify(value)); }
-
-    function getRitaSettings(){
-      const s = loadStore(STORE.settings, { notificationsEnabled: true });
-      if (typeof s.notificationsEnabled !== "boolean") s.notificationsEnabled = true;
-      return s;
-    }
-
-    function getEmployees(){
-      let employees = loadStore(STORE.employees, null);
-      if (!employees) {
-        const profile = getProfile();
-        const deviceEmployeeId = (profile.employee_id && profile.employee_id.trim())
-          ? profile.employee_id.trim()
-          : "device_" + (localStorage.getItem(CLIENT_ID_KEY) || "unknown");
-
-        employees = {
-          [deviceEmployeeId]: {
-            id: deviceEmployeeId,
-            name: profile.displayName || "Employee",
-            active: true,
-            roles: [profile.role || "Expo"],  // default role set
-            location: profile.location || "Kyle"
-          }
-        };
-        saveStore(STORE.employees, employees);
-      }
-      return employees;
-    }
-    function saveEmployees(employees){ saveStore(STORE.employees, employees); }
-
-    function getCurrentEmployeeId(){
-      const profile = getProfile();
-      const employees = getEmployees();
-
-      const id = (profile.employee_id && profile.employee_id.trim())
-        ? profile.employee_id.trim()
-        : "device_" + (localStorage.getItem(CLIENT_ID_KEY) || "unknown");
-
-      if (!employees[id]) {
-        employees[id] = {
-          id,
-          name: profile.displayName || "Employee",
-          active: true,
-          roles: [profile.role || "Expo"],
-          location: profile.location || "Kyle"
-        };
-        saveEmployees(employees);
-      } else {
-        // keep name/location fresh-ish
-        employees[id].name = profile.displayName || employees[id].name || "Employee";
-        employees[id].location = profile.location || employees[id].location || "Kyle";
-        saveEmployees(employees);
-      }
-      return id;
-    }
-
-    function getManagerWhitelist(){
-      let wl = loadStore(STORE.managerWhitelist, null);
-      if (!wl) {
-        wl = { ids: [] }; // Ownership will set these per device / later via manager UI
-        saveStore(STORE.managerWhitelist, wl);
-      }
-      return wl;
-    }
-    function isManager(employeeId){
-      const wl = getManagerWhitelist();
-      return Array.isArray(wl.ids) && wl.ids.includes(employeeId);
-    }
-
-    function getAssignments(){ return loadStore(STORE.assignments, []); }
-    function saveAssignments(list){ saveStore(STORE.assignments, list); }
-    function getCompletions(){ return loadStore(STORE.completions, {}); }
-    function saveCompletions(c){ saveStore(STORE.completions, c); }
-
-    function scopeKey(roleId, location){ return `${roleId}__${location || "Kyle"}`; }
-
-    function computeAssignmentState(assignment, completion){
-      if (!assignment) return "unknown";
-      if (assignment.status === "superseded") return "superseded";
-      if (completion?.completed_at) {
-        const done = new Date(completion.completed_at).getTime();
-        const due = new Date(assignment.due_at).getTime();
-        return done <= due ? "completed_on_time" : "completed_late";
-      }
-      const due = new Date(assignment.due_at).getTime();
-      return Date.now() > due ? "overdue" : "open";
-    }
-
-    function getAssignmentsForEmployee(employeeId){
-      const employees = getEmployees();
-      const emp = employees[employeeId];
-      if (!emp) return [];
-
-      const roles = Array.isArray(emp.roles) ? emp.roles : [];
-      const location = emp.location || "Kyle";
-
-      const assignments = getAssignments();
-      const completions = getCompletions();
-      const empComps = completions[employeeId] || {};
-
-      // Role-based assignments + always include role "All"
-      const eligibleScopes = new Set([
-        ...roles.map(r => scopeKey(r, location)),
-        scopeKey("All", location)
-      ]);
-
-      const active = assignments
-        .filter(a => a.status === "open" && eligibleScopes.has(a.scope))
-        .map(a => {
-          const completion = empComps[a.id] || null;
-          return {
-            ...a,
-            computed_status: computeAssignmentState(a, completion),
-            completed_at: completion?.completed_at || null
-          };
-        });
-
-      // overdue first, then due soon
-      active.sort((a,b) => new Date(a.due_at) - new Date(b.due_at));
-      active.sort((a,b) => (a.computed_status === "overdue" ? -1 : 0) - (b.computed_status === "overdue" ? -1 : 0));
-
-      return active;
-    }
-
-    function completeAssignment(employeeId, assignmentId){
-      const assignments = getAssignments();
-      const a = assignments.find(x => x.id === assignmentId);
-      if (!a || a.status !== "open") return false;
-
-      const completions = getCompletions();
-      if (!completions[employeeId]) completions[employeeId] = {};
-      completions[employeeId][assignmentId] = { completed_at: nowIso() };
-      saveCompletions(completions);
-      return true;
-    }
-
-    // Seed default assignments if none exist yet (role-based by default).
-    function seedDefaultAssignmentsIfEmpty() {
-      const existing = getAssignments();
-      if (existing && existing.length) return;
-
-      const profile = getProfile();
-      const location = profile.location || "Kyle";
-
-      const expoModuleIds = MODULES.filter(m => m.role === "Expo").map(m => m.id);
-      const allModuleIds  = MODULES.filter(m => m.role === "All").map(m => m.id);
-
-      const assigned_at = nowIso();
-      const due_at = addDaysIso(assigned_at, DEFAULT_DUE_DAYS);
-
-      const seeded = [];
-
-      // "All" scope
-      allModuleIds.forEach((moduleId) => {
-        seeded.push({
-          id: "asgn_" + Math.random().toString(36).slice(2),
-          scope: scopeKey("All", location),
-          role_id: "All",
-          location,
-          module_id: moduleId,
-          assigned_at,
-          due_at,
-          due_days: DEFAULT_DUE_DAYS,
-          status: "open",
-          assigned_by: "seed"
-        });
-      });
-
-      // Expo scope
-      expoModuleIds.forEach((moduleId) => {
-        seeded.push({
-          id: "asgn_" + Math.random().toString(36).slice(2),
-          scope: scopeKey("Expo", location),
-          role_id: "Expo",
-          location,
-          module_id: moduleId,
-          assigned_at,
-          due_at,
-          due_days: DEFAULT_DUE_DAYS,
-          status: "open",
-          assigned_by: "seed"
-        });
-      });
-
-      saveAssignments(seeded);
-    }
-
-    // Employee access blocking (Phase 2A)
-    function getBlockedList(){ return loadStore(STORE.blocked, { employee_ids: [] }); }
-    function isEmployeeBlocked(employeeId){
-      const b = getBlockedList();
-      return Array.isArray(b.employee_ids) && b.employee_ids.includes(employeeId);
-    }
-
-    function enforceEmployeeAccessOrBlockUI(){
-      const employees = getEmployees();
-      const id = getCurrentEmployeeId();
-      const emp = employees[id];
-
-      if (isEmployeeBlocked(id) || (emp && emp.active === false)) {
-        const shell = document.querySelector(".app-shell");
-        if (shell) {
-          shell.innerHTML = `
-            <main class="block-wrap">
-              <div class="card">
-                <h2 class="block-title">Access Disabled</h2>
-                <p class="muted">
-                  Your access to RITA has been disabled. Please see a manager.
-                </p>
-              </div>
-            </main>`;
-        }
-        return false;
-      }
-      return true;
-    }
-
-    // Run 2A boot
-    seedDefaultAssignmentsIfEmpty();
-    const accessOk = enforceEmployeeAccessOrBlockUI();
-
-    /* ============================================================
-       UI integration: assignments -> what employee sees + completes
-       ============================================================ */
-    let currentAssignmentId = null; // THIS replaces “module completion” as the unit of work
-
-    function getAssignedItemsForUI() {
-      const employeeId = getCurrentEmployeeId();
-      const assignments = getAssignmentsForEmployee(employeeId);
-
-      // Map assignment -> module (attach metadata for rendering)
-      return assignments
-        .map(a => {
-          const m = MODULES.find(mm => mm.id === a.module_id);
-          if (!m) return null;
-          return {
-            assignment: a,
-            module: m
-          };
-        })
-        .filter(Boolean);
-    }
-
-    function getCompletedAssignedCount() {
-      const items = getAssignedItemsForUI();
-      return items.filter(it => it.assignment.completed_at).length;
-    }
-
-    function getTotalAssignedCount() {
-      return getAssignedItemsForUI().length;
-    }
-
     // ---------- Accordion Rendering ----------------------------------------
-    function renderAssignedAccordion(containerEl, assignedItems) {
+    function renderAssignedAccordion(containerEl, modules) {
       containerEl.innerHTML = "";
-      if (!assignedItems || assignedItems.length === 0) {
+      const profile = getProfile();
+      const userName = employeeKey(profile.displayName || profile.legalName);
+
+      if (!modules || modules.length === 0) {
         const empty = document.createElement("div");
         empty.className = "empty-state";
-        empty.textContent = "No assignments yet.";
+        empty.textContent = "No assignments found.";
         containerEl.appendChild(empty);
         return;
       }
 
+      // sort categories so universal category (Housekeeping) rises to top
+      const categories = {};
+      modules.forEach((m) => {
+        if (!categories[m.category]) categories[m.category] = [];
+        categories[m.category].push(m);
+      });
+
+      const categoryOrder = Object.keys(categories).sort((a,b) => {
+        if (a === "Housekeeping" && b !== "Housekeeping") return -1;
+        if (b === "Housekeeping" && a !== "Housekeeping") return 1;
+        return a.localeCompare(b);
+      });
+
       const accordion = document.createElement("div");
       accordion.className = "accordion";
 
-      // Group by category (module.category)
-      const categories = {};
-      assignedItems.forEach((it) => {
-        const cat = it.module.category || "General";
-        if (!categories[cat]) categories[cat] = [];
-        categories[cat].push(it);
-      });
-
-      const catKeys = Object.keys(categories).sort();
-      catKeys.forEach((cat, idx) => {
+      categoryOrder.forEach((cat, idx) => {
         const item = document.createElement("div");
         item.className = "accordion-item";
         if (idx === 0) item.classList.add("open");
@@ -1460,22 +1281,12 @@
         left.appendChild(title);
 
         const mods = categories[cat];
-        const completedCount = mods.filter((it) => !!it.assignment.completed_at).length;
 
-        // overdue count
-        const overdueCount = mods.filter((it) => it.assignment.computed_status === "overdue").length;
-
+        const completedCount = mods.filter((m) => isCompleted(userName, m.id)).length;
         const meta = document.createElement("span");
         meta.className = "accordion-meta";
         meta.textContent = `${completedCount}/${mods.length} complete`;
         left.appendChild(meta);
-
-        if (overdueCount > 0) {
-          const badge = document.createElement("span");
-          badge.className = "meta-badge overdue";
-          badge.textContent = `${overdueCount} overdue`;
-          left.appendChild(badge);
-        }
 
         const chevron = document.createElement("span");
         chevron.className = "accordion-chevron";
@@ -1490,24 +1301,31 @@
         const list = document.createElement("div");
         list.className = "list";
 
-        mods.forEach((it) => {
-          const m = it.module;
-          const a = it.assignment;
+        // inside a category: overdue first, then incomplete, then complete
+        const sortedMods = mods.slice().sort((a,b) => {
+          const aOver = isOverdue(userName, a.id) ? 1 : 0;
+          const bOver = isOverdue(userName, b.id) ? 1 : 0;
+          if (aOver !== bOver) return bOver - aOver;
 
-          const completed = !!a.completed_at;
-          const overdue = a.computed_status === "overdue" && !completed;
+          const aComp = isCompleted(userName, a.id) ? 1 : 0;
+          const bComp = isCompleted(userName, b.id) ? 1 : 0;
+          if (aComp !== bComp) return aComp - bComp;
+
+          return a.title.localeCompare(b.title);
+        });
+
+        sortedMods.forEach((m) => {
+          const completed = isCompleted(userName, m.id);
+          const overdue = isOverdue(userName, m.id);
 
           const itemRow = document.createElement("div");
           itemRow.className =
             "list-item " +
-            (completed ? "status-complete" : (overdue ? "status-overdue" : "status-required"));
+            (completed ? "status-complete" : overdue ? "status-overdue" : "status-required");
 
-          itemRow.onclick = () => openModuleDetail(m.id, a.id);
+          itemRow.onclick = () => openModuleDetail(m.id);
 
-          const metaText = completed
-            ? "Complete"
-            : (overdue ? "Overdue" : `Due ${formatDueDateShort(a.due_at)}`);
-
+          const metaText = completed ? "Complete" : overdue ? "Overdue" : "Assigned";
           itemRow.innerHTML = `<span class="label">${m.title}</span><span class="meta">${metaText}</span>`;
           list.appendChild(itemRow);
         });
@@ -1524,60 +1342,54 @@
       containerEl.appendChild(accordion);
     }
 
-    function formatDueDateShort(iso){
-      const d = new Date(iso);
-      const mm = d.getMonth() + 1;
-      const dd = d.getDate();
-      return `${mm}/${dd}`;
-    }
-
     // ---------- Home Rendering ---------------------------------------------
     function renderHome() {
-      if (!accessOk) return;
+      ensureCurrentUserInDirectory();
 
-      const assignedItems = getAssignedItemsForUI();
-      const completedCount = assignedItems.filter(it => !!it.assignment.completed_at).length;
+      const assigned = getAssignedModulesForCurrentUser();
+      const profile = getProfile();
+      const userName = employeeKey(profile.displayName || profile.legalName);
+
+      const completedCount = assigned.filter(m => isCompleted(userName, m.id)).length;
 
       const label = document.getElementById("progressLabel");
-      label.textContent = `${completedCount} / ${assignedItems.length} Assignments Completed`;
+      label.textContent = `${completedCount} / ${assigned.length} Assigned Completed`;
 
       const progressFill = document.getElementById("progressFill");
-      const pct = assignedItems.length === 0 ? 0 : (completedCount / assignedItems.length) * 100;
+      const pct = assigned.length === 0 ? 0 : (completedCount / assigned.length) * 100;
       progressFill.style.width = pct + "%";
-
-      const overdueCount = assignedItems.filter(it => it.assignment.computed_status === "overdue" && !it.assignment.completed_at).length;
 
       const alertContainer = document.getElementById("homeAlertContainer");
       alertContainer.innerHTML = "";
-
       const alert = document.createElement("div");
       alert.className = "alert";
 
-      if (assignedItems.length === 0) {
+      const overdueCount = assigned.filter(m => isOverdue(userName, m.id)).length;
+
+      if (assigned.length === 0) {
         alert.innerHTML =
-          "<div><strong>No assignments yet.</strong><span class='muted'>Your manager hasn’t assigned training on this device.</span></div>";
-      } else if (completedCount < assignedItems.length) {
-        const remaining = assignedItems.length - completedCount;
-        const overdueLine = overdueCount > 0
-          ? `<div class="muted" style="margin-top:0.25rem;">${overdueCount} assignment${overdueCount !== 1 ? "s are" : " is"} overdue.</div>`
-          : "";
-        alert.innerHTML = `<div><strong>Training in progress.</strong>You have ${remaining} assignment${remaining !== 1 ? "s" : ""} left to complete.${overdueLine}</div>`;
+          "<div><strong>No assignments yet.</strong><span class='muted'>Ask a manager to assign training.</span></div>";
+      } else if (overdueCount > 0) {
+        alert.innerHTML =
+          `<div><strong>Action needed.</strong>${overdueCount} assignment${overdueCount !== 1 ? "s" : ""} overdue. Complete them ASAP.</div>`;
+      } else if (completedCount < assigned.length) {
+        const remaining = assigned.length - completedCount;
+        alert.innerHTML =
+          `<div><strong>Training in progress.</strong>You have ${remaining} assigned module${remaining !== 1 ? "s" : ""} left.</div>`;
       } else {
         alert.classList.add("complete");
         alert.innerHTML =
-          "<div><strong>You have completed all assigned training.</strong><span class='muted'>Check back for new assignments.</span></div>";
+          "<div><strong>All assigned training completed.</strong><span class='muted'>Check back if a manager assigns new training.</span></div>";
       }
 
       alertContainer.appendChild(alert);
 
       const homeAssignedAccordion = document.getElementById("homeAssignedAccordion");
-      renderAssignedAccordion(homeAssignedAccordion, assignedItems);
+      renderAssignedAccordion(homeAssignedAccordion, assigned);
     }
 
-    // ---------- Modules View Rendering (browse-only) ------------------------
+    // ---------- Modules View Rendering -------------------------------------
     function renderModulesList() {
-      if (!accessOk) return;
-
       const container = document.getElementById("modulesList");
       container.innerHTML = "";
 
@@ -1599,18 +1411,10 @@
         title.textContent = roleObj.label;
         left.appendChild(title);
 
+        const roleMods = MODULES.filter(m => m.role === roleObj.id || m.role === "All");
         const meta = document.createElement("span");
         meta.className = "accordion-meta";
-
-        if (roleObj.id === "Expo") {
-          const expoModules = MODULES.filter(m => m.role === "Expo");
-          meta.textContent = `${expoModules.length} modules • Available now`;
-        } else if (roleObj.id === "Cashier") {
-          // You said: no cashier modules for now (we’ll add later)
-          meta.textContent = "Coming soon";
-        } else {
-          meta.textContent = "Coming soon";
-        }
+        meta.textContent = `${roleMods.length} modules`;
         left.appendChild(meta);
 
         const chevron = document.createElement("span");
@@ -1623,15 +1427,25 @@
         const body = document.createElement("div");
         body.className = "accordion-body";
 
-        if (roleObj.id === "Expo") {
-          const roleMods = MODULES.filter(m => m.role === "Expo" || m.role === "All");
+        if (roleMods.length === 0) {
+          const empty = document.createElement("div");
+          empty.className = "empty-state";
+          empty.textContent = "No modules configured for this role yet.";
+          body.appendChild(empty);
+        } else {
           const categories = {};
           roleMods.forEach((m) => {
             if (!categories[m.category]) categories[m.category] = [];
             categories[m.category].push(m);
           });
 
-          Object.keys(categories).sort().forEach((cat) => {
+          const categoryOrder = Object.keys(categories).sort((a,b) => {
+            if (a === "Housekeeping" && b !== "Housekeeping") return -1;
+            if (b === "Housekeeping" && a !== "Housekeeping") return 1;
+            return a.localeCompare(b);
+          });
+
+          categoryOrder.forEach((cat) => {
             const catLabel = document.createElement("p");
             catLabel.textContent = cat;
             catLabel.className = "muted";
@@ -1643,26 +1457,19 @@
             list.className = "list";
 
             categories[cat].forEach((m) => {
-              // Browse-only: show whether completed in legacy state (optional hint)
-              const completedLegacy = !!state.completed[m.id];
-
-              const row = document.createElement("div");
-              row.className = "list-item " + (completedLegacy ? "status-complete" : "status-required");
-              row.onclick = () => openModuleDetail(m.id, null);
-              row.innerHTML = `<span class="label">${m.title}</span><span class="meta">${completedLegacy ? "Complete (device)" : "Browse"}</span>`;
-              list.appendChild(row);
+              const itemRow = document.createElement("div");
+              itemRow.className = "list-item";
+              itemRow.onclick = () => openModuleDetail(m.id);
+              itemRow.innerHTML = `<span class="label">${m.title}</span><span class="meta">View</span>`;
+              list.appendChild(itemRow);
             });
 
             body.appendChild(list);
           });
-        } else {
-          const coming = document.createElement("div");
-          coming.className = "empty-state";
-          coming.textContent = `${roleObj.label} modules are coming soon.`;
-          body.appendChild(coming);
         }
 
         header.addEventListener("click", () => item.classList.toggle("open"));
+
         item.appendChild(header);
         item.appendChild(body);
         accordion.appendChild(item);
@@ -1733,15 +1540,13 @@
         prevBtn.addEventListener("click", () => {
           if (!currentCarouselImages.length) return;
           currentCarouselIndex =
-            (currentCarouselIndex - 1 + currentCarouselImages.length) %
-            currentCarouselImages.length;
+            (currentCarouselIndex - 1 + currentCarouselImages.length) % currentCarouselImages.length;
           updateCarouselDisplay();
         });
 
         nextBtn.addEventListener("click", () => {
           if (!currentCarouselImages.length) return;
-          currentCarouselIndex =
-            (currentCarouselIndex + 1) % currentCarouselImages.length;
+          currentCarouselIndex = (currentCarouselIndex + 1) % currentCarouselImages.length;
           updateCarouselDisplay();
         });
 
@@ -1761,50 +1566,36 @@
       const btn = document.getElementById("completeModuleBtn");
       btn.classList.remove("completed");
 
-      if (!currentModuleId) {
-        btn.disabled = true;
-        return;
-      }
+      if (!currentModuleId) { btn.disabled = true; return; }
 
-      // Determine completion based on CURRENT assignment (if any)
-      const employeeId = getCurrentEmployeeId();
-      const completions = getCompletions();
-      const empComps = completions[employeeId] || {};
-      const alreadyCompletedThisAssignment = currentAssignmentId && empComps[currentAssignmentId]?.completed_at;
+      const profile = getProfile();
+      const userName = employeeKey(profile.displayName || profile.legalName);
 
-      if (alreadyCompletedThisAssignment) {
+      const completedAlready = isCompleted(userName, currentModuleId);
+      if (completedAlready) {
         btn.disabled = true;
-        btn.textContent = "Assignment Completed";
+        btn.textContent = "Module Completed";
         btn.classList.add("completed");
-        return;
-      }
-
-      // If no assignment in context, do not allow completion from browse mode
-      if (!currentAssignmentId) {
-        btn.disabled = true;
-        btn.textContent = "Complete via assignment";
         return;
       }
 
       const checkboxes = document.querySelectorAll("#detailSteps input[type='checkbox']");
       if (checkboxes.length === 0) {
         btn.disabled = true;
-        btn.textContent = "Mark Complete";
+        btn.textContent = "Mark Module Complete";
         return;
       }
 
       const allChecked = Array.from(checkboxes).every((cb) => cb.checked);
       btn.disabled = !allChecked;
-      btn.textContent = allChecked ? "Mark Assignment Complete" : "Check all steps to complete";
+      btn.textContent = allChecked ? "Mark Module Complete" : "Check all steps to complete";
     }
 
-    function openModuleDetail(moduleId, assignmentId) {
-      const module = MODULES.find((m) => m.id === moduleId);
+    function openModuleDetail(id) {
+      const module = MODULES.find((m) => m.id === id);
       if (!module) return;
 
-      currentModuleId = moduleId;
-      currentAssignmentId = assignmentId || null;
-
+      currentModuleId = id;
       document.getElementById("detailCategoryPill").textContent = module.category;
       document.getElementById("detailTitle").textContent = module.title;
       document.getElementById("detailDescription").textContent = module.description;
@@ -1837,20 +1628,20 @@
         stepsContainer.appendChild(row);
       });
 
-      const hint = document.getElementById("detailHint");
-      if (!currentAssignmentId) {
-        hint.textContent = "Browse mode: assignments control what’s required and what can be completed.";
-      } else {
-        const a = getAssignments().find(x => x.id === currentAssignmentId);
-        const dueText = a?.due_at ? `Due ${formatDueDateShort(a.due_at)}` : "Due in 14 days";
-        hint.textContent = `Assignment active. ${dueText}. Complete the steps, then pass the quick check.`;
-      }
+      const profile = getProfile();
+      const userName = employeeKey(profile.displayName || profile.legalName);
+      const completed = isCompleted(userName, id);
 
-      // Button state
+      const hint = document.getElementById("detailHint");
+      hint.textContent = completed
+        ? "This module is completed for the current assignment. If re-assigned, it will require completion again."
+        : "Work through each step, then check all boxes to unlock completion.";
+
       const btn = document.getElementById("completeModuleBtn");
       btn.disabled = true;
       btn.classList.remove("completed");
-      btn.textContent = currentAssignmentId ? "Check all steps to complete" : "Complete via assignment";
+      btn.textContent = completed ? "Module Completed" : "Check all steps to complete";
+      if (completed) btn.classList.add("completed");
 
       updateCompleteButtonState();
       setView("moduleDetail");
@@ -1865,12 +1656,7 @@
     const quizSubmitBtn = document.getElementById("quizSubmitBtn");
     const quizCancelBtn = document.getElementById("quizCancelBtn");
 
-    let quizState = {
-      moduleId: null,
-      assignmentId: null,
-      type: null,         // "mc" | "number"
-      correct: null       // string or number
-    };
+    let quizState = { moduleId: null, type: null, correct: null };
 
     const GENERIC_DISTRACTORS = [
       "Ask guests if they want dessert menus before they sit down.",
@@ -1898,7 +1684,6 @@
 
     function buildQuizForModule(module) {
       const steps = Array.isArray(module.steps) ? module.steps.slice() : [];
-
       if (!steps.length) {
         return {
           type: "number",
@@ -1958,11 +1743,9 @@
       }
     }
 
-    function openQuizForModule(module, assignmentId) {
+    function openQuizForModule(module) {
       const quiz = buildQuizForModule(module);
-
       quizState.moduleId = module.id;
-      quizState.assignmentId = assignmentId;
       quizState.type = quiz.type;
       quizState.correct = quiz.correct;
       quizErrorEl.textContent = "";
@@ -2006,7 +1789,6 @@
       quizOverlay.setAttribute("aria-hidden", "true");
       quizErrorEl.textContent = "";
       quizState.moduleId = null;
-      quizState.assignmentId = null;
       quizState.type = null;
       quizState.correct = null;
     }
@@ -2014,20 +1796,17 @@
     quizCancelBtn.addEventListener("click", closeQuiz);
 
     quizSubmitBtn.addEventListener("click", () => {
-      if (!quizState.moduleId || !quizState.type || !quizState.assignmentId) return;
+      if (!quizState.moduleId || !quizState.type) return;
 
       if (quizState.type === "mc") {
         const selected = document.querySelector('#quizOptions input[name="quiz-option"]:checked');
-        if (!selected) {
-          quizErrorEl.textContent = "Please select an answer.";
-          return;
-        }
+        if (!selected) { quizErrorEl.textContent = "Please select an answer."; return; }
         const value = selected.value;
+
         if (value === quizState.correct) {
           const module = MODULES.find((m) => m.id === quizState.moduleId);
-          const assignmentId = quizState.assignmentId;
           closeQuiz();
-          if (module) finalizeAssignmentCompletion(module, assignmentId);
+          if (module) finalizeModuleCompletion(module);
         } else {
           quizErrorEl.textContent = "Not quite. Try again.";
         }
@@ -2036,11 +1815,11 @@
         if (raw === "") { quizErrorEl.textContent = "Enter a number to continue."; return; }
         const num = parseInt(raw, 10);
         if (Number.isNaN(num)) { quizErrorEl.textContent = "That doesn't look like a number. Try again."; return; }
+
         if (num === quizState.correct) {
           const module = MODULES.find((m) => m.id === quizState.moduleId);
-          const assignmentId = quizState.assignmentId;
           closeQuiz();
-          if (module) finalizeAssignmentCompletion(module, assignmentId);
+          if (module) finalizeModuleCompletion(module);
         } else {
           quizErrorEl.textContent = "That's not the right number. Try again.";
         }
@@ -2048,73 +1827,55 @@
     });
 
     // ---------- Finalize Completion (assignment-based) ----------------------
-    function finalizeAssignmentCompletion(module, assignmentId) {
-      const employeeId = getCurrentEmployeeId();
-      const ok = completeAssignment(employeeId, assignmentId);
-      if (!ok) {
-        showToast("Could not mark complete. Refresh and try again.");
-        return;
+    function finalizeModuleCompletion(module) {
+      if (!module) return;
+
+      const profile = getProfile();
+      const userName = employeeKey(profile.displayName || profile.legalName);
+
+      // ensure assignment exists (safety)
+      if (!isAssigned(userName, module.id)) {
+        assignModuleToEmployee(userName, module.id);
       }
 
-      // legacy device completion kept for your reset handshake (optional)
+      const map = getAssignmentsForEmployee(userName);
+      if (map[module.id]) {
+        map[module.id].completed_at = nowIso();
+      }
+
+      // legacy flag
       state.completed[module.id] = true;
+
       saveState();
 
-      const assignedItems = getAssignedItemsForUI();
-      const completedCount = assignedItems.filter(it => !!it.assignment.completed_at).length;
-      const pct = assignedItems.length === 0 ? 0 : Math.round((completedCount / assignedItems.length) * 100);
+      const assigned = getAssignedModulesForCurrentUser();
+      const completedCount = assigned.filter(m => isCompleted(userName, m.id)).length;
+      const pct = assigned.length === 0 ? 0 : Math.round((completedCount / assigned.length) * 100);
 
-      // compute completion status for sheet payload
-      const a = getAssignments().find(x => x.id === assignmentId);
-      const comps = getCompletions();
-      const completed_at = comps?.[employeeId]?.[assignmentId]?.completed_at || nowIso();
-      const completion_status = (() => {
-        if (!a?.due_at) return "completed";
-        return new Date(completed_at).getTime() <= new Date(a.due_at).getTime()
-          ? "completed_on_time"
-          : "completed_late";
-      })();
-
-      syncCompletionToSheet(module, pct, {
-        assignment_id: assignmentId,
-        assigned_at: a?.assigned_at || "",
-        due_at: a?.due_at || "",
-        completion_status
-      });
-
-      renderHome();
-      renderModulesList();
-      renderAssignedView();
+      syncCompletionToSheet(module, pct);
 
       const btn = document.getElementById("completeModuleBtn");
       if (btn) {
         btn.classList.add("completed");
-        btn.textContent = "Assignment Completed";
+        btn.textContent = "Module Completed";
         btn.disabled = true;
       }
 
       setView("home");
-      showToast(`Completed: ${module.title} • ${pct}% of assigned training done`);
+      renderHome();
+      showToast(`Completed: ${module.title} • ${pct}% of assignments done`);
     }
 
     document.getElementById("completeModuleBtn").addEventListener("click", () => {
-      if (!currentModuleId || !currentAssignmentId) return;
+      if (!currentModuleId) return;
       const btn = document.getElementById("completeModuleBtn");
       if (btn.disabled) return;
 
       const module = MODULES.find((m) => m.id === currentModuleId);
       if (!module) return;
 
-      openQuizForModule(module, currentAssignmentId);
+      openQuizForModule(module);
     });
-
-    // ---------- Assigned View (if used) -------------------------------------
-    function renderAssignedView() {
-      if (!accessOk) return;
-      const container = document.getElementById("assignedAccordion");
-      const assignedItems = getAssignedItemsForUI();
-      renderAssignedAccordion(container, assignedItems);
-    }
 
     // ---------- Settings: Profile Editing -----------------------------------
     document.getElementById("profileFirstNameRow").addEventListener("click", () => {
@@ -2122,8 +1883,8 @@
       const value = prompt("Enter your first name", current || "");
       if (value && value.trim()) {
         localStorage.setItem(PROFILE_FIRST_NAME_KEY, value.trim());
-        refreshHeaderFromProfile();
         updateSettingsProfileUI();
+        renderHome();
       }
     });
 
@@ -2132,8 +1893,8 @@
       const value = prompt("Enter your last name", current || "");
       if (value && value.trim()) {
         localStorage.setItem(PROFILE_LAST_NAME_KEY, value.trim());
-        refreshHeaderFromProfile();
         updateSettingsProfileUI();
+        renderHome();
       }
     });
 
@@ -2142,8 +1903,8 @@
       const value = prompt("Enter your common name (optional)", current || "");
       if (value !== null) {
         localStorage.setItem(PROFILE_COMMON_NAME_KEY, value.trim());
-        refreshHeaderFromProfile();
         updateSettingsProfileUI();
+        renderHome();
       }
     });
 
@@ -2153,8 +1914,6 @@
       if (value !== null) {
         localStorage.setItem(PROFILE_EMPLOYEE_ID_KEY, value.trim());
         updateSettingsProfileUI();
-        // ensure employee registry updates to new id
-        getCurrentEmployeeId();
       }
     });
 
@@ -2162,18 +1921,19 @@
       const value = e.target.value === "Other" ? "Other" : "Kyle";
       localStorage.setItem(PROFILE_LOCATION_KEY, value);
       updateSettingsProfileUI();
-      // location impacts assignment scope: re-render
-      renderHome();
-      renderModulesList();
-      renderAssignedView();
     });
 
     // ---------- Navigation Wiring -------------------------------------------
     document.querySelectorAll(".tab-btn").forEach((btn) =>
       btn.addEventListener("click", () => {
         const tab = btn.dataset.tab;
-        if (tab === "home") { setView("home"); renderHome(); }
-        else if (tab === "modules") { setView("modules"); renderModulesList(); }
+        if (tab === "home") {
+          setView("home");
+          renderHome();
+        } else if (tab === "modules") {
+          setView("modules");
+          renderModulesList();
+        }
       })
     );
 
@@ -2182,12 +1942,214 @@
       setView("settings");
     });
 
-    // ---------- Secret Manager Handshake (Reset + Block tooling) ------------
+    // ---------- Manager Screen (2b) -----------------------------------------
+    const managerToolsRow = document.getElementById("managerToolsRow");
+    const mgrEmployeeSelect = document.getElementById("mgrEmployeeSelect");
+    const mgrNewEmployeeName = document.getElementById("mgrNewEmployeeName");
+    const mgrAddEmployeeBtn = document.getElementById("mgrAddEmployeeBtn");
+    const mgrAssignExpoBtn = document.getElementById("mgrAssignExpoBtn");
+    const mgrAssignCashierBtn = document.getElementById("mgrAssignCashierBtn");
+    const mgrModuleSelect = document.getElementById("mgrModuleSelect");
+    const mgrAssignSingleBtn = document.getElementById("mgrAssignSingleBtn");
+    const mgrSnapshot = document.getElementById("mgrSnapshot");
+
+    function requireManagerPin() {
+      const pin = prompt("Enter manager PIN:");
+      if (pin === null) return false;
+      if (pin !== MANAGER_PIN) {
+        showToast("Incorrect PIN.");
+        return false;
+      }
+      return true;
+    }
+
+    managerToolsRow.addEventListener("click", () => {
+      if (!requireManagerPin()) return;
+      setView("manager");
+      renderManagerScreen();
+    });
+
+    function renderManagerEmployeeSelect() {
+      ensureCurrentUserInDirectory();
+      const dir = loadEmployeeDirectory();
+
+      mgrEmployeeSelect.innerHTML = "";
+      const optAll = document.createElement("option");
+      optAll.value = "__ALL__";
+      optAll.textContent = "ALL EMPLOYEES";
+      mgrEmployeeSelect.appendChild(optAll);
+
+      dir.forEach(name => {
+        const opt = document.createElement("option");
+        opt.value = name;
+        opt.textContent = name;
+        mgrEmployeeSelect.appendChild(opt);
+      });
+
+      // default select current user if present
+      const profile = getProfile();
+      const me = normalizeName(profile.displayName || profile.legalName);
+      if (dir.includes(me)) mgrEmployeeSelect.value = me;
+    }
+
+    function renderManagerModuleSelect() {
+      mgrModuleSelect.innerHTML = "";
+      MODULES.slice()
+        .sort((a,b)=>a.title.localeCompare(b.title))
+        .forEach(m => {
+          const opt = document.createElement("option");
+          opt.value = m.id;
+          opt.textContent = m.title;
+          mgrModuleSelect.appendChild(opt);
+        });
+    }
+
+    function renderManagerSnapshot(targetName) {
+      const dir = loadEmployeeDirectory();
+      if (!targetName || targetName === "__ALL__") {
+        // all employees snapshot
+        if (!dir.length) {
+          mgrSnapshot.textContent = "No employees saved on this device yet.";
+          return;
+        }
+        const lines = dir.map(n => {
+          const assignedMap = getAssignmentsForEmployee(n);
+          const assignedIds = Object.keys(assignedMap);
+          const assignedMods = MODULES.filter(m => assignedIds.includes(m.id));
+          const completedCount = assignedMods.filter(m => isCompleted(n, m.id)).length;
+          const overdueCount = assignedMods.filter(m => isOverdue(n, m.id)).length;
+          return `• ${n}: ${completedCount}/${assignedMods.length} complete • ${overdueCount} overdue`;
+        });
+        mgrSnapshot.textContent = lines.join("\n");
+        return;
+      }
+
+      // individual
+      const assignedMap = getAssignmentsForEmployee(targetName);
+      const assignedIds = Object.keys(assignedMap);
+      const assignedMods = MODULES.filter(m => assignedIds.includes(m.id));
+
+      if (!assignedMods.length) {
+        mgrSnapshot.textContent = "No assignments yet for this employee.";
+        return;
+      }
+
+      const completedCount = assignedMods.filter(m => isCompleted(targetName, m.id)).length;
+      const overdueCount = assignedMods.filter(m => isOverdue(targetName, m.id)).length;
+
+      // show top 5 incomplete / overdue next actions
+      const nextUp = assignedMods
+        .filter(m => !isCompleted(targetName, m.id))
+        .sort((a,b) => {
+          const aOver = isOverdue(targetName, a.id) ? 1 : 0;
+          const bOver = isOverdue(targetName, b.id) ? 1 : 0;
+          if (aOver !== bOver) return bOver - aOver;
+          const aDue = getActiveAssignment(targetName, a.id)?.due_at || "";
+          const bDue = getActiveAssignment(targetName, b.id)?.due_at || "";
+          return new Date(aDue).getTime() - new Date(bDue).getTime();
+        })
+        .slice(0, 5)
+        .map(m => {
+          const asn = getActiveAssignment(targetName, m.id);
+          const due = asn?.due_at ? new Date(asn.due_at).toLocaleDateString() : "n/a";
+          const flag = isOverdue(targetName, m.id) ? "OVERDUE" : "Due";
+          return `• ${m.title} — ${flag}: ${due}`;
+        });
+
+      mgrSnapshot.textContent =
+        `${targetName}\n` +
+        `${completedCount}/${assignedMods.length} complete • ${overdueCount} overdue\n\n` +
+        (nextUp.length ? `Next up:\n${nextUp.join("\n")}` : "All assigned modules complete.");
+    }
+
+    function renderManagerScreen() {
+      renderManagerEmployeeSelect();
+      renderManagerModuleSelect();
+      renderManagerSnapshot(mgrEmployeeSelect.value);
+    }
+
+    mgrEmployeeSelect.addEventListener("change", () => {
+      renderManagerSnapshot(mgrEmployeeSelect.value);
+    });
+
+    mgrAddEmployeeBtn.addEventListener("click", () => {
+      const name = normalizeName(mgrNewEmployeeName.value);
+      if (!name) { showToast("Enter a name first."); return; }
+      const dir = loadEmployeeDirectory();
+      if (!dir.includes(name)) {
+        dir.push(name);
+        dir.sort((a,b)=>a.localeCompare(b));
+        saveEmployeeDirectory(dir);
+
+        // seed default assignments (Housekeeping + role-based default dev roles)
+        seedDefaultAssignmentsForEmployee(name, ["Expo", "Cashier"]);
+
+        mgrNewEmployeeName.value = "";
+        renderManagerEmployeeSelect();
+        mgrEmployeeSelect.value = name;
+        renderManagerSnapshot(name);
+        showToast(`Added: ${name}`);
+      } else {
+        showToast("That name already exists.");
+      }
+    });
+
+    function forEachTargetEmployee(targetValue, fn) {
+      const dir = loadEmployeeDirectory();
+      if (targetValue === "__ALL__") {
+        dir.forEach(fn);
+      } else {
+        fn(targetValue);
+      }
+    }
+
+    mgrAssignExpoBtn.addEventListener("click", () => {
+      const target = mgrEmployeeSelect.value;
+      forEachTargetEmployee(target, (name) => {
+        assignRoleToEmployee(name, "Expo");
+        // Housekeeping always ensured
+        seedDefaultAssignmentsForEmployee(name, []);
+      });
+
+      renderManagerSnapshot(target);
+      renderHome();
+      showToast(target === "__ALL__" ? "Assigned Expo to all employees." : "Assigned Expo.");
+    });
+
+    mgrAssignCashierBtn.addEventListener("click", () => {
+      const target = mgrEmployeeSelect.value;
+      forEachTargetEmployee(target, (name) => {
+        assignRoleToEmployee(name, "Cashier");
+        seedDefaultAssignmentsForEmployee(name, []);
+      });
+
+      renderManagerSnapshot(target);
+      renderHome();
+      showToast(target === "__ALL__" ? "Assigned Cashier to all employees." : "Assigned Cashier.");
+    });
+
+    mgrAssignSingleBtn.addEventListener("click", () => {
+      const target = mgrEmployeeSelect.value;
+      const moduleId = mgrModuleSelect.value;
+      const mod = MODULES.find(m => m.id === moduleId);
+
+      forEachTargetEmployee(target, (name) => {
+        assignModuleToEmployee(name, moduleId);
+        seedDefaultAssignmentsForEmployee(name, []);
+      });
+
+      renderManagerSnapshot(target);
+      renderHome();
+      showToast(target === "__ALL__"
+        ? `Assigned: ${mod ? mod.title : "Module"} (all)`
+        : `Assigned: ${mod ? mod.title : "Module"}`);
+    });
+
+    // ---------- Secret Reset Handshake (PIN only) ---------------------------
     let secretTapCount = 0;
     let secretTapTimer = null;
     const SECRET_TAP_WINDOW_MS = 4000;
     const SECRET_REQUIRED_TAPS = 5;
-    const MANAGER_PIN = "0856";
 
     headerTitle.addEventListener("click", () => {
       secretTapCount++;
@@ -2204,70 +2166,38 @@
         secretTapTimer = null;
         secretTapCount = 0;
 
-        const action = prompt(
-          "Manager tools (PIN required):\n\nType one:\nRESET\nBLOCK\nUNBLOCK\n\nCancel to exit."
-        );
-        if (!action) return;
+        const confirmReset = confirm("Manager reset:\n\nClear COMPLETIONS on this device? (Assignments remain.)");
+        if (!confirmReset) return;
 
-        const pin = prompt("Enter manager PIN:");
-        if (pin !== MANAGER_PIN) {
-          showToast("Incorrect PIN. No changes made.");
-          return;
-        }
+        const pin = prompt("Enter manager PIN to confirm reset:");
+        if (pin === MANAGER_PIN) {
+          // clear completion timestamps for all employees / modules stored
+          Object.keys(state.assignments || {}).forEach(emp => {
+            const map = state.assignments[emp] || {};
+            Object.keys(map).forEach(mid => {
+              if (map[mid]) map[mid].completed_at = null;
+            });
+          });
 
-        const cmd = action.trim().toUpperCase();
-
-        if (cmd === "RESET") {
-          const confirmReset = confirm("Clear all COMPLETIONS + ASSIGNMENT completions on this device?");
-          if (!confirmReset) return;
-
-          // Clear legacy
           state.completed = {};
           saveState();
 
-          // Clear assignment completions (but keep assignments)
-          saveCompletions({});
-
           renderHome();
           renderModulesList();
-          renderAssignedView();
-          showToast("All completions cleared (assignments remain).");
-          return;
-        }
+          if (currentView === "manager") renderManagerScreen();
 
-        if (cmd === "BLOCK") {
-          const id = prompt("Enter employee ID to BLOCK:");
-          if (!id) return;
-          const b = getBlockedList();
-          if (!Array.isArray(b.employee_ids)) b.employee_ids = [];
-          if (!b.employee_ids.includes(id.trim())) b.employee_ids.push(id.trim());
-          saveStore(STORE.blocked, b);
-          showToast("Employee blocked on this device.");
-          return;
+          showToast("Completions cleared. Assignments preserved.");
+        } else if (pin !== null) {
+          showToast("Incorrect PIN. No changes made.");
         }
-
-        if (cmd === "UNBLOCK") {
-          const id = prompt("Enter employee ID to UNBLOCK:");
-          if (!id) return;
-          const b = getBlockedList();
-          b.employee_ids = Array.isArray(b.employee_ids) ? b.employee_ids : [];
-          b.employee_ids = b.employee_ids.filter(x => x !== id.trim());
-          saveStore(STORE.blocked, b);
-          showToast("Employee unblocked on this device.");
-          return;
-        }
-
-        showToast("Unknown command.");
       }
     });
 
     // ---------- Initial Render ----------------------------------------------
-    if (accessOk) {
-      refreshHeaderFromProfile();
-      updateSettingsProfileUI();
-      renderHome();
-      renderModulesList();
-    }
+    ensureCurrentUserInDirectory();
+    updateSettingsProfileUI();
+    renderHome();
+    renderModulesList();
   </script>
 </body>
 </html>
