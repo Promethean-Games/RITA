@@ -80,6 +80,8 @@
       letter-spacing: 0.06em;
       text-transform: uppercase;
       font-size: 0.86rem;
+      cursor: pointer;
+      user-select: none;
     }
 
     .icon-btn {
@@ -683,7 +685,12 @@
         </div>
 
         <button class="icon-btn" id="settingsButton" aria-label="Settings">
-          <span class="icon" aria-hidden="true">⚙</span>
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 8.9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 8.9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 8.9 4.6 1.65 1.65 0 0 0 10.41 3.1V3a2 2 0 0 1 4 0v.09A1.65 1.65 0 0 0 15.1 4.6a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 8.9 1.65 1.65 0 0 0 20.9 10.41H21a2 2 0 0 1 0 4h-.09A1.65 1.65 0 0 0 19.4 15z"></path>
+            </svg>
+          </span>
         </button>
       </div>
     </header>
@@ -712,7 +719,7 @@
         <div class="card">
           <h3>Assigned Training</h3>
           <p class="muted" style="font-size:0.8rem;">
-            These modules are required for your Expo role.
+            These modules are required for your role.
           </p>
           <div id="homeAssignedAccordion"></div>
         </div>
@@ -785,7 +792,7 @@
         </div>
       </section>
 
-      <!-- ASSIGNED MODULES VIEW (same accordion pattern if you ever route here) -->
+      <!-- ASSIGNED MODULES VIEW (accordion pattern if you ever route here) -->
       <section id="view-assigned" class="view">
         <div class="card">
           <h2>Assigned Modules</h2>
@@ -832,6 +839,69 @@
   <script>
     // ---------- Modules -----------------------------------------------------
     const MODULES = [
+      // Housekeeping (general for all positions)
+      {
+        id: "housekeeping_communication_basics",
+        title: "Housekeeping — Communication & Floor Awareness",
+        category: "Housekeeping",
+        role: "All", // shared expectation across roles
+        description:
+          "Use consistent verbal cues and tools to keep the floor safe, smooth, and guest-friendly.",
+        steps: [
+          "Use mirrors to visually check blind spots before stepping into high-traffic areas.",
+          "Say “Behind!” any time you pass closely behind another team member.",
+          "Knock before opening any swinging door, especially if guests or staff may be on the other side.",
+          "Follow the seating chart when guiding guests, and confirm table numbers before food leaves the window."
+        ]
+      },
+
+      // Opening – Expo station setup
+      {
+        id: "opening_expo_station_setup",
+        title: "Opening — Expo & Front Station Setup",
+        category: "Opening Process",
+        role: "Expo",
+        description:
+          "Start your shift prepared: clock in, gear up, and stage the Expo station so service can start smoothly.",
+        steps: [
+          "Clock in using the point-of-sale system assigned to your location.",
+          "Put on a clean black apron from dry storage.",
+          "Arrange all 4 black floor mats to the left of the service entrance/exit in their standard positions.",
+          "Wash your hands with soap and warm water for a full 20 seconds.",
+          "Stage cups, plates, silverware, ticket spike, and soup containers at the Expo station.",
+          "Gather a large steel bin and matching lid from the dish pit.",
+          "Gather a large steel pot from the dish pit for soup service.",
+          "Bring tortilla trays from cold storage to the prep area.",
+          "Gather 5 black towels from the server station.",
+          "Line the large steel bin with 1 black towel on each side, leaving 1 towel set aside to cover tortillas once they’re cooked."
+        ]
+      },
+
+      // Opening – Tortillas & soup prep
+      {
+        id: "opening_tortillas_and_soup_prep",
+        title: "Opening — Tortillas & Soup Service Prep",
+        category: "Opening Process",
+        role: "Expo",
+        description:
+          "Prepare tortillas and soup so the line is ready for guests as soon as doors open.",
+        steps: [
+          "Prep 1 tortilla tray (70 tortillas) from the cold-storage tray.",
+          "Untie or open the tray lining carefully so dough balls remain organized.",
+          "Lightly flour the tortilla dough balls so they release cleanly in the press.",
+          "Place ONE tortilla dough ball in the loader per cycle to avoid jams.",
+          "Arrange flattened tortillas in a 4×4 grid on the flattop, keeping spacing even.",
+          "Flip each tortilla once, when it begins to rise and puff slightly.",
+          "Cook until both sides are lightly browned, then transfer tortillas into the towel-lined warming bin.",
+          "Cover the tortillas in the bin with a black towel to keep them warm and protected.",
+          "CAUTION: HOT — Carefully pour chicken broth (provided by kitchen staff) into the electric soup warmer.",
+          "Season the chicken broth using the designated dry-storage seasoning mix.",
+          "Add 2 full scoops of broth at the start of the day to charge the warmer.",
+          "For any restock during service, add 1 full scoop of broth at a time and re-check seasoning."
+        ]
+      },
+
+      // Existing Expo modules
       {
         id: "prep_ice_cream_balls",
         title: "Prep — Ice Cream Balls",
@@ -885,7 +955,7 @@
         description:
           "Polish and stage utensils so servers can roll silverware quickly.",
         images: [
-          "polish-utensils.png"
+          "polish-setup.png"
         ],
         steps: [
           "Sort utensils from dish (steak knives and spoons only).",
@@ -1056,7 +1126,7 @@
         localStorage.getItem(PROFILE_LOCATION_KEY) || "Kyle";
       const employee_id =
         localStorage.getItem(PROFILE_EMPLOYEE_ID_KEY) || "";
-      const role = "Expo";
+      const role = "Expo"; // current MVP still assumes Expo as primary
 
       return {
         firstName,
@@ -1073,7 +1143,7 @@
     }
 
     function refreshHeaderFromProfile() {
-      // Header currently only shows logo text; keep for future use if needed.
+      // Header currently only shows logo text; reserved for later if needed.
     }
 
     function updateSettingsProfileUI() {
@@ -1209,51 +1279,14 @@
       }
     });
 
-    // ---------- Secret Handshake: reset completions ------------------------
-    let secretTapCount = 0;
-    let secretTapTimer = null;
-
-    function handleSecretTap() {
-      secretTapCount += 1;
-
-      if (secretTapTimer) {
-        clearTimeout(secretTapTimer);
-      }
-
-      // Reset window after 4 seconds of inactivity
-      secretTapTimer = setTimeout(() => {
-        secretTapCount = 0;
-      }, 4000);
-
-      if (secretTapCount >= 5) {
-        secretTapCount = 0;
-        clearTimeout(secretTapTimer);
-        secretTapTimer = null;
-
-        const confirmed = confirm(
-          "Reset all completed modules on this device?\n\nThis will clear progress for all roles."
-        );
-        if (confirmed) {
-          state.completed = {};
-          saveState();
-          renderHome();
-          renderModulesList();
-          showToast("All module completions have been cleared.");
-        }
-      }
-    }
-
-    if (headerTitle) {
-      headerTitle.addEventListener("click", handleSecretTap);
-    }
-
     // ---------- Helpers: Assigned & Progress --------------------------------
     function getAssignedModules() {
       const profile = getProfile();
-      if (profile.role === "Expo") {
-        return MODULES.filter((m) => m.role === "Expo");
-      }
-      return [];
+      const roleId = profile.role || "Expo";
+      // Include both role-specific and "All" modules
+      return MODULES.filter(
+        (m) => m.role === roleId || m.role === "All"
+      );
     }
 
     function getCompletedAssignedCount() {
@@ -1388,9 +1421,11 @@
       const accordion = document.createElement("div");
       accordion.className = "accordion";
 
-      const expoModules = MODULES.filter((m) => m.role === "Expo");
+      const expoModules = MODULES.filter(
+        (m) => m.role === "Expo" || m.role === "All"
+      );
 
-      ROLES.forEach((roleObj, idx) => {
+      ROLES.forEach((roleObj) => {
         const item = document.createElement("div");
         item.className = "accordion-item";
         if (roleObj.id === "Expo") {
@@ -1682,6 +1717,21 @@
       correct: null       // string or number
     };
 
+    const GENERIC_DISTRACTORS = [
+      "Ask guests if they want dessert menus before they sit down.",
+      "Rearrange all the tables just to change the vibe.",
+      "Start a team huddle to discuss tonight’s karaoke playlist.",
+      "Offer every guest a complimentary sombrero fitting."
+    ];
+
+    const SILLY_DISTRACTORS = [
+      "Teach a tortilla how to salsa dance.",
+      "Politely ask the soup to cool itself down.",
+      "Give an inspirational speech to the floor mats.",
+      "Name each tortilla before service.",
+      "Assign performance reviews to the spoons."
+    ];
+
     function shuffleArray(arr) {
       const copy = arr.slice();
       for (let i = copy.length - 1; i > 0; i--) {
@@ -1694,11 +1744,12 @@
     function buildQuizForModule(module) {
       const steps = Array.isArray(module.steps) ? module.steps.slice() : [];
 
-      // Fallback: if no steps, use a simple "how many steps" pattern with 0.
+      // Fallback: if no steps, simple numeric question
       if (!steps.length) {
         return {
           type: "number",
-          question: "How many steps are listed in this module?",
+          question:
+            "If you complete every step once, how many actions did you just take in this module?",
           correct: 0,
           options: null
         };
@@ -1708,25 +1759,61 @@
       const useMultipleChoice = moduleIndex % 2 === 0; // even = MC, odd = numeric
 
       if (useMultipleChoice) {
-        // Multiple choice: "Which of the following is a step in this module?"
-        const correctStep =
-          steps[Math.floor(Math.random() * steps.length)];
+        // Decide whether to use an EXCEPT pattern
+        const useExceptPattern = moduleIndex % 4 === 0 && steps.length >= 3;
 
-        const otherSteps = steps.filter((s) => s !== correctStep);
-        const distractors = shuffleArray(otherSteps).slice(0, 3);
-        const options = shuffleArray([correctStep, ...distractors]);
+        if (useExceptPattern) {
+          // EXCEPT style: 3 real steps, 1 silly; pick the one that does NOT belong
+          const realStepsShuffled = shuffleArray(steps);
+          const realSubset = realStepsShuffled.slice(0, 3);
+          const silly =
+            SILLY_DISTRACTORS[
+              Math.floor(Math.random() * SILLY_DISTRACTORS.length)
+            ];
 
-        return {
-          type: "mc",
-          question: "Which of the following is one of the steps in this module?",
-          correct: correctStep,
-          options
-        };
+          const options = shuffleArray([...realSubset, silly]);
+
+          return {
+            type: "mc",
+            question:
+              "All of the following actions belong in this module EXCEPT:",
+            correct: silly,
+            options
+          };
+        } else {
+          // Positive style: which action IS part of this module?
+          const correctStep =
+            steps[Math.floor(Math.random() * steps.length)];
+
+          const distractors = [];
+          const genericPool = GENERIC_DISTRACTORS.slice();
+          const silly =
+            SILLY_DISTRACTORS[
+              Math.floor(Math.random() * SILLY_DISTRACTORS.length)
+            ];
+          distractors.push(silly);
+
+          while (distractors.length < 3 && genericPool.length) {
+            const idx = Math.floor(Math.random() * genericPool.length);
+            distractors.push(genericPool.splice(idx, 1)[0]);
+          }
+
+          const options = shuffleArray([correctStep, ...distractors]);
+
+          return {
+            type: "mc",
+            question:
+              "Which of the following is actually part of this training module?",
+            correct: correctStep,
+            options
+          };
+        }
       } else {
-        // Numeric: "How many steps are in this module?"
+        // Numeric: count of steps
         return {
           type: "number",
-          question: "How many steps are in this module?",
+          question:
+            "If you complete every listed step once, how many actions do you perform in this module?",
           correct: steps.length,
           options: null
         };
@@ -1823,7 +1910,8 @@
           closeQuiz();
           if (module) finalizeModuleCompletion(module);
         } else {
-          quizErrorEl.textContent = "That's not the right number of steps. Try again.";
+          quizErrorEl.textContent =
+            "That's not the right number of steps. Try again.";
         }
       }
     });
@@ -1965,6 +2053,47 @@
         updateSettingsProfileUI();
         setView("settings");
       });
+
+    // ---------- Secret Manager Handshake (Reset) ----------------------------
+    let secretTapCount = 0;
+    let secretTapTimer = null;
+    const SECRET_TAP_WINDOW_MS = 4000;
+    const SECRET_REQUIRED_TAPS = 5;
+    const MANAGER_PIN = "0856";
+
+    headerTitle.addEventListener("click", () => {
+      secretTapCount++;
+
+      if (!secretTapTimer) {
+        secretTapTimer = setTimeout(() => {
+          secretTapCount = 0;
+          secretTapTimer = null;
+        }, SECRET_TAP_WINDOW_MS);
+      }
+
+      if (secretTapCount >= SECRET_REQUIRED_TAPS) {
+        clearTimeout(secretTapTimer);
+        secretTapTimer = null;
+        secretTapCount = 0;
+
+        const confirmReset = confirm(
+          "Manager reset:\n\nClear all completed modules on this device?"
+        );
+        if (!confirmReset) return;
+
+        const pin = prompt("Enter manager PIN to confirm reset:");
+        if (pin === MANAGER_PIN) {
+          state.completed = {};
+          saveState();
+          renderHome();
+          renderModulesList();
+          renderAssignedView();
+          showToast("All module completions have been cleared.");
+        } else if (pin !== null) {
+          showToast("Incorrect PIN. No changes made.");
+        }
+      }
+    });
 
     // ---------- Initial Render ----------------------------------------------
     refreshHeaderFromProfile();
