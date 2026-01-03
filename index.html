@@ -17,6 +17,10 @@
       --accent-soft: rgba(249, 115, 22, 0.1);
       --border: #d1d5db;
       --danger: #b91c1c;
+
+      --warn: #b45309;
+      --warn-soft: rgba(180, 83, 9, 0.10);
+
       --radius-lg: 16px;
       --radius-md: 10px;
       --shadow-soft: 0 14px 30px rgba(15, 23, 42, 0.12);
@@ -24,9 +28,7 @@
         sans-serif;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -96,10 +98,7 @@
       color: var(--muted);
     }
 
-    .icon-btn:hover {
-      background: var(--bg-soft);
-      color: var(--text);
-    }
+    .icon-btn:hover { background: var(--bg-soft); color: var(--text); }
 
     .icon {
       width: 18px;
@@ -127,29 +126,14 @@
       padding: 0.85rem 0.9rem;
     }
 
-    .card + .card {
-      margin-top: 0.25rem;
-    }
+    .card + .card { margin-top: 0.25rem; }
 
-    h2 {
-      margin: 0 0 0.4rem;
-      font-size: 1rem;
-    }
+    h2 { margin: 0 0 0.4rem; font-size: 1rem; }
+    h3 { margin: 0 0 0.3rem; font-size: 0.95rem; }
 
-    h3 {
-      margin: 0 0 0.3rem;
-      font-size: 0.95rem;
-    }
+    p { margin: 0; font-size: 0.85rem; line-height: 1.4; }
 
-    p {
-      margin: 0;
-      font-size: 0.85rem;
-      line-height: 1.4;
-    }
-
-    .muted {
-      color: var(--muted);
-    }
+    .muted { color: var(--muted); }
 
     .pill {
       display: inline-flex;
@@ -171,10 +155,7 @@
       margin-bottom: 0.5rem;
     }
 
-    .progress-label {
-      font-size: 0.85rem;
-      font-weight: 500;
-    }
+    .progress-label { font-size: 0.85rem; font-weight: 500; }
 
     .progress-bar {
       width: 100%;
@@ -209,10 +190,7 @@
       background: rgba(22, 163, 74, 0.05);
     }
 
-    .alert strong {
-      display: block;
-      margin-bottom: 0.15rem;
-    }
+    .alert strong { display: block; margin-bottom: 0.15rem; }
 
     .list {
       display: flex;
@@ -235,23 +213,29 @@
       transition: background 0.15s ease, border-color 0.15s ease;
     }
 
-    .list-item span.label {
-      flex: 1;
-    }
+    .list-item span.label { flex: 1; }
+    .list-item span.meta { font-size: 0.75rem; color: var(--muted); }
 
-    .list-item span.meta {
-      font-size: 0.75rem;
+    .list-item.status-required { background: var(--accent-soft); border-color: var(--accentA); }
+    .list-item.status-complete { background: rgba(34, 197, 94, 0.08); border-color: rgba(34, 197, 94, 0.45); }
+    .list-item.status-overdue { background: var(--warn-soft); border-color: rgba(180, 83, 9, 0.55); }
+
+    .meta-badge {
+      font-size: 0.72rem;
       color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.08rem 0.45rem;
+      background: var(--bg-elevated);
+      margin-left: 0.4rem;
+      white-space: nowrap;
     }
 
-    .list-item.status-required {
-      background: var(--accent-soft);
-      border-color: var(--accentA);
-    }
-
-    .list-item.status-complete {
-      background: rgba(34, 197, 94, 0.08);
-      border-color: rgba(34, 197, 94, 0.45);
+    .meta-badge.overdue {
+      color: var(--warn);
+      border-color: rgba(180, 83, 9, 0.55);
+      background: var(--warn-soft);
+      font-weight: 600;
     }
 
     .btn {
@@ -275,26 +259,16 @@
       transition: background 0.15s ease, opacity 0.15s ease;
     }
 
-    .btn-primary[disabled] {
-      opacity: 0.6;
-      cursor: default;
-    }
+    .btn-primary[disabled] { opacity: 0.6; cursor: default; }
 
     .btn-primary.completed {
       background: linear-gradient(135deg, #22c55e, #4ade80);
       color: #022c22;
     }
 
-    .btn-outline {
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--text);
-    }
+    .btn-outline { border: 1px solid var(--border); background: transparent; color: var(--text); }
 
-    .divider {
-      border-top: 1px solid var(--border);
-      margin: 0.5rem 0;
-    }
+    .divider { border-top: 1px solid var(--border); margin: 0.5rem 0; }
 
     footer {
       flex-shrink: 0;
@@ -333,22 +307,11 @@
       background: transparent;
     }
 
-    .tab-btn.active {
-      color: var(--accentA);
-      font-weight: 600;
-    }
+    .tab-btn.active { color: var(--accentA); font-weight: 600; }
+    .tab-btn.active span.dot { background: var(--accentA); }
 
-    .tab-btn.active span.dot {
-      background: var(--accentA);
-    }
-
-    .view {
-      display: none;
-    }
-
-    .view.active {
-      display: block;
-    }
+    .view { display: none; }
+    .view.active { display: block; }
 
     .steps {
       display: flex;
@@ -365,24 +328,12 @@
       cursor: pointer;
     }
 
-    .step-row input[type="checkbox"] {
-      margin-top: 0.1rem;
-      flex-shrink: 0;
-    }
+    .step-row input[type="checkbox"] { margin-top: 0.1rem; flex-shrink: 0; }
+    .step-row span { flex: 1; }
 
-    .step-row span {
-      flex: 1;
-    }
+    .hint { font-size: 0.8rem; color: var(--muted); margin-top: 0.25rem; }
 
-    .hint {
-      font-size: 0.8rem;
-      color: var(--muted);
-      margin-top: 0.25rem;
-    }
-
-    .settings-group {
-      margin-top: 0.3rem;
-    }
+    .settings-group { margin-top: 0.3rem; }
 
     .settings-item {
       padding: 0.55rem 0;
@@ -394,13 +345,8 @@
       cursor: pointer;
     }
 
-    .settings-item.no-click {
-      cursor: default;
-    }
-
-    .settings-item.no-click > span {
-      pointer-events: none;
-    }
+    .settings-item.no-click { cursor: default; }
+    .settings-item.no-click > span { pointer-events: none; }
 
     .settings-select {
       font-size: 0.8rem;
@@ -411,11 +357,7 @@
       color: var(--text);
     }
 
-    .empty-state {
-      font-size: 0.85rem;
-      color: var(--muted);
-      padding: 0.4rem 0;
-    }
+    .empty-state { font-size: 0.85rem; color: var(--muted); padding: 0.4rem 0; }
 
     /* Module image / carousel */
     .module-image-wrapper {
@@ -429,9 +371,7 @@
       flex-direction: column;
     }
 
-    .module-image-main {
-      width: 100%;
-    }
+    .module-image-main { width: 100%; }
 
     .module-image-main img {
       width: 100%;
@@ -475,15 +415,9 @@
       gap: 0.2rem;
     }
 
-    .module-carousel-btn:hover {
-      background: var(--bg-soft);
-      color: var(--text);
-    }
+    .module-carousel-btn:hover { background: var(--bg-soft); color: var(--text); }
 
-    .module-carousel-counter {
-      font-size: 0.78rem;
-      color: var(--muted);
-    }
+    .module-carousel-counter { font-size: 0.78rem; color: var(--muted); }
 
     .toast {
       position: fixed;
@@ -541,16 +475,9 @@
       font-size: 0.85rem;
     }
 
-    .accordion-title {
-      font-weight: 600;
-      font-size: 0.86rem;
-    }
+    .accordion-title { font-weight: 600; font-size: 0.86rem; }
 
-    .accordion-meta {
-      font-size: 0.75rem;
-      color: var(--muted);
-      margin-left: 0.4rem;
-    }
+    .accordion-meta { font-size: 0.75rem; color: var(--muted); margin-left: 0.4rem; }
 
     .accordion-chevron {
       font-size: 0.8rem;
@@ -564,13 +491,9 @@
       display: none;
     }
 
-    .accordion-item.open .accordion-body {
-      display: block;
-    }
+    .accordion-item.open .accordion-body { display: block; }
 
-    .accordion-item.open .accordion-chevron {
-      transform: rotate(180deg);
-    }
+    .accordion-item.open .accordion-chevron { transform: rotate(180deg); }
 
     /* Quiz modal */
     .quiz-overlay {
@@ -583,9 +506,7 @@
       z-index: 50;
     }
 
-    .quiz-overlay.show {
-      display: flex;
-    }
+    .quiz-overlay.show { display: flex; }
 
     .quiz-card {
       background: var(--bg-elevated);
@@ -597,16 +518,8 @@
       max-width: 420px;
     }
 
-    .quiz-title {
-      font-size: 0.95rem;
-      font-weight: 600;
-      margin-bottom: 0.3rem;
-    }
-
-    .quiz-question {
-      font-size: 0.85rem;
-      margin-bottom: 0.6rem;
-    }
+    .quiz-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.3rem; }
+    .quiz-question { font-size: 0.85rem; margin-bottom: 0.6rem; }
 
     .quiz-options {
       display: flex;
@@ -615,16 +528,8 @@
       margin-bottom: 0.6rem;
     }
 
-    .quiz-option-row {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      font-size: 0.85rem;
-    }
-
-    .quiz-option-row input[type="radio"] {
-      flex-shrink: 0;
-    }
+    .quiz-option-row { display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; }
+    .quiz-option-row input[type="radio"] { flex-shrink: 0; }
 
     .quiz-input {
       width: 100%;
@@ -637,12 +542,7 @@
       margin-bottom: 0.4rem;
     }
 
-    .quiz-footer {
-      display: flex;
-      justify-content: flex-end;
-      gap: 0.5rem;
-      margin-top: 0.25rem;
-    }
+    .quiz-footer { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 0.25rem; }
 
     .quiz-btn {
       border-radius: 999px;
@@ -660,12 +560,13 @@
       font-weight: 600;
     }
 
-    .quiz-error {
-      font-size: 0.78rem;
-      color: var(--danger);
-      min-height: 1em;
-      margin-bottom: 0.2rem;
+    .quiz-error { font-size: 0.78rem; color: var(--danger); min-height: 1em; margin-bottom: 0.2rem; }
+
+    /* Block screen */
+    .block-wrap {
+      padding: 1.2rem;
     }
+    .block-title { margin: 0 0 0.35rem; font-size: 1.05rem; }
   </style>
 </head>
 <body>
@@ -706,7 +607,7 @@
                 0 / 0 Modules Completed
               </div>
               <div class="muted" style="font-size:0.78rem;">
-                All modules are required.
+                Assigned modules are due in 14 days.
               </div>
             </div>
           </div>
@@ -719,7 +620,7 @@
         <div class="card">
           <h3>Assigned Training</h3>
           <p class="muted" style="font-size:0.8rem;">
-            These modules are required for your role.
+            Your assignments show up here immediately.
           </p>
           <div id="homeAssignedAccordion"></div>
         </div>
@@ -730,7 +631,7 @@
         <div class="card">
           <h2>Modules by Role</h2>
           <p class="muted" style="font-size:0.8rem;">
-            Expo modules are available now. Other roles are coming soon.
+            Modules are grouped by role for browsing. Assignments control what’s required.
           </p>
           <div class="divider"></div>
           <div id="modulesList"></div>
@@ -797,7 +698,7 @@
         <div class="card">
           <h2>Assigned Modules</h2>
           <p class="muted" style="font-size:0.8rem;">
-            All training modules are required.
+            All assigned training is required.
           </p>
           <div class="divider"></div>
           <div id="assignedAccordion"></div>
@@ -844,7 +745,7 @@
         id: "housekeeping_communication_basics",
         title: "Housekeeping — Communication & Floor Awareness",
         category: "Housekeeping",
-        role: "All", // shared expectation across roles
+        role: "All",
         description:
           "Use consistent verbal cues and tools to keep the floor safe, smooth, and guest-friendly.",
         steps: [
@@ -1060,7 +961,7 @@
       { id: "Kitchen", label: "Kitchen" }
     ];
 
-    // ---------- State & Profile ---------------------------------------------
+    // ---------- Legacy State & Profile ---------------------------------------------
     const STORAGE_KEY = "expoTrainingMvpState_v12";
     const PROFILE_NAME_KEY = "expoTrainingName"; // legacy fallback
     const PROFILE_FIRST_NAME_KEY = "expoTrainingFirstName";
@@ -1074,18 +975,12 @@
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (!raw) {
-          return {
-            completed: {}
-          };
+          return { completed: {} };
         }
         const parsed = JSON.parse(raw);
-        return {
-          completed: parsed.completed || {}
-        };
+        return { completed: parsed.completed || {} };
       } catch (e) {
-        return {
-          completed: {}
-        };
+        return { completed: {} };
       }
     }
 
@@ -1113,38 +1008,25 @@
         localStorage.getItem(PROFILE_NAME_KEY) || "Fname Lname";
 
       let legalName = (firstName + " " + lastName).trim();
-      if (!legalName) {
-        legalName = legacyFull;
-      }
+      if (!legalName) legalName = legacyFull;
 
       let displayName = legalName;
-      if (commonName && commonName.trim()) {
-        displayName = commonName.trim();
-      }
+      if (commonName && commonName.trim()) displayName = commonName.trim();
 
-      const location =
-        localStorage.getItem(PROFILE_LOCATION_KEY) || "Kyle";
-      const employee_id =
-        localStorage.getItem(PROFILE_EMPLOYEE_ID_KEY) || "";
-      const role = "Expo"; // current MVP still assumes Expo as primary
+      const location = localStorage.getItem(PROFILE_LOCATION_KEY) || "Kyle";
+      const employee_id = localStorage.getItem(PROFILE_EMPLOYEE_ID_KEY) || "";
+      const role = "Expo"; // legacy; assignments control requirements now
 
       return {
-        firstName,
-        lastName,
-        commonName,
-        legalName,
-        displayName,
+        firstName, lastName, commonName,
+        legalName, displayName,
         employee_name: legalName,
-        location,
-        employee_id,
-        role,
+        location, employee_id, role,
         client_id: getClientId()
       };
     }
 
-    function refreshHeaderFromProfile() {
-      // Header currently only shows logo text; reserved for later if needed.
-    }
+    function refreshHeaderFromProfile() { /* reserved */ }
 
     function updateSettingsProfileUI() {
       const profile = getProfile();
@@ -1165,9 +1047,8 @@
     const SHEETS_ENDPOINT =
       "https://script.google.com/macros/s/AKfycbykPwcIulm6Tjo8JynUyviawqEDAQA7fqBMIN9I8jukZ9PrzYVO4dECESbh2GnEy9QyCw/exec";
 
-    function syncCompletionToSheet(module, completionPct) {
+    function syncCompletionToSheet(module, completionPct, assignmentMeta) {
       const profile = getProfile();
-
       const payload = {
         timestamp: new Date().toISOString(),
         employee_name: profile.employee_name,
@@ -1175,19 +1056,24 @@
         employee_id: profile.employee_id,
         location: profile.location,
         role: profile.role,
+
         module_id: module.id,
         module_title: module.title,
-        event_type: "MODULE_COMPLETED",
+
+        event_type: "ASSIGNMENT_COMPLETED",
         completion_pct: completionPct,
-        client_id: profile.client_id
+        client_id: profile.client_id,
+
+        assignment_id: assignmentMeta?.assignment_id || "",
+        assigned_at: assignmentMeta?.assigned_at || "",
+        due_at: assignmentMeta?.due_at || "",
+        completion_status: assignmentMeta?.completion_status || ""
       };
 
       fetch(SHEETS_ENDPOINT, {
         method: "POST",
         mode: "no-cors",
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
       }).catch((err) => {
         console.error("Sync to Sheets failed:", err);
@@ -1201,12 +1087,8 @@
     function showToast(message) {
       toastEl.textContent = message;
       toastEl.classList.add("show");
-      if (toastTimeoutId) {
-        clearTimeout(toastTimeoutId);
-      }
-      toastTimeoutId = setTimeout(() => {
-        toastEl.classList.remove("show");
-      }, 3200);
+      if (toastTimeoutId) clearTimeout(toastTimeoutId);
+      toastTimeoutId = setTimeout(() => toastEl.classList.remove("show"), 3200);
     }
 
     // ---------- Views & Nav -------------------------------------------------
@@ -1225,11 +1107,7 @@
     let lastView = "home";
 
     function updateBackButton() {
-      if (
-        currentView === "settings" ||
-        currentView === "assigned" ||
-        currentView === "moduleDetail"
-      ) {
+      if (currentView === "settings" || currentView === "assigned" || currentView === "moduleDetail") {
         backButton.style.display = "inline-flex";
       } else {
         backButton.style.display = "none";
@@ -1237,31 +1115,21 @@
     }
 
     function setView(viewKey, viaBack = false) {
-      if (!viaBack && viewKey !== currentView) {
-        lastView = currentView;
-      }
+      if (!viaBack && viewKey !== currentView) lastView = currentView;
       currentView = viewKey;
+
       Object.values(views).forEach((v) => v.classList.remove("active"));
       const view = views[viewKey];
       if (view) view.classList.add("active");
 
-      // Header title stays "Texican Logo" for all views.
-      if (headerTitle) {
-        headerTitle.textContent = "Texican Logo";
-      }
+      if (headerTitle) headerTitle.textContent = "Texican Logo";
 
-      document
-        .querySelectorAll(".tab-btn")
-        .forEach((btn) => btn.classList.remove("active"));
+      document.querySelectorAll(".tab-btn").forEach((btn) => btn.classList.remove("active"));
 
       if (viewKey === "home") {
-        document
-          .querySelector('.tab-btn[data-tab="home"]')
-          .classList.add("active");
+        document.querySelector('.tab-btn[data-tab="home"]').classList.add("active");
       } else if (viewKey === "modules" || viewKey === "moduleDetail") {
-        document
-          .querySelector('.tab-btn[data-tab="modules"]')
-          .classList.add("active");
+        document.querySelector('.tab-btn[data-tab="modules"]').classList.add("active");
       }
 
       updateBackButton();
@@ -1270,37 +1138,296 @@
     backButton.addEventListener("click", () => {
       const target = lastView || "home";
       setView(target, true);
-      if (target === "home") {
-        renderHome();
-      } else if (target === "modules") {
-        renderModulesList();
-      } else if (target === "assigned") {
-        renderAssignedView();
-      }
+      if (target === "home") renderHome();
+      else if (target === "modules") renderModulesList();
+      else if (target === "assigned") renderAssignedView();
     });
 
-    // ---------- Helpers: Assigned & Progress --------------------------------
-    function getAssignedModules() {
+    /* ============================================================
+       PHASE 2A — ASSIGNMENT ENGINE (local-first / role-based)
+       ============================================================ */
+    const STORE = {
+      employees: "rita_employees_v1",
+      settings:  "rita_settings_v1",
+      assignments: "rita_assignments_v1",
+      completions: "rita_assignment_completions_v1",
+      managerWhitelist: "rita_manager_whitelist_v1",
+      blocked: "rita_blocked_v1"
+    };
+
+    const DEFAULT_DUE_DAYS = 14;
+    const DUE_DAY_CHOICES = [7, 14, 21, 28];
+
+    function nowIso(){ return new Date().toISOString(); }
+    function addDaysIso(iso, days){
+      const d = new Date(iso);
+      d.setDate(d.getDate() + days);
+      return d.toISOString();
+    }
+    function safeJsonParse(raw, fallback){
+      try { return raw ? JSON.parse(raw) : fallback; } catch { return fallback; }
+    }
+    function loadStore(key, fallback){ return safeJsonParse(localStorage.getItem(key), fallback); }
+    function saveStore(key, value){ localStorage.setItem(key, JSON.stringify(value)); }
+
+    function getRitaSettings(){
+      const s = loadStore(STORE.settings, { notificationsEnabled: true });
+      if (typeof s.notificationsEnabled !== "boolean") s.notificationsEnabled = true;
+      return s;
+    }
+
+    function getEmployees(){
+      let employees = loadStore(STORE.employees, null);
+      if (!employees) {
+        const profile = getProfile();
+        const deviceEmployeeId = (profile.employee_id && profile.employee_id.trim())
+          ? profile.employee_id.trim()
+          : "device_" + (localStorage.getItem(CLIENT_ID_KEY) || "unknown");
+
+        employees = {
+          [deviceEmployeeId]: {
+            id: deviceEmployeeId,
+            name: profile.displayName || "Employee",
+            active: true,
+            roles: [profile.role || "Expo"],  // default role set
+            location: profile.location || "Kyle"
+          }
+        };
+        saveStore(STORE.employees, employees);
+      }
+      return employees;
+    }
+    function saveEmployees(employees){ saveStore(STORE.employees, employees); }
+
+    function getCurrentEmployeeId(){
       const profile = getProfile();
-      const roleId = profile.role || "Expo";
-      // Include both role-specific and "All" modules
-      return MODULES.filter(
-        (m) => m.role === roleId || m.role === "All"
-      );
+      const employees = getEmployees();
+
+      const id = (profile.employee_id && profile.employee_id.trim())
+        ? profile.employee_id.trim()
+        : "device_" + (localStorage.getItem(CLIENT_ID_KEY) || "unknown");
+
+      if (!employees[id]) {
+        employees[id] = {
+          id,
+          name: profile.displayName || "Employee",
+          active: true,
+          roles: [profile.role || "Expo"],
+          location: profile.location || "Kyle"
+        };
+        saveEmployees(employees);
+      } else {
+        // keep name/location fresh-ish
+        employees[id].name = profile.displayName || employees[id].name || "Employee";
+        employees[id].location = profile.location || employees[id].location || "Kyle";
+        saveEmployees(employees);
+      }
+      return id;
+    }
+
+    function getManagerWhitelist(){
+      let wl = loadStore(STORE.managerWhitelist, null);
+      if (!wl) {
+        wl = { ids: [] }; // Ownership will set these per device / later via manager UI
+        saveStore(STORE.managerWhitelist, wl);
+      }
+      return wl;
+    }
+    function isManager(employeeId){
+      const wl = getManagerWhitelist();
+      return Array.isArray(wl.ids) && wl.ids.includes(employeeId);
+    }
+
+    function getAssignments(){ return loadStore(STORE.assignments, []); }
+    function saveAssignments(list){ saveStore(STORE.assignments, list); }
+    function getCompletions(){ return loadStore(STORE.completions, {}); }
+    function saveCompletions(c){ saveStore(STORE.completions, c); }
+
+    function scopeKey(roleId, location){ return `${roleId}__${location || "Kyle"}`; }
+
+    function computeAssignmentState(assignment, completion){
+      if (!assignment) return "unknown";
+      if (assignment.status === "superseded") return "superseded";
+      if (completion?.completed_at) {
+        const done = new Date(completion.completed_at).getTime();
+        const due = new Date(assignment.due_at).getTime();
+        return done <= due ? "completed_on_time" : "completed_late";
+      }
+      const due = new Date(assignment.due_at).getTime();
+      return Date.now() > due ? "overdue" : "open";
+    }
+
+    function getAssignmentsForEmployee(employeeId){
+      const employees = getEmployees();
+      const emp = employees[employeeId];
+      if (!emp) return [];
+
+      const roles = Array.isArray(emp.roles) ? emp.roles : [];
+      const location = emp.location || "Kyle";
+
+      const assignments = getAssignments();
+      const completions = getCompletions();
+      const empComps = completions[employeeId] || {};
+
+      // Role-based assignments + always include role "All"
+      const eligibleScopes = new Set([
+        ...roles.map(r => scopeKey(r, location)),
+        scopeKey("All", location)
+      ]);
+
+      const active = assignments
+        .filter(a => a.status === "open" && eligibleScopes.has(a.scope))
+        .map(a => {
+          const completion = empComps[a.id] || null;
+          return {
+            ...a,
+            computed_status: computeAssignmentState(a, completion),
+            completed_at: completion?.completed_at || null
+          };
+        });
+
+      // overdue first, then due soon
+      active.sort((a,b) => new Date(a.due_at) - new Date(b.due_at));
+      active.sort((a,b) => (a.computed_status === "overdue" ? -1 : 0) - (b.computed_status === "overdue" ? -1 : 0));
+
+      return active;
+    }
+
+    function completeAssignment(employeeId, assignmentId){
+      const assignments = getAssignments();
+      const a = assignments.find(x => x.id === assignmentId);
+      if (!a || a.status !== "open") return false;
+
+      const completions = getCompletions();
+      if (!completions[employeeId]) completions[employeeId] = {};
+      completions[employeeId][assignmentId] = { completed_at: nowIso() };
+      saveCompletions(completions);
+      return true;
+    }
+
+    // Seed default assignments if none exist yet (role-based by default).
+    function seedDefaultAssignmentsIfEmpty() {
+      const existing = getAssignments();
+      if (existing && existing.length) return;
+
+      const profile = getProfile();
+      const location = profile.location || "Kyle";
+
+      const expoModuleIds = MODULES.filter(m => m.role === "Expo").map(m => m.id);
+      const allModuleIds  = MODULES.filter(m => m.role === "All").map(m => m.id);
+
+      const assigned_at = nowIso();
+      const due_at = addDaysIso(assigned_at, DEFAULT_DUE_DAYS);
+
+      const seeded = [];
+
+      // "All" scope
+      allModuleIds.forEach((moduleId) => {
+        seeded.push({
+          id: "asgn_" + Math.random().toString(36).slice(2),
+          scope: scopeKey("All", location),
+          role_id: "All",
+          location,
+          module_id: moduleId,
+          assigned_at,
+          due_at,
+          due_days: DEFAULT_DUE_DAYS,
+          status: "open",
+          assigned_by: "seed"
+        });
+      });
+
+      // Expo scope
+      expoModuleIds.forEach((moduleId) => {
+        seeded.push({
+          id: "asgn_" + Math.random().toString(36).slice(2),
+          scope: scopeKey("Expo", location),
+          role_id: "Expo",
+          location,
+          module_id: moduleId,
+          assigned_at,
+          due_at,
+          due_days: DEFAULT_DUE_DAYS,
+          status: "open",
+          assigned_by: "seed"
+        });
+      });
+
+      saveAssignments(seeded);
+    }
+
+    // Employee access blocking (Phase 2A)
+    function getBlockedList(){ return loadStore(STORE.blocked, { employee_ids: [] }); }
+    function isEmployeeBlocked(employeeId){
+      const b = getBlockedList();
+      return Array.isArray(b.employee_ids) && b.employee_ids.includes(employeeId);
+    }
+
+    function enforceEmployeeAccessOrBlockUI(){
+      const employees = getEmployees();
+      const id = getCurrentEmployeeId();
+      const emp = employees[id];
+
+      if (isEmployeeBlocked(id) || (emp && emp.active === false)) {
+        const shell = document.querySelector(".app-shell");
+        if (shell) {
+          shell.innerHTML = `
+            <main class="block-wrap">
+              <div class="card">
+                <h2 class="block-title">Access Disabled</h2>
+                <p class="muted">
+                  Your access to RITA has been disabled. Please see a manager.
+                </p>
+              </div>
+            </main>`;
+        }
+        return false;
+      }
+      return true;
+    }
+
+    // Run 2A boot
+    seedDefaultAssignmentsIfEmpty();
+    const accessOk = enforceEmployeeAccessOrBlockUI();
+
+    /* ============================================================
+       UI integration: assignments -> what employee sees + completes
+       ============================================================ */
+    let currentAssignmentId = null; // THIS replaces “module completion” as the unit of work
+
+    function getAssignedItemsForUI() {
+      const employeeId = getCurrentEmployeeId();
+      const assignments = getAssignmentsForEmployee(employeeId);
+
+      // Map assignment -> module (attach metadata for rendering)
+      return assignments
+        .map(a => {
+          const m = MODULES.find(mm => mm.id === a.module_id);
+          if (!m) return null;
+          return {
+            assignment: a,
+            module: m
+          };
+        })
+        .filter(Boolean);
     }
 
     function getCompletedAssignedCount() {
-      const assigned = getAssignedModules();
-      return assigned.filter((m) => !!state.completed[m.id]).length;
+      const items = getAssignedItemsForUI();
+      return items.filter(it => it.assignment.completed_at).length;
+    }
+
+    function getTotalAssignedCount() {
+      return getAssignedItemsForUI().length;
     }
 
     // ---------- Accordion Rendering ----------------------------------------
-    function renderAssignedAccordion(containerEl, modules) {
+    function renderAssignedAccordion(containerEl, assignedItems) {
       containerEl.innerHTML = "";
-      if (!modules || modules.length === 0) {
+      if (!assignedItems || assignedItems.length === 0) {
         const empty = document.createElement("div");
         empty.className = "empty-state";
-        empty.textContent = "No training modules configured.";
+        empty.textContent = "No assignments yet.";
         containerEl.appendChild(empty);
         return;
       }
@@ -1308,11 +1435,12 @@
       const accordion = document.createElement("div");
       accordion.className = "accordion";
 
-      // Group by category
+      // Group by category (module.category)
       const categories = {};
-      modules.forEach((m) => {
-        if (!categories[m.category]) categories[m.category] = [];
-        categories[m.category].push(m);
+      assignedItems.forEach((it) => {
+        const cat = it.module.category || "General";
+        if (!categories[cat]) categories[cat] = [];
+        categories[cat].push(it);
       });
 
       const catKeys = Object.keys(categories).sort();
@@ -1332,11 +1460,22 @@
         left.appendChild(title);
 
         const mods = categories[cat];
-        const completedCount = mods.filter((m) => !!state.completed[m.id]).length;
+        const completedCount = mods.filter((it) => !!it.assignment.completed_at).length;
+
+        // overdue count
+        const overdueCount = mods.filter((it) => it.assignment.computed_status === "overdue").length;
+
         const meta = document.createElement("span");
         meta.className = "accordion-meta";
         meta.textContent = `${completedCount}/${mods.length} complete`;
         left.appendChild(meta);
+
+        if (overdueCount > 0) {
+          const badge = document.createElement("span");
+          badge.className = "meta-badge overdue";
+          badge.textContent = `${overdueCount} overdue`;
+          left.appendChild(badge);
+        }
 
         const chevron = document.createElement("span");
         chevron.className = "accordion-chevron";
@@ -1351,23 +1490,31 @@
         const list = document.createElement("div");
         list.className = "list";
 
-        mods.forEach((m) => {
-          const completed = !!state.completed[m.id];
+        mods.forEach((it) => {
+          const m = it.module;
+          const a = it.assignment;
+
+          const completed = !!a.completed_at;
+          const overdue = a.computed_status === "overdue" && !completed;
+
           const itemRow = document.createElement("div");
           itemRow.className =
             "list-item " +
-            (completed ? "status-complete" : "status-required");
-          itemRow.onclick = () => openModuleDetail(m.id);
-          const metaText = completed ? "Complete" : "Required";
+            (completed ? "status-complete" : (overdue ? "status-overdue" : "status-required"));
+
+          itemRow.onclick = () => openModuleDetail(m.id, a.id);
+
+          const metaText = completed
+            ? "Complete"
+            : (overdue ? "Overdue" : `Due ${formatDueDateShort(a.due_at)}`);
+
           itemRow.innerHTML = `<span class="label">${m.title}</span><span class="meta">${metaText}</span>`;
           list.appendChild(itemRow);
         });
 
         body.appendChild(list);
 
-        header.addEventListener("click", () => {
-          item.classList.toggle("open");
-        });
+        header.addEventListener("click", () => item.classList.toggle("open"));
 
         item.appendChild(header);
         item.appendChild(body);
@@ -1377,60 +1524,70 @@
       containerEl.appendChild(accordion);
     }
 
+    function formatDueDateShort(iso){
+      const d = new Date(iso);
+      const mm = d.getMonth() + 1;
+      const dd = d.getDate();
+      return `${mm}/${dd}`;
+    }
+
     // ---------- Home Rendering ---------------------------------------------
     function renderHome() {
-      const assigned = getAssignedModules();
-      const completedCount = getCompletedAssignedCount();
+      if (!accessOk) return;
+
+      const assignedItems = getAssignedItemsForUI();
+      const completedCount = assignedItems.filter(it => !!it.assignment.completed_at).length;
 
       const label = document.getElementById("progressLabel");
-      label.textContent = `${completedCount} / ${assigned.length} Modules Completed`;
+      label.textContent = `${completedCount} / ${assignedItems.length} Assignments Completed`;
 
       const progressFill = document.getElementById("progressFill");
-      const pct =
-        assigned.length === 0 ? 0 : (completedCount / assigned.length) * 100;
+      const pct = assignedItems.length === 0 ? 0 : (completedCount / assignedItems.length) * 100;
       progressFill.style.width = pct + "%";
+
+      const overdueCount = assignedItems.filter(it => it.assignment.computed_status === "overdue" && !it.assignment.completed_at).length;
 
       const alertContainer = document.getElementById("homeAlertContainer");
       alertContainer.innerHTML = "";
+
       const alert = document.createElement("div");
       alert.className = "alert";
-      if (assigned.length === 0) {
+
+      if (assignedItems.length === 0) {
         alert.innerHTML =
-          "<div><strong>No training modules yet.</strong><span class='muted'>Your training plan has not been configured.</span></div>";
-      } else if (completedCount < assigned.length) {
-        const remaining = assigned.length - completedCount;
-        alert.innerHTML = `<div><strong>Training in progress.</strong>You have ${remaining} required module${
-          remaining !== 1 ? "s" : ""
-        } left to complete.</div>`;
+          "<div><strong>No assignments yet.</strong><span class='muted'>Your manager hasn’t assigned training on this device.</span></div>";
+      } else if (completedCount < assignedItems.length) {
+        const remaining = assignedItems.length - completedCount;
+        const overdueLine = overdueCount > 0
+          ? `<div class="muted" style="margin-top:0.25rem;">${overdueCount} assignment${overdueCount !== 1 ? "s are" : " is"} overdue.</div>`
+          : "";
+        alert.innerHTML = `<div><strong>Training in progress.</strong>You have ${remaining} assignment${remaining !== 1 ? "s" : ""} left to complete.${overdueLine}</div>`;
       } else {
         alert.classList.add("complete");
         alert.innerHTML =
-          "<div><strong>You have completed all required training.</strong><span class='muted'>Great job. Check back for new modules.</span></div>";
+          "<div><strong>You have completed all assigned training.</strong><span class='muted'>Check back for new assignments.</span></div>";
       }
+
       alertContainer.appendChild(alert);
 
       const homeAssignedAccordion = document.getElementById("homeAssignedAccordion");
-      renderAssignedAccordion(homeAssignedAccordion, assigned);
+      renderAssignedAccordion(homeAssignedAccordion, assignedItems);
     }
 
-    // ---------- Modules View Rendering -------------------------------------
+    // ---------- Modules View Rendering (browse-only) ------------------------
     function renderModulesList() {
+      if (!accessOk) return;
+
       const container = document.getElementById("modulesList");
       container.innerHTML = "";
 
       const accordion = document.createElement("div");
       accordion.className = "accordion";
 
-      const expoModules = MODULES.filter(
-        (m) => m.role === "Expo" || m.role === "All"
-      );
-
       ROLES.forEach((roleObj) => {
         const item = document.createElement("div");
         item.className = "accordion-item";
-        if (roleObj.id === "Expo") {
-          item.classList.add("open");
-        }
+        if (roleObj.id === "Expo") item.classList.add("open");
 
         const header = document.createElement("button");
         header.type = "button";
@@ -1446,8 +1603,11 @@
         meta.className = "accordion-meta";
 
         if (roleObj.id === "Expo") {
-          const completedCount = expoModules.filter((m) => !!state.completed[m.id]).length;
-          meta.textContent = `${completedCount}/${expoModules.length} complete • Available now`;
+          const expoModules = MODULES.filter(m => m.role === "Expo");
+          meta.textContent = `${expoModules.length} modules • Available now`;
+        } else if (roleObj.id === "Cashier") {
+          // You said: no cashier modules for now (we’ll add later)
+          meta.textContent = "Coming soon";
         } else {
           meta.textContent = "Coming soon";
         }
@@ -1464,58 +1624,45 @@
         body.className = "accordion-body";
 
         if (roleObj.id === "Expo") {
-          if (expoModules.length === 0) {
-            const empty = document.createElement("div");
-            empty.className = "empty-state";
-            empty.textContent = "No Expo training modules configured.";
-            body.appendChild(empty);
-          } else {
-            // Group by category inside Expo
-            const categories = {};
-            expoModules.forEach((m) => {
-              if (!categories[m.category]) categories[m.category] = [];
-              categories[m.category].push(m);
+          const roleMods = MODULES.filter(m => m.role === "Expo" || m.role === "All");
+          const categories = {};
+          roleMods.forEach((m) => {
+            if (!categories[m.category]) categories[m.category] = [];
+            categories[m.category].push(m);
+          });
+
+          Object.keys(categories).sort().forEach((cat) => {
+            const catLabel = document.createElement("p");
+            catLabel.textContent = cat;
+            catLabel.className = "muted";
+            catLabel.style.fontSize = "0.78rem";
+            catLabel.style.margin = "0.1rem 0 0.1rem";
+            body.appendChild(catLabel);
+
+            const list = document.createElement("div");
+            list.className = "list";
+
+            categories[cat].forEach((m) => {
+              // Browse-only: show whether completed in legacy state (optional hint)
+              const completedLegacy = !!state.completed[m.id];
+
+              const row = document.createElement("div");
+              row.className = "list-item " + (completedLegacy ? "status-complete" : "status-required");
+              row.onclick = () => openModuleDetail(m.id, null);
+              row.innerHTML = `<span class="label">${m.title}</span><span class="meta">${completedLegacy ? "Complete (device)" : "Browse"}</span>`;
+              list.appendChild(row);
             });
 
-            Object.keys(categories)
-              .sort()
-              .forEach((cat) => {
-                const catLabel = document.createElement("p");
-                catLabel.textContent = cat;
-                catLabel.className = "muted";
-                catLabel.style.fontSize = "0.78rem";
-                catLabel.style.margin = "0.1rem 0 0.1rem";
-                body.appendChild(catLabel);
-
-                const list = document.createElement("div");
-                list.className = "list";
-
-                categories[cat].forEach((m) => {
-                  const completed = !!state.completed[m.id];
-                  const itemRow = document.createElement("div");
-                  itemRow.className =
-                    "list-item " +
-                    (completed ? "status-complete" : "status-required");
-                  itemRow.onclick = () => openModuleDetail(m.id);
-                  const metaText = completed ? "Complete" : "Required";
-                  itemRow.innerHTML = `<span class="label">${m.title}</span><span class="meta">${metaText}</span>`;
-                  list.appendChild(itemRow);
-                });
-
-                body.appendChild(list);
-              });
-          }
+            body.appendChild(list);
+          });
         } else {
           const coming = document.createElement("div");
           coming.className = "empty-state";
-          coming.textContent = `${roleObj.label} training modules are coming soon.`;
+          coming.textContent = `${roleObj.label} modules are coming soon.`;
           body.appendChild(coming);
         }
 
-        header.addEventListener("click", () => {
-          item.classList.toggle("open");
-        });
-
+        header.addEventListener("click", () => item.classList.toggle("open"));
         item.appendChild(header);
         item.appendChild(body);
         accordion.appendChild(item);
@@ -1613,45 +1760,54 @@
     function updateCompleteButtonState() {
       const btn = document.getElementById("completeModuleBtn");
       btn.classList.remove("completed");
+
       if (!currentModuleId) {
         btn.disabled = true;
         return;
       }
 
-      const completedAlready = !!state.completed[currentModuleId];
-      if (completedAlready) {
+      // Determine completion based on CURRENT assignment (if any)
+      const employeeId = getCurrentEmployeeId();
+      const completions = getCompletions();
+      const empComps = completions[employeeId] || {};
+      const alreadyCompletedThisAssignment = currentAssignmentId && empComps[currentAssignmentId]?.completed_at;
+
+      if (alreadyCompletedThisAssignment) {
         btn.disabled = true;
-        btn.textContent = "Module Completed";
+        btn.textContent = "Assignment Completed";
         btn.classList.add("completed");
         return;
       }
 
-      const checkboxes = document.querySelectorAll(
-        "#detailSteps input[type='checkbox']"
-      );
+      // If no assignment in context, do not allow completion from browse mode
+      if (!currentAssignmentId) {
+        btn.disabled = true;
+        btn.textContent = "Complete via assignment";
+        return;
+      }
+
+      const checkboxes = document.querySelectorAll("#detailSteps input[type='checkbox']");
       if (checkboxes.length === 0) {
         btn.disabled = true;
-        btn.textContent = "Mark Module Complete";
+        btn.textContent = "Mark Complete";
         return;
       }
 
       const allChecked = Array.from(checkboxes).every((cb) => cb.checked);
       btn.disabled = !allChecked;
-      btn.textContent = allChecked
-        ? "Mark Module Complete"
-        : "Check all steps to complete";
+      btn.textContent = allChecked ? "Mark Assignment Complete" : "Check all steps to complete";
     }
 
-    function openModuleDetail(id) {
-      const module = MODULES.find((m) => m.id === id);
+    function openModuleDetail(moduleId, assignmentId) {
+      const module = MODULES.find((m) => m.id === moduleId);
       if (!module) return;
 
-      currentModuleId = id;
-      document.getElementById("detailCategoryPill").textContent =
-        module.category;
+      currentModuleId = moduleId;
+      currentAssignmentId = assignmentId || null;
+
+      document.getElementById("detailCategoryPill").textContent = module.category;
       document.getElementById("detailTitle").textContent = module.title;
-      document.getElementById("detailDescription").textContent =
-        module.description;
+      document.getElementById("detailDescription").textContent = module.description;
 
       renderModuleImages(module);
 
@@ -1681,22 +1837,20 @@
         stepsContainer.appendChild(row);
       });
 
-      const completed = !!state.completed[id];
       const hint = document.getElementById("detailHint");
-      hint.textContent = completed
-        ? "This module is marked complete. You can review steps any time."
-        : "Work through each step, then check all boxes to enable completion.";
+      if (!currentAssignmentId) {
+        hint.textContent = "Browse mode: assignments control what’s required and what can be completed.";
+      } else {
+        const a = getAssignments().find(x => x.id === currentAssignmentId);
+        const dueText = a?.due_at ? `Due ${formatDueDateShort(a.due_at)}` : "Due in 14 days";
+        hint.textContent = `Assignment active. ${dueText}. Complete the steps, then pass the quick check.`;
+      }
 
+      // Button state
       const btn = document.getElementById("completeModuleBtn");
       btn.disabled = true;
       btn.classList.remove("completed");
-      if (completed) {
-        btn.disabled = true;
-        btn.textContent = "Module Completed";
-        btn.classList.add("completed");
-      } else {
-        btn.textContent = "Check all steps to complete";
-      }
+      btn.textContent = currentAssignmentId ? "Check all steps to complete" : "Complete via assignment";
 
       updateCompleteButtonState();
       setView("moduleDetail");
@@ -1713,6 +1867,7 @@
 
     let quizState = {
       moduleId: null,
+      assignmentId: null,
       type: null,         // "mc" | "number"
       correct: null       // string or number
     };
@@ -1744,53 +1899,39 @@
     function buildQuizForModule(module) {
       const steps = Array.isArray(module.steps) ? module.steps.slice() : [];
 
-      // Fallback: if no steps, simple numeric question
       if (!steps.length) {
         return {
           type: "number",
-          question:
-            "If you complete every step once, how many actions did you just take in this module?",
+          question: "If you complete every step once, how many actions did you just take in this module?",
           correct: 0,
           options: null
         };
       }
 
       const moduleIndex = MODULES.findIndex((m) => m.id === module.id);
-      const useMultipleChoice = moduleIndex % 2 === 0; // even = MC, odd = numeric
+      const useMultipleChoice = moduleIndex % 2 === 0;
 
       if (useMultipleChoice) {
-        // Decide whether to use an EXCEPT pattern
         const useExceptPattern = moduleIndex % 4 === 0 && steps.length >= 3;
 
         if (useExceptPattern) {
-          // EXCEPT style: 3 real steps, 1 silly; pick the one that does NOT belong
           const realStepsShuffled = shuffleArray(steps);
           const realSubset = realStepsShuffled.slice(0, 3);
-          const silly =
-            SILLY_DISTRACTORS[
-              Math.floor(Math.random() * SILLY_DISTRACTORS.length)
-            ];
-
+          const silly = SILLY_DISTRACTORS[Math.floor(Math.random() * SILLY_DISTRACTORS.length)];
           const options = shuffleArray([...realSubset, silly]);
 
           return {
             type: "mc",
-            question:
-              "All of the following actions belong in this module EXCEPT:",
+            question: "All of the following actions belong in this module EXCEPT:",
             correct: silly,
             options
           };
         } else {
-          // Positive style: which action IS part of this module?
-          const correctStep =
-            steps[Math.floor(Math.random() * steps.length)];
+          const correctStep = steps[Math.floor(Math.random() * steps.length)];
 
           const distractors = [];
           const genericPool = GENERIC_DISTRACTORS.slice();
-          const silly =
-            SILLY_DISTRACTORS[
-              Math.floor(Math.random() * SILLY_DISTRACTORS.length)
-            ];
+          const silly = SILLY_DISTRACTORS[Math.floor(Math.random() * SILLY_DISTRACTORS.length)];
           distractors.push(silly);
 
           while (distractors.length < 3 && genericPool.length) {
@@ -1802,27 +1943,26 @@
 
           return {
             type: "mc",
-            question:
-              "Which of the following is actually part of this training module?",
+            question: "Which of the following is actually part of this training module?",
             correct: correctStep,
             options
           };
         }
       } else {
-        // Numeric: count of steps
         return {
           type: "number",
-          question:
-            "If you complete every listed step once, how many actions do you perform in this module?",
+          question: "If you complete every listed step once, how many actions do you perform in this module?",
           correct: steps.length,
           options: null
         };
       }
     }
 
-    function openQuizForModule(module) {
+    function openQuizForModule(module, assignmentId) {
       const quiz = buildQuizForModule(module);
+
       quizState.moduleId = module.id;
+      quizState.assignmentId = assignmentId;
       quizState.type = quiz.type;
       quizState.correct = quiz.correct;
       quizErrorEl.textContent = "";
@@ -1866,22 +2006,18 @@
       quizOverlay.setAttribute("aria-hidden", "true");
       quizErrorEl.textContent = "";
       quizState.moduleId = null;
+      quizState.assignmentId = null;
       quizState.type = null;
       quizState.correct = null;
     }
 
-    quizCancelBtn.addEventListener("click", () => {
-      // User can cancel, but module won't be marked complete.
-      closeQuiz();
-    });
+    quizCancelBtn.addEventListener("click", closeQuiz);
 
     quizSubmitBtn.addEventListener("click", () => {
-      if (!quizState.moduleId || !quizState.type) return;
+      if (!quizState.moduleId || !quizState.type || !quizState.assignmentId) return;
 
       if (quizState.type === "mc") {
-        const selected = document.querySelector(
-          '#quizOptions input[name="quiz-option"]:checked'
-        );
+        const selected = document.querySelector('#quizOptions input[name="quiz-option"]:checked');
         if (!selected) {
           quizErrorEl.textContent = "Please select an answer.";
           return;
@@ -1889,172 +2025,164 @@
         const value = selected.value;
         if (value === quizState.correct) {
           const module = MODULES.find((m) => m.id === quizState.moduleId);
+          const assignmentId = quizState.assignmentId;
           closeQuiz();
-          if (module) finalizeModuleCompletion(module);
+          if (module) finalizeAssignmentCompletion(module, assignmentId);
         } else {
           quizErrorEl.textContent = "Not quite. Try again.";
         }
-      } else if (quizState.type === "number") {
+      } else {
         const raw = quizNumberInput.value;
-        if (raw === "") {
-          quizErrorEl.textContent = "Enter a number to continue.";
-          return;
-        }
+        if (raw === "") { quizErrorEl.textContent = "Enter a number to continue."; return; }
         const num = parseInt(raw, 10);
-        if (Number.isNaN(num)) {
-          quizErrorEl.textContent = "That doesn't look like a number. Try again.";
-          return;
-        }
+        if (Number.isNaN(num)) { quizErrorEl.textContent = "That doesn't look like a number. Try again."; return; }
         if (num === quizState.correct) {
           const module = MODULES.find((m) => m.id === quizState.moduleId);
+          const assignmentId = quizState.assignmentId;
           closeQuiz();
-          if (module) finalizeModuleCompletion(module);
+          if (module) finalizeAssignmentCompletion(module, assignmentId);
         } else {
-          quizErrorEl.textContent =
-            "That's not the right number of steps. Try again.";
+          quizErrorEl.textContent = "That's not the right number. Try again.";
         }
       }
     });
 
-    // ---------- Finalize Completion (after quiz success) --------------------
-    function finalizeModuleCompletion(module) {
-      if (!module) return;
+    // ---------- Finalize Completion (assignment-based) ----------------------
+    function finalizeAssignmentCompletion(module, assignmentId) {
+      const employeeId = getCurrentEmployeeId();
+      const ok = completeAssignment(employeeId, assignmentId);
+      if (!ok) {
+        showToast("Could not mark complete. Refresh and try again.");
+        return;
+      }
 
+      // legacy device completion kept for your reset handshake (optional)
       state.completed[module.id] = true;
       saveState();
 
+      const assignedItems = getAssignedItemsForUI();
+      const completedCount = assignedItems.filter(it => !!it.assignment.completed_at).length;
+      const pct = assignedItems.length === 0 ? 0 : Math.round((completedCount / assignedItems.length) * 100);
+
+      // compute completion status for sheet payload
+      const a = getAssignments().find(x => x.id === assignmentId);
+      const comps = getCompletions();
+      const completed_at = comps?.[employeeId]?.[assignmentId]?.completed_at || nowIso();
+      const completion_status = (() => {
+        if (!a?.due_at) return "completed";
+        return new Date(completed_at).getTime() <= new Date(a.due_at).getTime()
+          ? "completed_on_time"
+          : "completed_late";
+      })();
+
+      syncCompletionToSheet(module, pct, {
+        assignment_id: assignmentId,
+        assigned_at: a?.assigned_at || "",
+        due_at: a?.due_at || "",
+        completion_status
+      });
+
       renderHome();
       renderModulesList();
-
-      const assigned = getAssignedModules();
-      const completedCount = getCompletedAssignedCount();
-      const pct =
-        assigned.length === 0
-          ? 0
-          : Math.round((completedCount / assigned.length) * 100);
-
-      syncCompletionToSheet(module, pct);
+      renderAssignedView();
 
       const btn = document.getElementById("completeModuleBtn");
       if (btn) {
         btn.classList.add("completed");
-        btn.textContent = "Module Completed";
+        btn.textContent = "Assignment Completed";
         btn.disabled = true;
       }
 
       setView("home");
-      showToast(
-        `Completed: ${module.title} • ${pct}% of required training done`
-      );
+      showToast(`Completed: ${module.title} • ${pct}% of assigned training done`);
     }
 
-    document
-      .getElementById("completeModuleBtn")
-      .addEventListener("click", () => {
-        if (!currentModuleId) return;
-        const btn = document.getElementById("completeModuleBtn");
-        if (btn.disabled) return;
+    document.getElementById("completeModuleBtn").addEventListener("click", () => {
+      if (!currentModuleId || !currentAssignmentId) return;
+      const btn = document.getElementById("completeModuleBtn");
+      if (btn.disabled) return;
 
-        const module = MODULES.find((m) => m.id === currentModuleId);
-        if (!module) return;
+      const module = MODULES.find((m) => m.id === currentModuleId);
+      if (!module) return;
 
-        // Instead of directly completing, open the quiz.
-        openQuizForModule(module);
-      });
+      openQuizForModule(module, currentAssignmentId);
+    });
 
     // ---------- Assigned View (if used) -------------------------------------
     function renderAssignedView() {
+      if (!accessOk) return;
       const container = document.getElementById("assignedAccordion");
-      const assigned = getAssignedModules();
-      renderAssignedAccordion(container, assigned);
+      const assignedItems = getAssignedItemsForUI();
+      renderAssignedAccordion(container, assignedItems);
     }
 
     // ---------- Settings: Profile Editing -----------------------------------
-    document
-      .getElementById("profileFirstNameRow")
-      .addEventListener("click", () => {
-        const current = getProfile().firstName;
-        const value = prompt("Enter your first name", current || "");
-        if (value && value.trim()) {
-          localStorage.setItem(PROFILE_FIRST_NAME_KEY, value.trim());
-          refreshHeaderFromProfile();
-          updateSettingsProfileUI();
-        }
-      });
-
-    document
-      .getElementById("profileLastNameRow")
-      .addEventListener("click", () => {
-        const current = getProfile().lastName;
-        const value = prompt("Enter your last name", current || "");
-        if (value && value.trim()) {
-          localStorage.setItem(PROFILE_LAST_NAME_KEY, value.trim());
-          refreshHeaderFromProfile();
-          updateSettingsProfileUI();
-        }
-      });
-
-    document
-      .getElementById("profileCommonNameRow")
-      .addEventListener("click", () => {
-        const current = getProfile().commonName;
-        const value = prompt(
-          "Enter your common name (optional)",
-          current || ""
-        );
-        if (value !== null) {
-          localStorage.setItem(PROFILE_COMMON_NAME_KEY, value.trim());
-          refreshHeaderFromProfile();
-          updateSettingsProfileUI();
-        }
-      });
-
-    document
-      .getElementById("profileEmployeeIdRow")
-      .addEventListener("click", () => {
-        const current = getProfile().employee_id;
-        const value = prompt(
-          "Enter your employee ID (optional)",
-          current || ""
-        );
-        if (value !== null) {
-          localStorage.setItem(PROFILE_EMPLOYEE_ID_KEY, value.trim());
-          updateSettingsProfileUI();
-        }
-      });
-
-    document
-      .getElementById("profileLocationSelect")
-      .addEventListener("change", (e) => {
-        const value = e.target.value === "Other" ? "Other" : "Kyle";
-        localStorage.setItem(PROFILE_LOCATION_KEY, value);
+    document.getElementById("profileFirstNameRow").addEventListener("click", () => {
+      const current = getProfile().firstName;
+      const value = prompt("Enter your first name", current || "");
+      if (value && value.trim()) {
+        localStorage.setItem(PROFILE_FIRST_NAME_KEY, value.trim());
+        refreshHeaderFromProfile();
         updateSettingsProfileUI();
-      });
+      }
+    });
+
+    document.getElementById("profileLastNameRow").addEventListener("click", () => {
+      const current = getProfile().lastName;
+      const value = prompt("Enter your last name", current || "");
+      if (value && value.trim()) {
+        localStorage.setItem(PROFILE_LAST_NAME_KEY, value.trim());
+        refreshHeaderFromProfile();
+        updateSettingsProfileUI();
+      }
+    });
+
+    document.getElementById("profileCommonNameRow").addEventListener("click", () => {
+      const current = getProfile().commonName;
+      const value = prompt("Enter your common name (optional)", current || "");
+      if (value !== null) {
+        localStorage.setItem(PROFILE_COMMON_NAME_KEY, value.trim());
+        refreshHeaderFromProfile();
+        updateSettingsProfileUI();
+      }
+    });
+
+    document.getElementById("profileEmployeeIdRow").addEventListener("click", () => {
+      const current = getProfile().employee_id;
+      const value = prompt("Enter your employee ID (optional)", current || "");
+      if (value !== null) {
+        localStorage.setItem(PROFILE_EMPLOYEE_ID_KEY, value.trim());
+        updateSettingsProfileUI();
+        // ensure employee registry updates to new id
+        getCurrentEmployeeId();
+      }
+    });
+
+    document.getElementById("profileLocationSelect").addEventListener("change", (e) => {
+      const value = e.target.value === "Other" ? "Other" : "Kyle";
+      localStorage.setItem(PROFILE_LOCATION_KEY, value);
+      updateSettingsProfileUI();
+      // location impacts assignment scope: re-render
+      renderHome();
+      renderModulesList();
+      renderAssignedView();
+    });
 
     // ---------- Navigation Wiring -------------------------------------------
-    document
-      .querySelectorAll(".tab-btn")
-      .forEach((btn) =>
-        btn.addEventListener("click", () => {
-          const tab = btn.dataset.tab;
-          if (tab === "home") {
-            setView("home");
-            renderHome();
-          } else if (tab === "modules") {
-            setView("modules");
-            renderModulesList();
-          }
-        })
-      );
+    document.querySelectorAll(".tab-btn").forEach((btn) =>
+      btn.addEventListener("click", () => {
+        const tab = btn.dataset.tab;
+        if (tab === "home") { setView("home"); renderHome(); }
+        else if (tab === "modules") { setView("modules"); renderModulesList(); }
+      })
+    );
 
-    document
-      .getElementById("settingsButton")
-      .addEventListener("click", () => {
-        updateSettingsProfileUI();
-        setView("settings");
-      });
+    document.getElementById("settingsButton").addEventListener("click", () => {
+      updateSettingsProfileUI();
+      setView("settings");
+    });
 
-    // ---------- Secret Manager Handshake (Reset) ----------------------------
+    // ---------- Secret Manager Handshake (Reset + Block tooling) ------------
     let secretTapCount = 0;
     let secretTapTimer = null;
     const SECRET_TAP_WINDOW_MS = 4000;
@@ -2076,30 +2204,70 @@
         secretTapTimer = null;
         secretTapCount = 0;
 
-        const confirmReset = confirm(
-          "Manager reset:\n\nClear all completed modules on this device?"
+        const action = prompt(
+          "Manager tools (PIN required):\n\nType one:\nRESET\nBLOCK\nUNBLOCK\n\nCancel to exit."
         );
-        if (!confirmReset) return;
+        if (!action) return;
 
-        const pin = prompt("Enter manager PIN to confirm reset:");
-        if (pin === MANAGER_PIN) {
+        const pin = prompt("Enter manager PIN:");
+        if (pin !== MANAGER_PIN) {
+          showToast("Incorrect PIN. No changes made.");
+          return;
+        }
+
+        const cmd = action.trim().toUpperCase();
+
+        if (cmd === "RESET") {
+          const confirmReset = confirm("Clear all COMPLETIONS + ASSIGNMENT completions on this device?");
+          if (!confirmReset) return;
+
+          // Clear legacy
           state.completed = {};
           saveState();
+
+          // Clear assignment completions (but keep assignments)
+          saveCompletions({});
+
           renderHome();
           renderModulesList();
           renderAssignedView();
-          showToast("All module completions have been cleared.");
-        } else if (pin !== null) {
-          showToast("Incorrect PIN. No changes made.");
+          showToast("All completions cleared (assignments remain).");
+          return;
         }
+
+        if (cmd === "BLOCK") {
+          const id = prompt("Enter employee ID to BLOCK:");
+          if (!id) return;
+          const b = getBlockedList();
+          if (!Array.isArray(b.employee_ids)) b.employee_ids = [];
+          if (!b.employee_ids.includes(id.trim())) b.employee_ids.push(id.trim());
+          saveStore(STORE.blocked, b);
+          showToast("Employee blocked on this device.");
+          return;
+        }
+
+        if (cmd === "UNBLOCK") {
+          const id = prompt("Enter employee ID to UNBLOCK:");
+          if (!id) return;
+          const b = getBlockedList();
+          b.employee_ids = Array.isArray(b.employee_ids) ? b.employee_ids : [];
+          b.employee_ids = b.employee_ids.filter(x => x !== id.trim());
+          saveStore(STORE.blocked, b);
+          showToast("Employee unblocked on this device.");
+          return;
+        }
+
+        showToast("Unknown command.");
       }
     });
 
     // ---------- Initial Render ----------------------------------------------
-    refreshHeaderFromProfile();
-    updateSettingsProfileUI();
-    renderHome();
-    renderModulesList();
+    if (accessOk) {
+      refreshHeaderFromProfile();
+      updateSettingsProfileUI();
+      renderHome();
+      renderModulesList();
+    }
   </script>
 </body>
 </html>
