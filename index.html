@@ -1,1262 +1,2137 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>RITA — Manager Console</title>
-
+  <meta charset="UTF-8" />
+  <title>RITA — Employee Training MVP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-    :root{
-      --bg:#0b0c10; --panel:#11131a; --panel2:#0f1117;
-      --text:#f2f4f8; --muted:rgba(242,244,248,.72);
-      --stroke:rgba(255,255,255,.12); --accent:#3ee8c9; --danger:#ff5a5f;
-      --shadow:0 18px 50px rgba(0,0,0,.45);
-      --radius:16px; --pad:14px;
-      --mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
-      --sans:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";
-    }
-    [data-theme="light"]{
-      --bg:#f6f7fb; --panel:#ffffff; --panel2:#fbfcff;
-      --text:#0b1020; --muted:rgba(11,16,32,.65);
-      --stroke:rgba(11,16,32,.14); --accent:#0aa37f;
-      --shadow:0 16px 40px rgba(20,25,40,.12);
-    }
-
-    *{ box-sizing:border-box; }
-    body{
-      margin:0; font-family:var(--sans); color:var(--text);
-      background: radial-gradient(1200px 700px at 20% -10%, rgba(62,232,201,.18), transparent 55%),
-                  radial-gradient(900px 600px at 90% 10%, rgba(62,232,201,.12), transparent 55%),
-                  var(--bg);
-    }
-    header{
-      position:sticky; top:0; z-index:10;
-      backdrop-filter: blur(10px);
-      background: color-mix(in srgb, var(--bg) 75%, transparent);
-      border-bottom:1px solid var(--stroke);
-    }
-    .wrap{ max-width:1200px; margin:0 auto; padding:16px; }
-    .topbar{ display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
-    .title{ display:flex; flex-direction:column; gap:2px; }
-    .title h1{ margin:0; font-size:16px; letter-spacing:.2px; }
-    .title .sub{ font-size:12px; color:var(--muted); font-family:var(--mono); }
-
-    .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
-    .btn{
-      appearance:none; border:1px solid var(--stroke);
-      background: color-mix(in srgb, var(--panel) 86%, transparent);
-      color:var(--text);
-      padding:10px 12px; border-radius:12px; cursor:pointer;
-      transition: transform .08s ease, border-color .15s ease, background .15s ease;
-      font-weight:650; font-size:13px;
-    }
-    .btn:hover{ border-color: color-mix(in srgb, var(--accent) 40%, var(--stroke)); }
-    .btn:active{ transform: scale(.98); }
-    .btn.primary{
-      border-color: color-mix(in srgb, var(--accent) 55%, var(--stroke));
-      background: color-mix(in srgb, var(--accent) 14%, var(--panel));
-    }
-    .pill{
-      font-size:12px; color:var(--muted);
-      border:1px solid var(--stroke);
-      padding:6px 10px; border-radius:999px;
-      font-family:var(--mono);
+    :root {
+      --bg: #f3f4f6;
+      --bg-elevated: #ffffff;
+      --bg-soft: #e5e7eb;
+      --text: #111827;
+      --muted: #6b7280;
+      --accentA: #f97316;
+      --accentB: #facc15;
+      --accent: var(--accentA);
+      --accent-soft: rgba(249, 115, 22, 0.1);
+      --border: #d1d5db;
+      --danger: #b91c1c;
+      --radius-lg: 16px;
+      --radius-md: 10px;
+      --shadow-soft: 0 14px 30px rgba(15, 23, 42, 0.12);
+      --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
-    main .grid{
-      display:grid; grid-template-columns: 1.25fr .75fr; gap:12px;
-      padding:16px; max-width:1200px; margin:0 auto;
-    }
-    @media (max-width: 980px){ main .grid{ grid-template-columns:1fr; } }
+    * { box-sizing: border-box; }
 
-    .card{
-      background: linear-gradient(180deg, color-mix(in srgb, var(--panel) 92%, transparent), var(--panel2));
-      border:1px solid var(--stroke);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      overflow:hidden;
-    }
-    .card .hd{
-      padding:var(--pad);
-      border-bottom:1px solid var(--stroke);
-      display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
-    }
-    .card .hd h2{ margin:0; font-size:14px; letter-spacing:.2px; }
-    .card .bd{ padding:var(--pad); }
-
-    .kpi{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
-    @media (max-width:560px){ .kpi{ grid-template-columns:1fr; } }
-    .kpi .box{
-      border:1px solid var(--stroke);
-      border-radius:14px; padding:12px;
-      background: color-mix(in srgb, var(--panel) 88%, transparent);
-    }
-    .kpi .num{ font-size:20px; font-weight:850; }
-    .kpi .lbl{ font-size:12px; color:var(--muted); margin-top:4px; }
-
-    .list{ display:flex; flex-direction:column; gap:10px; }
-
-    .item{
-      border:1px solid var(--stroke);
-      border-radius:14px; padding:12px;
-      background: color-mix(in srgb, var(--panel) 88%, transparent);
-      display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap;
-    }
-    .item .meta{ display:flex; flex-direction:column; gap:8px; min-width:260px; flex:1; }
-    .item .meta .a{ font-weight:800; font-size:14px; }
-    .item .meta .b{ font-size:12px; color:var(--muted); font-family:var(--mono); }
-    .item .actions{ display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
-
-    .field{ display:flex; flex-direction:column; gap:6px; margin-bottom:10px; }
-    .field label{ font-size:12px; color:var(--muted); }
-    .field input,.field select,.field textarea{
-      padding:10px 10px; border-radius:12px;
-      border:1px solid var(--stroke);
-      background: color-mix(in srgb, var(--panel) 86%, transparent);
-      color:var(--text); outline:none; font-size:13px;
-    }
-    .field textarea{ min-height:70px; resize:vertical; }
-
-    .hr{ height:1px; background:var(--stroke); margin:12px 0; }
-    .small{ font-size:12px; color:var(--muted); }
-    .mono{ font-family:var(--mono); }
-
-    .bar{
-      width:100%;
-      height:10px;
-      border-radius:999px;
-      border:1px solid var(--stroke);
-      background: color-mix(in srgb, var(--panel) 75%, transparent);
-      overflow:hidden;
-    }
-    .bar > div{
-      height:100%;
-      background: color-mix(in srgb, var(--accent) 60%, transparent);
-      width:0%;
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      background: var(--bg);
+      font-family: var(--font-main);
+      color: var(--text);
     }
 
-    details{
-      border:1px solid var(--stroke);
-      border-radius:14px;
-      background: color-mix(in srgb, var(--panel) 86%, transparent);
-      padding:10px 12px;
-    }
-    summary{
-      cursor:pointer;
-      font-weight:750;
-      font-size:13px;
-      list-style:none;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-    }
-    summary::-webkit-details-marker{ display:none; }
-    .chips{ display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
-    .chip{
-      border:1px solid var(--stroke);
-      border-radius:999px;
-      padding:6px 10px;
-      font-size:12px;
-      color:var(--text);
-      background: color-mix(in srgb, var(--panel) 84%, transparent);
-      font-family: var(--mono);
-    }
-    .chip.ok{ border-color: color-mix(in srgb, var(--accent) 50%, var(--stroke)); }
-    .chip.muted{ color: var(--muted); }
-
-    /* Modal base */
-    .modalBackdrop{
-      position:fixed; inset:0; z-index:50;
-      background: rgba(0,0,0,.55);
-      display:none; align-items:center; justify-content:center;
-      padding:18px;
-    }
-    [data-theme="light"] .modalBackdrop{ background: rgba(15,18,30,.35); }
-
-    .modal{
-      width:min(920px,100%);
-      border-radius:18px; border:1px solid var(--stroke);
-      background: linear-gradient(180deg, var(--panel), var(--panel2));
-      box-shadow:0 30px 80px rgba(0,0,0,.55);
-      overflow:hidden;
-    }
-    .modal .mhd{
-      padding:14px; border-bottom:1px solid var(--stroke);
-      display:flex; align-items:center; justify-content:space-between; gap:12px;
-    }
-    .modal .mbd{ padding:14px; }
-    .modal .mft{
-      padding:14px; border-top:1px solid var(--stroke);
-      display:flex; justify-content:flex-end; gap:10px; flex-wrap:wrap;
+    .app-shell {
+      width: 100%;
+      max-width: 480px;
+      min-height: 100vh;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      position: relative;
     }
 
-    /* Analytics tabs */
-    .tabs{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      margin-bottom:12px;
-    }
-    .tab{
-      border:1px solid var(--stroke);
-      background: color-mix(in srgb, var(--panel) 86%, transparent);
-      padding:8px 10px;
-      border-radius:999px;
-      cursor:pointer;
-      font-size:13px;
-      font-weight:750;
-      color:var(--muted);
-    }
-    .tab.active{
-      color:var(--text);
-      border-color: color-mix(in srgb, var(--accent) 45%, var(--stroke));
-      background: color-mix(in srgb, var(--accent) 12%, var(--panel));
+    header {
+      flex-shrink: 0;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-elevated);
+      box-shadow: 0 1px 0 rgba(15, 23, 42, 0.03);
+      position: sticky;
+      top: 0;
+      z-index: 10;
     }
 
-    .table{
-      width:100%;
-      border-collapse:separate;
-      border-spacing:0;
-      overflow:hidden;
-      border:1px solid var(--stroke);
-      border-radius:14px;
-      background: color-mix(in srgb, var(--panel) 86%, transparent);
+    .header-inner {
+      padding: 0.75rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
     }
-    .table th, .table td{
-      padding:10px 10px;
-      border-bottom:1px solid var(--stroke);
-      font-size:12px;
-      text-align:left;
-      color:var(--text);
-    }
-    .table th{ color:var(--muted); font-family:var(--mono); font-weight:800; }
-    .table tr:last-child td{ border-bottom:none; }
 
-    .toast{
-      position:fixed; left:50%; bottom:18px; transform:translateX(-50%);
-      background: color-mix(in srgb, var(--panel) 92%, rgba(0,0,0,.15));
-      border:1px solid var(--stroke);
-      color:var(--text); padding:10px 12px; border-radius:999px;
-      box-shadow:var(--shadow);
-      display:none; z-index:99; font-size:13px;
-      max-width:calc(100vw - 30px);
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    .header-logo {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+    }
+
+    .header-logo-text {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.25rem 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-size: 0.86rem;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .icon-btn {
+      border: none;
+      background: transparent;
+      padding: 0.3rem;
+      border-radius: 999px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      line-height: 0;
+    }
+
+    .icon-btn:hover {
+      background: var(--bg-soft);
+      color: var(--text);
+    }
+
+    .icon {
+      width: 18px;
+      height: 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    main {
+      flex: 1;
+      padding: 0.75rem 1rem 0.8rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .card {
+      background: var(--bg-elevated);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+      padding: 0.85rem 0.9rem;
+    }
+
+    h2 { margin: 0 0 0.4rem; font-size: 1rem; }
+    h3 { margin: 0 0 0.3rem; font-size: 0.95rem; }
+
+    p {
+      margin: 0;
+      font-size: 0.85rem;
+      line-height: 1.4;
+    }
+
+    .muted { color: var(--muted); }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.1rem 0.5rem;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      background: var(--accent-soft);
+      color: var(--accentA);
+      font-weight: 500;
+      margin-bottom: 0.35rem;
+    }
+
+    .progress-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .progress-label { font-size: 0.85rem; font-weight: 500; }
+
+    .progress-bar {
+      width: 100%;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--bg-soft);
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accentA), var(--accentB));
+      width: 0%;
+      transition: width 0.2s ease-out;
+    }
+
+    .alert {
+      border-radius: var(--radius-md);
+      padding: 0.5rem 0.6rem;
+      border: 1px solid var(--border);
+      background: var(--bg-soft);
+      font-size: 0.82rem;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 0.5rem;
+      margin-top: 0.25rem;
+    }
+
+    .alert.complete {
+      border-color: rgba(34, 197, 94, 0.4);
+      background: rgba(22, 163, 74, 0.05);
+    }
+
+    .alert strong { display: block; margin-bottom: 0.15rem; }
+
+    .list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      margin-top: 0.3rem;
+    }
+
+    .list-item {
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      padding: 0.55rem 0.65rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      background: var(--bg-elevated);
+      cursor: pointer;
+      font-size: 0.86rem;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+
+    .list-item span.label { flex: 1; }
+    .list-item span.meta { font-size: 0.75rem; color: var(--muted); }
+
+    .list-item.status-required { background: var(--accent-soft); border-color: var(--accentA); }
+    .list-item.status-complete { background: rgba(34, 197, 94, 0.08); border-color: rgba(34, 197, 94, 0.45); }
+
+    .btn {
+      border-radius: 999px;
+      border: none;
+      padding: 0.55rem 0.9rem;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3rem;
+      margin-top: 0.4rem;
+      width: 100%;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accentA), var(--accentB));
+      color: #111827;
+      font-weight: 600;
+      transition: background 0.15s ease, opacity 0.15s ease;
+    }
+
+    .btn-primary[disabled] { opacity: 0.6; cursor: default; }
+
+    .btn-primary.completed {
+      background: linear-gradient(135deg, #22c55e, #4ade80);
+      color: #022c22;
+    }
+
+    .divider { border-top: 1px solid var(--border); margin: 0.5rem 0; }
+
+    footer {
+      flex-shrink: 0;
+      border-top: 1px solid var(--border);
+      background: var(--bg-elevated);
+      position: sticky;
+      bottom: 0;
+      z-index: 5;
+    }
+
+    .tabbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 0.4rem 0.2rem 0.55rem;
+    }
+
+    .tab-btn {
+      flex: 1;
+      border: none;
+      background: transparent;
+      padding: 0.35rem 0;
+      font-size: 0.8rem;
+      color: var(--muted);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.15rem;
+    }
+
+    .tab-btn span.dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 999px;
+      background: transparent;
+    }
+
+    .tab-btn.active { color: var(--accentA); font-weight: 600; }
+    .tab-btn.active span.dot { background: var(--accentA); }
+
+    .view { display: none; }
+    .view.active { display: block; }
+
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      margin-top: 0.4rem;
+    }
+
+    .step-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    .step-row input[type="checkbox"] { margin-top: 0.1rem; flex-shrink: 0; }
+    .step-row span { flex: 1; }
+
+    .hint { font-size: 0.8rem; color: var(--muted); margin-top: 0.25rem; }
+
+    .settings-group { margin-top: 0.3rem; }
+
+    .settings-item {
+      padding: 0.55rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    .settings-item.no-click { cursor: default; }
+    .settings-item.no-click > span { pointer-events: none; }
+
+    .settings-select {
+      font-size: 0.8rem;
+      padding: 0.2rem 0.4rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--bg-elevated);
+      color: var(--text);
+    }
+
+    .empty-state {
+      font-size: 0.85rem;
+      color: var(--muted);
+      padding: 0.4rem 0;
+    }
+
+    /* Module image / carousel */
+    .module-image-wrapper {
+      width: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 0.4rem 0 0.6rem;
+      border: 1px solid var(--border);
+      background: var(--bg-soft);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .module-image-main { width: 100%; }
+    .module-image-main img {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      display: block;
+    }
+
+    .module-image-placeholder {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+      color: var(--muted);
+      padding: 0.5rem;
+      text-align: center;
+    }
+
+    .module-carousel-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.3rem 0.6rem;
+      background: var(--bg-elevated);
+      border-top: 1px solid var(--border);
+      font-size: 0.78rem;
+    }
+
+    .module-carousel-btn {
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      padding: 0.2rem 0.4rem;
+      border-radius: 999px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.2rem;
+    }
+
+    .module-carousel-btn:hover { background: var(--bg-soft); color: var(--text); }
+    .module-carousel-counter { font-size: 0.78rem; color: var(--muted); }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 76px;
+      background: var(--bg-elevated);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 0.55rem 0.9rem;
+      font-size: 0.8rem;
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.4);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+      transform-origin: center;
+      z-index: 40;
+      white-space: nowrap;
+      max-width: 90%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .toast.show {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(-50%) translateY(-4px);
+    }
+
+    /* Accordion */
+    .accordion {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      margin-top: 0.35rem;
+    }
+
+    .accordion-item {
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      background: var(--bg-elevated);
+      overflow: hidden;
+    }
+
+    .accordion-header {
+      width: 100%;
+      padding: 0.45rem 0.6rem;
+      border: none;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      font-size: 0.85rem;
+      gap: 0.6rem;
+      text-align: left;
+    }
+
+    .accordion-header > .left {
+      display: flex;
+      align-items: baseline;
+      gap: 0.4rem;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .accordion-title {
+      font-weight: 600;
+      font-size: 0.86rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .accordion-meta {
+      font-size: 0.75rem;
+      color: var(--muted);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .accordion-chevron {
+      font-size: 0.8rem;
+      transition: transform 0.15s ease-out;
+      flex-shrink: 0;
+    }
+
+    .accordion-body {
+      padding: 0 0.6rem 0.55rem;
+      border-top: 1px solid var(--border);
+      display: none;
+    }
+
+    .accordion-item.open .accordion-body { display: block; }
+    .accordion-item.open .accordion-chevron { transform: rotate(180deg); }
+
+    .nested-accordion { margin-top: 0.4rem; }
+    .nested-accordion .accordion-header { padding: 0.4rem 0.35rem; }
+    .nested-accordion .accordion-body { padding: 0 0.35rem 0.45rem; }
+
+    /* Quiz modal */
+    .quiz-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.45);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+    }
+
+    .quiz-overlay.show { display: flex; }
+
+    .quiz-card {
+      background: var(--bg-elevated);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+      padding: 0.85rem 0.9rem;
+      width: 92%;
+      max-width: 420px;
+    }
+
+    .quiz-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.3rem; }
+    .quiz-question { font-size: 0.85rem; margin-bottom: 0.6rem; }
+
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .quiz-option-row { display: flex; align-items: flex-start; gap: 0.4rem; font-size: 0.85rem; }
+    .quiz-option-row input[type="radio"] { margin-top: 0.15rem; flex-shrink: 0; }
+
+    .quiz-input {
+      width: 100%;
+      font-size: 0.85rem;
+      padding: 0.4rem 0.5rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--bg-elevated);
+      color: var(--text);
+      margin-bottom: 0.4rem;
+    }
+
+    .quiz-footer { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 0.25rem; }
+
+    .quiz-btn {
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: transparent;
+      padding: 0.45rem 0.85rem;
+      font-size: 0.82rem;
+      cursor: pointer;
+    }
+
+    .quiz-btn-primary {
+      border: none;
+      background: linear-gradient(135deg, var(--accentA), var(--accentB));
+      color: #111827;
+      font-weight: 600;
+    }
+
+    .quiz-error {
+      font-size: 0.78rem;
+      color: var(--danger);
+      min-height: 1em;
+      margin-bottom: 0.2rem;
     }
   </style>
 </head>
 
 <body>
-<header>
-  <div class="wrap">
-    <div class="topbar">
-      <div class="title">
-        <h1>RITA — Manager Console</h1>
-        <div class="sub">Assignments • roles • completions • v<?= appVersion ?></div>
-      </div>
+  <div class="app-shell">
+    <header>
+      <div class="header-inner">
+        <button class="icon-btn" id="backButton" aria-label="Back" style="display:none;">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </span>
+        </button>
 
-      <div class="row">
-        <span class="pill" id="statusPill">Loading…</span>
-        <button class="btn" id="themeBtn">🌓 Theme</button>
-        <button class="btn" id="analyticsBtn">📊 Analytics</button>
-        <button class="btn" id="seedBtn">Seed Data</button>
-        <button class="btn primary" id="refreshBtn">Refresh</button>
-      </div>
-    </div>
-  </div>
-</header>
-
-<main>
-  <div class="grid">
-
-    <!-- Manager console -->
-    <section class="card">
-      <div class="hd">
-        <h2>Manager Console</h2>
-        <button class="btn primary" id="assignBtn">+ Assign Training</button>
-      </div>
-
-      <div class="bd">
-        <div class="kpi" id="kpis"></div>
-
-        <div class="hr"></div>
-
-        <div class="row" style="justify-content:space-between; align-items:flex-end;">
-          <div>
-            <div style="font-weight:850;">Assignments</div>
-            <div class="small">Shows assignment progress + who’s assigned / completed.</div>
-          </div>
-          <div class="field" style="margin:0; width:min(260px, 100%);">
-            <label>Filter</label>
-            <select id="asgFilter">
-              <option value="all">All assignments</option>
-              <option value="open">Open</option>
-              <option value="done">Done</option>
-            </select>
-          </div>
+        <div class="header-logo">
+          <span class="header-logo-text" id="headerTitle">Texican Logo</span>
         </div>
 
-        <div class="list" id="assignmentsList" style="margin-top:10px;"></div>
-
-        <div class="hr"></div>
-        <div class="small mono" id="diagBox">—</div>
+        <button class="icon-btn" id="settingsButton" aria-label="Settings">
+          <span class="icon" aria-hidden="true">
+            <!-- Fixed settings icon (SVG, consistent rendering) -->
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 8.9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 8.9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 8.9 4.6 1.65 1.65 0 0 0 10.41 3.1V3a2 2 0 0 1 4 0v.09A1.65 1.65 0 0 0 15.1 4.6a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 8.9 1.65 1.65 0 0 0 20.9 10.41H21a2 2 0 0 1 0 4h-.09A1.65 1.65 0 0 0 19.4 15z"></path>
+            </svg>
+          </span>
+        </button>
       </div>
-    </section>
+    </header>
 
-    <!-- Employee view (still useful for testing) -->
-    <section class="card">
-      <div class="hd">
-        <h2>Employee View</h2>
-        <div class="field" style="margin:0; width:min(320px, 100%);">
-          <label>Pick an employee</label>
-          <select id="employeeSelect"></select>
-        </div>
-      </div>
-
-      <div class="bd">
-        <div class="small">Simulates an employee: Start / Complete assigned modules.</div>
-        <div class="hr"></div>
-        <div class="list" id="employeeAssignments"></div>
-      </div>
-    </section>
-
-  </div>
-</main>
-
-<!-- Assignment modal -->
-<div class="modalBackdrop" id="assignBackdrop">
-  <div class="modal">
-    <div class="mhd">
-      <strong>Create Assignment</strong>
-      <button class="btn" id="closeAssignBtn">✕</button>
-    </div>
-
-    <div class="mbd">
-      <div class="field">
-        <label>Module</label>
-        <select id="moduleSelect"></select>
-      </div>
-
-      <div class="field">
-        <label>Assign to</label>
-        <select id="assigneeType">
-          <option value="ALL">All Employees</option>
-          <option value="ROLE">Only Employees in Role</option>
-          <option value="SELECTED">Selected Employees</option>
-        </select>
-      </div>
-
-      <div id="rolePickWrap" style="display:none;">
-        <div class="field">
-          <label>Target role</label>
-          <select id="targetRoleId"></select>
-        </div>
-      </div>
-
-      <div id="selectedPickWrap" style="display:none;">
-        <div class="field">
-          <label>Select employees</label>
-          <select id="selectedEmployeesMulti" multiple size="6"></select>
-          <div class="small">Tip: hold Ctrl/⌘ to multi-select. (We’ll store IDs behind the scenes.)</div>
-        </div>
-      </div>
-
-      <div class="field">
-        <label>Due date (optional)</label>
-        <input id="dueDateISO" placeholder="2026-01-15" />
-      </div>
-
-      <div class="field">
-        <label>Notes (optional)</label>
-        <textarea id="notes" placeholder="Example: Complete before Friday shift."></textarea>
-      </div>
-
-      <div class="small">Created by: <span class="mono" id="createdBy">manager_test</span></div>
-    </div>
-
-    <div class="mft">
-      <button class="btn" id="cancelAssignBtn">Cancel</button>
-      <button class="btn primary" id="createAssignmentBtn">Create Assignment</button>
-    </div>
-  </div>
-</div>
-
-<!-- Analytics modal -->
-<div class="modalBackdrop" id="analyticsBackdrop">
-  <div class="modal">
-    <div class="mhd">
-      <strong>Analytics</strong>
-      <button class="btn" id="closeAnalyticsBtn">✕</button>
-    </div>
-
-    <div class="mbd">
-      <div class="tabs">
-        <button class="tab active" data-tab="overview">Overview</button>
-        <button class="tab" data-tab="module">Module Detail</button>
-        <button class="tab" data-tab="activity">Recent Activity</button>
-      </div>
-
-      <!-- Overview -->
-      <div id="tab-overview">
-        <div class="small" style="margin-bottom:10px;">
-          Completion % by module (based on the <b>latest assignment per module</b>).
-        </div>
-        <canvas id="moduleChart" width="860" height="260" style="width:100%; border:1px solid var(--stroke); border-radius:14px;"></canvas>
-        <div class="hr"></div>
-        <div id="overviewTable"></div>
-      </div>
-
-      <!-- Module Detail -->
-      <div id="tab-module" style="display:none;">
-        <div class="field">
-          <label>Select module</label>
-          <select id="analyticsModuleSelect"></select>
-        </div>
-
-        <div id="moduleDetailPanel"></div>
-      </div>
-
-      <!-- Activity -->
-      <div id="tab-activity" style="display:none;">
-        <div class="small" style="margin-bottom:10px;">Latest completions (most recent first).</div>
-        <div id="activityTable"></div>
-      </div>
-    </div>
-
-    <div class="mft">
-      <button class="btn" id="closeAnalyticsBtn2">Close</button>
-    </div>
-  </div>
-</div>
-
-<div class="toast" id="toast"></div>
-
-<script>
-  // ---- Theme ----
-  const THEME_KEY = "rita_theme";
-  function applyTheme(theme){ document.documentElement.setAttribute("data-theme", theme); localStorage.setItem(THEME_KEY, theme); }
-  function toggleTheme(){
-    const cur = document.documentElement.getAttribute("data-theme") || "dark";
-    applyTheme(cur === "dark" ? "light" : "dark");
-    toast(`Theme: ${document.documentElement.getAttribute("data-theme")}`);
-    renderChart(); // re-render for contrast
-  }
-  (function initTheme(){ applyTheme(localStorage.getItem(THEME_KEY) || "dark"); })();
-
-  // ---- google.script.run API wrapper (NO CORS) ----
-  function api(action, data = {}) {
-    return new Promise((resolve) => {
-      if (!(window.google && google.script && google.script.run)) {
-        resolve({ ok:false, error:"google.script.run not available. Open via deployed Web App." });
-        return;
-      }
-      google.script.run
-        .withSuccessHandler((res) => resolve(res))
-        .withFailureHandler((err) => resolve({ ok:false, error: (err && err.message) ? err.message : String(err) }))
-        .api(action, data);
-    });
-  }
-
-  // ---- State ----
-  let SNAP = null;
-  let lastSeedCounts = null;
-  const $ = (id) => document.getElementById(id);
-
-  // ---- UI helpers ----
-  function toast(msg){
-    const t = $("toast");
-    t.textContent = msg;
-    t.style.display = "block";
-    clearTimeout(window.__toastTimer);
-    window.__toastTimer = setTimeout(()=> t.style.display="none", 2400);
-  }
-  function setStatus(text){ $("statusPill").textContent = text; }
-  function safeStr(x){ return (x === undefined || x === null) ? "" : String(x); }
-
-  // ---- Data helpers ----
-  function employeeMap(){
-    const m = new Map();
-    (SNAP.employees||[]).forEach(e => m.set(String(e.employeeId), e));
-    return m;
-  }
-  function moduleMap(){
-    const m = new Map();
-    (SNAP.modules||[]).forEach(mod => m.set(String(mod.moduleId), mod));
-    return m;
-  }
-  function roleNameById(roleId){
-    const r = (SNAP.roles||[]).find(x => safeStr(x.roleId) === safeStr(roleId));
-    return r ? r.roleName : "";
-  }
-  function parseEmployeesFromCSV(csv){
-    return safeStr(csv).split(",").map(s=>s.trim()).filter(Boolean);
-  }
-
-  function completionsMap(){
-    // key = employeeId::assignmentId
-    const m = new Map();
-    (SNAP.completions||[]).forEach(c => {
-      m.set(`${c.employeeId}::${c.assignmentId}`, c);
-    });
-    return m;
-  }
-
-  function computeTargets(assignment){
-    const type = safeStr(assignment.assigneeType).toUpperCase();
-    const employees = (SNAP.employees||[]).filter(e => !!e.active);
-
-    if (type === "ALL") return employees.map(e => e.employeeId);
-
-    if (type === "ROLE"){
-      const rid = safeStr(assignment.targetRoleId).trim();
-      return employees
-        .filter(e => (e.roles||[]).includes(rid))
-        .map(e => e.employeeId);
-    }
-
-    if (type === "SELECTED"){
-      const ids = parseEmployeesFromCSV(assignment.selectedEmployeeIdsCSV);
-      const set = new Set(ids);
-      return employees.filter(e => set.has(e.employeeId)).map(e => e.employeeId);
-    }
-
-    return [];
-  }
-
-  function assignmentProgress(assignment){
-    const targets = computeTargets(assignment);
-    const cm = completionsMap();
-    let done = 0;
-    const completedIds = [];
-    targets.forEach(empId => {
-      const c = cm.get(`${empId}::${assignment.assignmentId}`);
-      if (c && safeStr(c.status).toLowerCase() === "completed") {
-        done++;
-        completedIds.push(empId);
-      }
-    });
-    return { done, total: targets.length, targets, completedIds };
-  }
-
-  function formatName(emp){
-    if (!emp) return "Unknown";
-    return `${emp.name} (${emp.employeeId})`;
-  }
-
-  function isDoneAssignment(a){
-    const p = assignmentProgress(a);
-    return (p.total > 0 && p.done === p.total);
-  }
-
-  function latestAssignmentPerModule(){
-    // Choose the most recent assignment per module by createdAt (fallback to row order)
-    const asgs = (SNAP.assignments || []).slice();
-    asgs.sort((a,b) => String(b.createdAt||"").localeCompare(String(a.createdAt||"")));
-    const map = new Map();
-    for (const a of asgs){
-      if (!map.has(a.moduleId)) map.set(a.moduleId, a);
-    }
-    return map; // moduleId -> assignment
-  }
-
-  // ---- Render: KPIs ----
-  function renderKpis(){
-    const emps = (SNAP.employees||[]).filter(e => !!e.active);
-    const asgs = SNAP.assignments || [];
-    const comps = SNAP.completions || [];
-
-    const totalTargets = asgs.reduce((sum, a) => sum + computeTargets(a).length, 0);
-    const completed = comps.filter(c => safeStr(c.status).toLowerCase() === "completed").length;
-
-    $("kpis").innerHTML = [
-      { num: emps.length, lbl: "Active Employees" },
-      { num: asgs.length, lbl: "Assignments" },
-      { num: `${completed}/${totalTargets || 0}`, lbl: "Completions (count/targets)" }
-    ].map(b => `
-      <div class="box">
-        <div class="num">${b.num}</div>
-        <div class="lbl">${b.lbl}</div>
-      </div>
-    `).join("");
-  }
-
-  // ---- Render: Employee Picker ----
-  function renderEmployeePicker(){
-    const sel = $("employeeSelect");
-    sel.innerHTML = "";
-    const emps = (SNAP.employees||[]).filter(e => !!e.active);
-
-    if (!emps.length){
-      const opt = document.createElement("option");
-      opt.value = "";
-      opt.textContent = "No employees (seed data)";
-      sel.appendChild(opt);
-      return;
-    }
-
-    emps.forEach(e => {
-      const opt = document.createElement("option");
-      opt.value = e.employeeId;
-      opt.textContent = `${e.name} (${e.employeeId}) — ${e.location || "—"}`;
-      sel.appendChild(opt);
-    });
-
-    const saved = localStorage.getItem("rita_emp") || emps[0].employeeId;
-    if (saved && emps.some(e => e.employeeId === saved)) sel.value = saved;
-  }
-
-  // ---- Render: Assignment Create Modal pickers ----
-  function renderModulePicker(){
-    const sel = $("moduleSelect");
-    sel.innerHTML = "";
-    const mods = (SNAP.modules || []).filter(m => !!m.active);
-
-    if (!mods.length){
-      const opt = document.createElement("option");
-      opt.value = "";
-      opt.textContent = "No modules (seed data)";
-      sel.appendChild(opt);
-      return;
-    }
-
-    mods.forEach(m => {
-      const opt = document.createElement("option");
-      opt.value = m.moduleId;
-      const role = safeStr(m.roleId) ? ` • Role: ${roleNameById(m.roleId)}` : "";
-      opt.textContent = `${m.title}${role} • v${safeStr(m.version) || "1.0"}`;
-      sel.appendChild(opt);
-    });
-  }
-
-  function renderRolePicker(){
-    const sel = $("targetRoleId");
-    sel.innerHTML = "";
-    const roles = SNAP.roles || [];
-
-    if (!roles.length){
-      const opt = document.createElement("option");
-      opt.value = "";
-      opt.textContent = "No roles (seed data)";
-      sel.appendChild(opt);
-      return;
-    }
-
-    roles.forEach(r => {
-      const opt = document.createElement("option");
-      opt.value = r.roleId;
-      opt.textContent = `${r.roleName} (${r.roleId})`;
-      sel.appendChild(opt);
-    });
-  }
-
-  function renderSelectedEmployeesMulti(){
-    const sel = $("selectedEmployeesMulti");
-    sel.innerHTML = "";
-    const emps = (SNAP.employees||[]).filter(e => !!e.active);
-    emps.forEach(e => {
-      const opt = document.createElement("option");
-      opt.value = e.employeeId;
-      opt.textContent = `${e.name} (${e.employeeId})`;
-      sel.appendChild(opt);
-    });
-  }
-
-  // ---- Render: Assignments list (manager-friendly) ----
-  function renderAssignments(){
-    const list = $("assignmentsList");
-    const filter = $("asgFilter").value;
-
-    const mm = moduleMap();
-    const em = employeeMap();
-
-    const asgs = (SNAP.assignments || []).slice().reverse();
-
-    const items = asgs.map(a => {
-      const mod = mm.get(String(a.moduleId));
-      const p = assignmentProgress(a);
-      const done = (p.total > 0 && p.done === p.total);
-
-      if (filter === "open" && done) return null;
-      if (filter === "done" && !done) return null;
-
-      const percent = (p.total ? Math.round((p.done / p.total) * 100) : 0);
-
-      const type = safeStr(a.assigneeType).toUpperCase();
-      const typeLabel =
-        type === "ALL" ? "All employees" :
-        type === "ROLE" ? `Role: ${roleNameById(a.targetRoleId)}` :
-        type === "SELECTED" ? "Selected employees" : type;
-
-      const assignedNames = p.targets.map(id => formatName(em.get(String(id))));
-      const completedSet = new Set(p.completedIds.map(String));
-      const completedNames = p.targets
-        .filter(id => completedSet.has(String(id)))
-        .map(id => formatName(em.get(String(id))));
-
-      const due = safeStr(a.dueDateISO).trim();
-
-      return `
-        <div class="item">
-          <div class="meta">
-            <div class="a">${mod ? mod.title : a.moduleId}</div>
-            <div class="b">
-              ${typeLabel} • Progress: ${p.done}/${p.total} (${percent}%)
-              ${due ? " • Due: " + due : ""}
+    <main>
+      <!-- HOME VIEW -->
+      <section id="view-home" class="view active">
+        <div class="card">
+          <div class="pill">Dashboard</div>
+          <div class="progress-row">
+            <div>
+              <div class="progress-label" id="progressLabel">0 / 0 Modules Completed</div>
+              <div class="muted" style="font-size:0.78rem;">
+                Your assigned training updates automatically.
+              </div>
             </div>
-
-            <div class="bar" aria-label="progress"><div style="width:${percent}%"></div></div>
-
-            <details>
-              <summary>
-                Assigned (${assignedNames.length})
-                <span class="small mono">${a.assignmentId}</span>
-              </summary>
-              <div class="chips">
-                ${assignedNames.length
-                  ? assignedNames.map(n => `<span class="chip muted">${n}</span>`).join("")
-                  : `<span class="small">No targets for this assignment.</span>`
-                }
-              </div>
-            </details>
-
-            <details>
-              <summary>
-                Completed (${completedNames.length})
-                <span class="small">${completedNames.length ? "✅" : ""}</span>
-              </summary>
-              <div class="chips">
-                ${completedNames.length
-                  ? completedNames.map(n => `<span class="chip ok">${n}</span>`).join("")
-                  : `<span class="small">No completions yet.</span>`
-                }
-              </div>
-            </details>
-
-            ${a.notes ? `<div class="small">${a.notes}</div>` : ""}
           </div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+          <div id="homeAlertContainer"></div>
+        </div>
 
-          <div class="actions">
-            <button class="btn" data-action="openAnalytics" data-module="${a.moduleId}">View Module</button>
+        <div class="card">
+          <h3>Assigned Training</h3>
+          <p class="muted" style="font-size:0.8rem;">
+            Complete assigned modules for any role you’re currently trained on.
+          </p>
+          <div id="homeAssignedAccordion"></div>
+        </div>
+      </section>
+
+      <!-- MODULES LIST VIEW -->
+      <section id="view-modules" class="view">
+        <div class="card">
+          <h2>Modules</h2>
+          <p class="muted" style="font-size:0.8rem;">
+            Browse modules by role, then by category. (Optimized for mobile.)
+          </p>
+          <div class="divider"></div>
+          <div id="modulesList"></div>
+        </div>
+      </section>
+
+      <!-- MODULE DETAIL VIEW -->
+      <section id="view-module-detail" class="view">
+        <div class="card">
+          <div class="pill" id="detailCategoryPill">Category</div>
+          <h2 id="detailTitle">Module Title</h2>
+          <p class="muted" id="detailDescription" style="font-size:0.8rem;">
+            Description goes here.
+          </p>
+
+          <div id="detailImageContainer"></div>
+
+          <div class="steps" id="detailSteps"></div>
+          <button class="btn btn-primary" id="completeModuleBtn" disabled>
+            Mark Module Complete
+          </button>
+          <p class="hint" id="detailHint"></p>
+        </div>
+      </section>
+
+      <!-- SETTINGS VIEW -->
+      <section id="view-settings" class="view">
+        <div class="card">
+          <h2>Settings</h2>
+          <div class="settings-group">
+            <div class="settings-item" id="profileFirstNameRow">
+              <span>First Name</span>
+              <span class="muted" id="profileFirstNameValue" style="font-size:0.8rem;">Fname</span>
+            </div>
+            <div class="settings-item" id="profileLastNameRow">
+              <span>Last Name</span>
+              <span class="muted" id="profileLastNameValue" style="font-size:0.8rem;">Lname</span>
+            </div>
+            <div class="settings-item" id="profileCommonNameRow">
+              <span>Common Name</span>
+              <span class="muted" id="profileCommonNameValue" style="font-size:0.8rem;">Optional</span>
+            </div>
+            <div class="settings-item no-click">
+              <span>Location</span>
+              <select id="profileLocationSelect" class="settings-select">
+                <option value="Kyle">Kyle</option>
+                <option value="Other">Other...</option>
+              </select>
+            </div>
+            <div class="settings-item" id="profileEmployeeIdRow">
+              <span>Employee ID</span>
+              <span class="muted" id="profileEmployeeIdValue" style="font-size:0.8rem;">Not set</span>
+            </div>
+            <div class="settings-item no-click">
+              <span>Notifications</span>
+              <span class="muted" style="font-size:0.8rem;">Coming later</span>
+            </div>
           </div>
         </div>
-      `;
-    }).filter(Boolean);
+      </section>
 
-    list.innerHTML = items.length ? items.join("") : `<div class="small">No assignments yet. Create one.</div>`;
-
-    list.querySelectorAll("button[data-action='openAnalytics']").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const moduleId = btn.getAttribute("data-module");
-        openAnalytics("module", moduleId);
-      });
-    });
-  }
-
-  // ---- Render: Employee assignments (test harness) ----
-  function renderEmployeeAssignments(){
-    const empId = $("employeeSelect").value;
-    if (!empId){
-      $("employeeAssignments").innerHTML = `<div class="small">Seed data to test employee assignments.</div>`;
-      return;
-    }
-    localStorage.setItem("rita_emp", empId);
-
-    const em = employeeMap();
-    const mm = moduleMap();
-    const cm = completionsMap();
-
-    const asgs = (SNAP.assignments || []).slice().reverse();
-    const assignedToEmp = asgs.filter(a => computeTargets(a).includes(empId));
-
-    if (!assignedToEmp.length){
-      $("employeeAssignments").innerHTML = `<div class="small">No assignments for this employee (yet).</div>`;
-      return;
-    }
-
-    $("employeeAssignments").innerHTML = assignedToEmp.map(a => {
-      const mod = mm.get(String(a.moduleId));
-      const key = `${empId}::${a.assignmentId}`;
-      const c = cm.get(key);
-      const status = c ? safeStr(c.status).toLowerCase() : "not_started";
-      const pretty = status === "completed" ? "✅ Completed" : status === "in_progress" ? "🟡 In progress" : "⚪ Not started";
-      const due = safeStr(a.dueDateISO).trim();
-
-      return `
-        <div class="item">
-          <div class="meta">
-            <div class="a">${mod ? mod.title : a.moduleId}</div>
-            <div class="b">Status: ${pretty}${due ? " • Due: " + due : ""}</div>
-          </div>
-          <div class="actions">
-            <button class="btn" data-action="start" data-asg="${a.assignmentId}">Start</button>
-            <button class="btn primary" data-action="complete" data-asg="${a.assignmentId}">Complete</button>
-          </div>
+      <!-- ASSIGNED MODULES VIEW (reserved) -->
+      <section id="view-assigned" class="view">
+        <div class="card">
+          <h2>Assigned Modules</h2>
+          <p class="muted" style="font-size:0.8rem;">All assigned training appears on Home.</p>
+          <div class="divider"></div>
+          <div id="assignedAccordion"></div>
         </div>
-      `;
-    }).join("");
+      </section>
+    </main>
 
-    $("employeeAssignments").querySelectorAll("button[data-action]").forEach(btn => {
-      btn.addEventListener("click", async () => {
-        const action = btn.getAttribute("data-action");
-        const assignmentId = btn.getAttribute("data-asg");
+    <footer>
+      <div class="tabbar">
+        <button class="tab-btn active" data-tab="home">
+          <span>Home</span>
+          <span class="dot"></span>
+        </button>
+        <button class="tab-btn" data-tab="modules">
+          <span>Modules</span>
+          <span class="dot"></span>
+        </button>
+      </div>
+    </footer>
 
-        if (action === "start") {
-          const r = await api("markCompletion", { employeeId: empId, assignmentId, status: "in_progress" });
-          if (r.ok) { toast("Marked in progress"); await refresh(); }
-          else toast(r.error || "Error");
-        }
+    <div id="toast" class="toast"></div>
 
-        if (action === "complete") {
-          const score = prompt("Optional score (leave blank if none):", "");
-          const r = await api("markCompletion", { employeeId: empId, assignmentId, status: "completed", score: (score ?? "") });
-          if (r.ok) { toast("Completed ✅"); await refresh(); }
-          else toast(r.error || "Error");
-        }
-      });
-    });
-  }
-
-  // ---- Diagnostics ----
-  function renderDiagnostics(){
-    const box = $("diagBox");
-    if (!SNAP) { box.textContent = "—"; return; }
-    const lines = [];
-    lines.push(`Spreadsheet: ${SNAP.spreadsheet ? `${SNAP.spreadsheet.name} (${SNAP.spreadsheet.id})` : "—"}`);
-    lines.push(`Rows — Roles:${(SNAP.roles||[]).length} Employees:${(SNAP.employees||[]).length} Modules:${(SNAP.modules||[]).length} Assignments:${(SNAP.assignments||[]).length} Completions:${(SNAP.completions||[]).length}`);
-    if (lastSeedCounts) lines.push(`Last seed counts: ${JSON.stringify(lastSeedCounts)}`);
-    box.textContent = lines.join(" • ");
-  }
-
-  // =========================
-  // ANALYTICS (modal + tabs)
-  // =========================
-  function openBackdrop(id){ $(id).style.display = "flex"; }
-  function closeBackdrop(id){ $(id).style.display = "none"; }
-
-  function setAnalyticsTab(tabName){
-    document.querySelectorAll(".tab").forEach(t => t.classList.toggle("active", t.getAttribute("data-tab") === tabName));
-    $("tab-overview").style.display = tabName === "overview" ? "block" : "none";
-    $("tab-module").style.display = tabName === "module" ? "block" : "none";
-    $("tab-activity").style.display = tabName === "activity" ? "block" : "none";
-  }
-
-  function openAnalytics(tabName = "overview", moduleId = null){
-    openBackdrop("analyticsBackdrop");
-    setAnalyticsTab(tabName);
-    renderAnalyticsPickers();
-    renderOverview();
-    renderActivity();
-    if (moduleId){
-      $("analyticsModuleSelect").value = moduleId;
-      renderModuleDetail();
-    }
-    // defer chart render so canvas has correct layout
-    setTimeout(renderChart, 30);
-  }
-
-  function renderAnalyticsPickers(){
-    const sel = $("analyticsModuleSelect");
-    sel.innerHTML = "";
-    const mods = (SNAP.modules||[]).filter(m => !!m.active);
-
-    mods.forEach(m => {
-      const opt = document.createElement("option");
-      opt.value = m.moduleId;
-      opt.textContent = `${m.title}`;
-      sel.appendChild(opt);
-    });
-
-    if (!sel.value && mods.length) sel.value = mods[0].moduleId;
-  }
-
-  function getModuleStatsFromLatestAssignments(){
-    const mm = moduleMap();
-    const em = employeeMap();
-
-    const latestMap = latestAssignmentPerModule(); // moduleId -> assignment
-    const rows = [];
-
-    for (const [moduleId, asg] of latestMap.entries()){
-      const mod = mm.get(String(moduleId));
-      if (!mod) continue;
-
-      const p = assignmentProgress(asg);
-      const percent = p.total ? (p.done / p.total) * 100 : 0;
-
-      // Assigned & completed names
-      const completedSet = new Set(p.completedIds.map(String));
-      const assignedNames = p.targets.map(id => formatName(em.get(String(id))));
-      const completedNames = p.targets
-        .filter(id => completedSet.has(String(id)))
-        .map(id => formatName(em.get(String(id))));
-
-      rows.push({
-        moduleId,
-        moduleTitle: mod.title,
-        assignmentId: asg.assignmentId,
-        done: p.done,
-        total: p.total,
-        percent,
-        assignedNames,
-        completedNames
-      });
-    }
-
-    rows.sort((a,b) => b.percent - a.percent);
-    return rows;
-  }
-
-  function renderOverview(){
-    const rows = getModuleStatsFromLatestAssignments();
-
-    const html = `
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Module</th>
-            <th>Completion</th>
-            <th>Latest Assignment</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${rows.map(r => `
-            <tr>
-              <td><b>${r.moduleTitle}</b><div class="small mono">${r.moduleId}</div></td>
-              <td>${Math.round(r.percent)}% <span class="small mono">(${r.done}/${r.total})</span></td>
-              <td class="mono">${r.assignmentId}</td>
-            </tr>
-          `).join("")}
-        </tbody>
-      </table>
-    `;
-
-    $("overviewTable").innerHTML = rows.length ? html : `<div class="small">No assignments yet.</div>`;
-  }
-
-  function renderModuleDetail(){
-    const moduleId = $("analyticsModuleSelect").value;
-    const mm = moduleMap();
-    const mod = mm.get(String(moduleId));
-    const em = employeeMap();
-
-    const latestMap = latestAssignmentPerModule();
-    const asg = latestMap.get(String(moduleId));
-
-    if (!mod){
-      $("moduleDetailPanel").innerHTML = `<div class="small">Unknown module.</div>`;
-      return;
-    }
-    if (!asg){
-      $("moduleDetailPanel").innerHTML = `<div class="small">No assignments yet for <b>${mod.title}</b>.</div>`;
-      return;
-    }
-
-    const p = assignmentProgress(asg);
-    const percent = p.total ? Math.round((p.done / p.total) * 100) : 0;
-    const completedSet = new Set(p.completedIds.map(String));
-
-    const assigned = p.targets.map(id => em.get(String(id))).filter(Boolean);
-    const completed = assigned.filter(e => completedSet.has(String(e.employeeId)));
-    const remaining = assigned.filter(e => !completedSet.has(String(e.employeeId)));
-
-    $("moduleDetailPanel").innerHTML = `
-      <div class="item">
-        <div class="meta">
-          <div class="a">${mod.title}</div>
-          <div class="b">Latest assignment: <span class="mono">${asg.assignmentId}</span> • Progress: ${p.done}/${p.total} (${percent}%)</div>
-          <div class="bar"><div style="width:${percent}%"></div></div>
+    <!-- Quiz Modal -->
+    <div id="quizOverlay" class="quiz-overlay" aria-hidden="true">
+      <div class="quiz-card" role="dialog" aria-modal="true" aria-labelledby="quizTitle">
+        <div class="quiz-title" id="quizTitle">Quick Check</div>
+        <div class="quiz-question" id="quizQuestion"></div>
+        <div id="quizOptions" class="quiz-options"></div>
+        <input id="quizNumberInput" class="quiz-input" type="number" style="display:none;" />
+        <div class="quiz-error" id="quizError"></div>
+        <div class="quiz-footer">
+          <button type="button" class="quiz-btn" id="quizCancelBtn">Cancel</button>
+          <button type="button" class="quiz-btn quiz-btn-primary" id="quizSubmitBtn">Submit</button>
         </div>
       </div>
+    </div>
+  </div>
 
-      <div class="hr"></div>
+  <script>
+    // -----------------------------------------------------------------------
+    // MODULES
+    // - roles: array for multi-role employees (incl cross-training)
+    // - "All" = universally assigned (always surfaces first in Assigned list)
+    // -----------------------------------------------------------------------
+    const MODULES = [
+      // Housekeeping (universal)
+      {
+        id: "housekeeping_communication_basics",
+        title: "Housekeeping — Communication & Floor Awareness",
+        category: "Housekeeping",
+        roles: ["All"],
+        description:
+          "Use consistent verbal cues and tools to keep the floor safe, smooth, and guest-friendly.",
+        steps: [
+          "Use mirrors to visually check blind spots before stepping into high-traffic areas.",
+          "Say “Behind!” any time you pass closely behind another team member.",
+          "Knock before opening any swinging door, especially if guests or staff may be on the other side.",
+          "Follow the seating chart when guiding guests, and confirm table numbers before food leaves the window."
+        ]
+      },
 
-      <details open>
-        <summary>Assigned (${assigned.length}) <span class="small">Includes completed + remaining</span></summary>
-        <div class="chips">
-          ${assigned.length ? assigned.map(e => `<span class="chip muted">${formatName(e)}</span>`).join("") : `<span class="small">None.</span>`}
-        </div>
-      </details>
+      // Opening (Expo) — treated as Expo Basic (universal Expo training) in current MVP
+      {
+        id: "opening_expo_station_setup",
+        title: "Opening — Expo & Front Station Setup",
+        category: "Opening Process",
+        roles: ["Expo"], // Expo (basic)
+        description:
+          "Start your shift prepared: clock in, gear up, and stage the Expo station so service can start smoothly.",
+        steps: [
+          "Clock in using the point-of-sale system assigned to your location.",
+          "Put on a clean black apron from dry storage.",
+          "Arrange all 4 black floor mats to the left of the service entrance/exit in their standard positions.",
+          "Wash your hands with soap and warm water for a full 20 seconds.",
+          "Stage cups, plates, silverware, ticket spike, and soup containers at the Expo station.",
+          "Gather a large steel bin and matching lid from the dish pit.",
+          "Gather a large steel pot from the dish pit for soup service.",
+          "Bring tortilla trays from cold storage to the prep area.",
+          "Gather 5 black towels from the server station.",
+          "Line the large steel bin with 1 black towel on each side, leaving 1 towel set aside to cover tortillas once they’re cooked."
+        ]
+      },
+      {
+        id: "opening_tortillas_and_soup_prep",
+        title: "Opening — Tortillas & Soup Service Prep",
+        category: "Opening Process",
+        roles: ["Expo"], // Expo (basic)
+        description:
+          "Prepare tortillas and soup so the line is ready for guests as soon as doors open.",
+        steps: [
+          "Prep 1 tortilla tray (70 tortillas) from the cold-storage tray.",
+          "Untie or open the tray lining carefully so dough balls remain organized.",
+          "Lightly flour the tortilla dough balls so they release cleanly in the press.",
+          "Place ONE tortilla dough ball in the loader per cycle to avoid jams.",
+          "Arrange flattened tortillas in a 4×4 grid on the flattop, keeping spacing even.",
+          "Flip each tortilla once, when it begins to rise and puff slightly.",
+          "Cook until both sides are lightly browned, then transfer tortillas into the towel-lined warming bin.",
+          "Cover the tortillas in the bin with a black towel to keep them warm and protected.",
+          "CAUTION: HOT — Carefully pour chicken broth (provided by kitchen staff) into the electric soup warmer.",
+          "Season the chicken broth using the designated dry-storage seasoning mix.",
+          "Add 2 full scoops of broth at the start of the day to charge the warmer.",
+          "For any restock during service, add 1 full scoop of broth at a time and re-check seasoning."
+        ]
+      },
 
-      <div style="height:10px"></div>
+      // Expo modules
+      {
+        id: "prep_ice_cream_balls",
+        title: "Prep — Ice Cream Balls",
+        category: "Prep",
+        roles: ["Expo"],
+        description:
+          "Prepare and restock Ice Cream Balls during prep so servers can plate desserts quickly.",
+        images: ["icb-setup.png", "icb-weight.png", "icb-label.png", "icb-cleanup.png"],
+        steps: [
+          "Gather ice cream, scale, plastic wrap, corn flakes, and gloves.",
+          "Scoop 12 oz. ice cream balls using plastic wrap over scale surface.",
+          "Roll each scoop ball in corn flakes until coated.",
+          "Place ball back onto scale to wrap with plastic.",
+          "Label and store the ice cream balls in the mini-freezer.",
+          "Return ice cream, scale, plastic wrap, and corn flakes. Dispose of gloves.",
+          "Clean prep surfaces with sanitizer towel."
+        ]
+      },
+      {
+        id: "prep_tortilla_trays",
+        title: "Prep — Tortilla Trays",
+        category: "Prep",
+        roles: ["Expo"],
+        description:
+          "Press and stage tortillas so the line never runs out during service.",
+        images: ["tt-setup.png", "tt-count.png", "tt-label.png", "tt-cover.png", "tt-tie.png"],
+        steps: [
+          "Gather tortilla dough balls, clean trays, parchment sheets, and a scoop.",
+          "Place parchment sheets on trays.",
+          "Stack tortillas balls 7 across by 10 high (70 total).",
+          "Cover trays with plastic bags.",
+          "Label and store in the correct cooler."
+        ]
+      },
+      {
+        id: "prep_polish_utensils",
+        title: "Prep — Polish Utensils",
+        category: "Prep",
+        roles: ["Expo"],
+        description:
+          "Polish and stage utensils so servers can roll silverware quickly.",
+        images: ["polish-setup.png"], /* image added */
+        steps: [
+          "Sort utensils from dish (steak knives and spoons only).",
+          "Place utensils in plastic pitcher filled with hot water.",
+          "Use a dry black towel to remove any water spots.",
+          "Sort utensils into the correct bins.",
+          "Restock the expo station with polished utensils or cover with plastic wrap for later use."
+        ]
+      },
+      {
+        id: "prep_make_sauces",
+        title: "Prep — Make Sauces",
+        category: "Prep",
+        roles: ["Expo"],
+        description:
+          "Batch and label sauces needed on the line: spicy salsa, chipotle ranch, ranch, and others.",
+        steps: [
+          "Review par for each sauce with your trainer.",
+          "Measure ingredients according to the recipe listed.",
+          "Blend until smooth.",
+          "Transfer to labeled containers.",
+          "Label and store in the correct cooler."
+        ]
+      },
+      {
+        id: "sauces_overview",
+        title: "Sauces Overview",
+        category: "Sauces",
+        roles: ["Expo"],
+        description:
+          "Know which sauces pair with which dishes and where they are stored.",
+        images: ["ketchup.png"],
+        steps: [
+          "Review each house sauce and its primary dishes.",
+          "Locate each sauce on the line and in backup storage.",
+          "Check labels and dates before service."
+        ]
+      },
+      {
+        id: "closing_duties_basic",
+        title: "Closing Duties — Expo Line",
+        category: "Closing Duties",
+        roles: ["Expo"],
+        description:
+          "Clean and reset the Expo line so the next shift starts ready to go.",
+        steps: [
+          "Clear and consolidate pans and containers.",
+          "Place sides being saved under the heat lamp.",
+          "Dump water from side warmers down drain.",
+          "Scour, squeegee, and wipe down expo line and window.",
+          "Replace side warmers.",
+          "Place saved sides in appropriate cooler.",
+          "Wipe down carrying trays and shelves."
+        ]
+      },
+      {
+        id: "closing_light_close",
+        title: "Closing Duties — Light Close",
+        category: "Closing Duties",
+        roles: ["Expo"],
+        description:
+          "Perform essential end-of-shift tasks to reset the Expo and tortilla preparation areas for the following day.",
+        steps: [
+          "Sweep and store all four black floor mats in their designated location.",
+          "Turn off both side warmers to allow safe cool-down.",
+          "Wipe down and sanitize the Expo window, ledges, and line surfaces.",
+          "Tear down the tortilla machine following the full tortilla-machine module procedure.",
+          "Polish and restock utensils as needed for the next shift.",
+          "Check Ice Cream Ball inventory and prep additional batches if below par.",
+          "Check tortilla tray inventory and prep additional trays if needed."
+        ]
+      },
+      {
+        id: "closing_tortilla_machine",
+        title: "Closing Duties — Tortilla Machine",
+        category: "Closing Duties",
+        roles: ["Expo"],
+        description:
+          "Shut down, clean, and reset the tortilla machine so it’s safe, sanitary, and ready for the next shift.",
+        steps: [
+          "Power down the tortilla machine following standard shut-off protocol.",
+          "Carefully remove the black knob once surfaces have cooled enough to handle.",
+          "Remove the faceplate and wash it thoroughly in the dish area.",
+          "Disengage and remove the locking pin with heat awareness.",
+          "Lift and remove the steel tortilla ramp, placing it in the dish area for cleaning.",
+          "Wipe down all accessible surfaces, focusing on flour buildup and heat-retaining areas.",
+          "Cover the flour bin with foil to maintain sanitation standards overnight.",
+          "Store any remaining tortillas in the appropriate cooler container.",
+          "Vacuum hard-to-reach areas to remove flour dust and debris."
+        ]
+      },
 
-      <details>
-        <summary>Completed (${completed.length})</summary>
-        <div class="chips">
-          ${completed.length ? completed.map(e => `<span class="chip ok">${formatName(e)}</span>`).join("") : `<span class="small">No completions yet.</span>`}
-        </div>
-      </details>
+      // Cashier (MVP: only this for now)
+      {
+        id: "cashier_closing_pm",
+        title: "Cashier — Closing Duties (PM)",
+        category: "Cashier",
+        roles: ["Cashier"],
+        description:
+          "Close the cashier station: break down, return the buzzer, finalize orders, and secure drawer/receipts.",
+        steps: [
+          "Consolidate and store small and large containers and lids.",
+          "Wipe all surfaces with soap and water.",
+          "Remove debris with steel wool (dry storage).",
+          "Return the guest buzzer to the charging station (host stand).",
+          "Confirm the buzzer is seated correctly and charging.",
+          "Confirm all in-person, online, and scheduled orders have been fulfilled or properly handed off.",
+          "Verify there are no open tickets remaining in the point-of-sale system.",
+          "Organize receipts in chronological order (oldest on top). No receipts for cash transactions.",
+          "Print Close Out and staple to combined receipts.",
+          "Remove the cash drawer and count all bills and coins.",
+          "Confirm totals match expected amounts.",
+          "If the drawer is short or over: recount once.",
+          "Notify a manager immediately if count is still over/under.",
+          "Secure the drawer and receipts according to closing procedure (manager hand-off and verification)."
+        ]
+      }
+    ];
 
-      <div style="height:10px"></div>
+    // Roles list (for Modules browsing)
+    const ROLES = [
+      { id: "All", label: "All (Universal)" },
+      { id: "Expo", label: "Expo" },
+      { id: "Cashier", label: "Cashier" },
+      { id: "Server", label: "Server" },
+      { id: "Bar", label: "Bar" },
+      { id: "Dish", label: "Dish" },
+      { id: "Kitchen", label: "Kitchen" }
+    ];
 
-      <details>
-        <summary>Remaining (${remaining.length})</summary>
-        <div class="chips">
-          ${remaining.length ? remaining.map(e => `<span class="chip muted">${formatName(e)}</span>`).join("") : `<span class="small">Everyone is complete ✅</span>`}
-        </div>
-      </details>
-    `;
-  }
+    // -----------------------------------------------------------------------
+    // STATE & PROFILE
+    // - Default roles for dev: Expo + Cashier (cross-trained)
+    // - Completed state is per-device MVP
+    // -----------------------------------------------------------------------
+    const STORAGE_KEY = "ritaEmployeeTrainingState_v13";
+    const PROFILE_NAME_KEY = "expoTrainingName"; // legacy fallback
+    const PROFILE_FIRST_NAME_KEY = "expoTrainingFirstName";
+    const PROFILE_LAST_NAME_KEY = "expoTrainingLastName";
+    const PROFILE_COMMON_NAME_KEY = "expoTrainingCommonName";
+    const PROFILE_LOCATION_KEY = "expoTrainingLocation";
+    const PROFILE_EMPLOYEE_ID_KEY = "expoTrainingEmployeeId";
+    const CLIENT_ID_KEY = "expoTrainingClientId";
 
-  function renderActivity(){
-    const em = employeeMap();
-    const mm = moduleMap();
+    // Dev: cross-trained defaults (until role selection/assignments framework lands)
+    const DEV_DEFAULT_ROLES = ["Expo", "Cashier"];
 
-    // Completed events with timestamps
-    const events = (SNAP.completions||[])
-      .filter(c => safeStr(c.status).toLowerCase() === "completed" && safeStr(c.completedAt).trim())
-      .map(c => {
-        const emp = em.get(String(c.employeeId));
-        const mod = mm.get(String(c.moduleId));
-        return {
-          when: String(c.completedAt),
-          employee: emp ? emp.name : c.employeeId,
-          employeeId: String(c.employeeId),
-          module: mod ? mod.title : c.moduleId,
-          moduleId: String(c.moduleId),
-          assignmentId: String(c.assignmentId || "")
-        };
-      })
-      .sort((a,b) => b.when.localeCompare(a.when))
-      .slice(0, 30);
-
-    if (!events.length){
-      $("activityTable").innerHTML = `<div class="small">No completions recorded yet.</div>`;
-      return;
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return { completed: {} };
+        const parsed = JSON.parse(raw);
+        return { completed: parsed.completed || {} };
+      } catch (e) {
+        return { completed: {} };
+      }
     }
 
-    $("activityTable").innerHTML = `
-      <table class="table">
-        <thead>
-          <tr>
-            <th>When</th>
-            <th>Employee</th>
-            <th>Module</th>
-            <th>Assignment</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${events.map(e => `
-            <tr>
-              <td class="mono">${e.when}</td>
-              <td><b>${e.employee}</b> <span class="small mono">(${e.employeeId})</span></td>
-              <td>${e.module} <span class="small mono">(${e.moduleId})</span></td>
-              <td class="mono">${e.assignmentId}</td>
-            </tr>
-          `).join("")}
-        </tbody>
-      </table>
-    `;
-  }
+    let state = loadState();
 
-  // Simple no-library chart (bar chart)
-  function renderChart(){
-    const canvas = $("moduleChart");
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    const rows = getModuleStatsFromLatestAssignments();
-
-    // Resize to actual display width for crispness
-    const cssW = canvas.clientWidth || 860;
-    const cssH = canvas.clientHeight || 260;
-    const dpr = window.devicePixelRatio || 1;
-    canvas.width = Math.floor(cssW * dpr);
-    canvas.height = Math.floor(cssH * dpr);
-    ctx.setTransform(dpr,0,0,dpr,0,0);
-
-    // Colors (theme-aware)
-    const isLight = (document.documentElement.getAttribute("data-theme") === "light");
-    const bg = isLight ? "#fbfcff" : "#0f1117";
-    const grid = isLight ? "rgba(11,16,32,.12)" : "rgba(255,255,255,.12)";
-    const text = isLight ? "rgba(11,16,32,.82)" : "rgba(242,244,248,.88)";
-    const accent = isLight ? "rgba(10,163,127,.85)" : "rgba(62,232,201,.85)";
-
-    const W = cssW, H = cssH;
-    ctx.clearRect(0,0,W,H);
-
-    // background
-    ctx.fillStyle = bg;
-    ctx.fillRect(0,0,W,H);
-
-    // padding
-    const padL = 54, padR = 12, padT = 12, padB = 34;
-    const plotW = W - padL - padR;
-    const plotH = H - padT - padB;
-
-    // axes/grid
-    ctx.strokeStyle = grid;
-    ctx.lineWidth = 1;
-    for (let i=0;i<=4;i++){
-      const y = padT + (plotH * i/4);
-      ctx.beginPath();
-      ctx.moveTo(padL, y);
-      ctx.lineTo(W-padR, y);
-      ctx.stroke();
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     }
 
-    // no data
-    if (!rows.length){
-      ctx.fillStyle = text;
-      ctx.font = "13px " + getComputedStyle(document.body).fontFamily;
-      ctx.fillText("No assignments yet.", padL, padT + 18);
-      return;
+    function getClientId() {
+      let id = localStorage.getItem(CLIENT_ID_KEY);
+      if (!id) {
+        id = "client_" + Math.random().toString(36).slice(2);
+        localStorage.setItem(CLIENT_ID_KEY, id);
+      }
+      return id;
     }
 
-    // Bars
-    const n = Math.min(rows.length, 8); // keep readable
-    const shown = rows.slice(0, n).sort((a,b) => a.percent - b.percent);
-    const gap = 10;
-    const barW = (plotW - gap*(n-1)) / n;
+    function getProfile() {
+      const firstName = localStorage.getItem(PROFILE_FIRST_NAME_KEY) || "";
+      const lastName = localStorage.getItem(PROFILE_LAST_NAME_KEY) || "";
+      const commonName = localStorage.getItem(PROFILE_COMMON_NAME_KEY) || "";
 
-    ctx.fillStyle = accent;
+      const legacyFull = localStorage.getItem(PROFILE_NAME_KEY) || "Fname Lname";
 
-    shown.forEach((r, i) => {
-      const x = padL + i*(barW + gap);
-      const h = (r.percent/100) * plotH;
-      const y = padT + (plotH - h);
+      let legalName = (firstName + " " + lastName).trim();
+      if (!legalName) legalName = legacyFull;
 
-      ctx.fillRect(x, y, barW, h);
-    });
+      let displayName = legalName;
+      if (commonName && commonName.trim()) displayName = commonName.trim();
 
-    // Labels
-    ctx.fillStyle = text;
-    ctx.font = "12px " + getComputedStyle(document.body).fontFamily;
+      const location = localStorage.getItem(PROFILE_LOCATION_KEY) || "Kyle";
+      const employee_id = localStorage.getItem(PROFILE_EMPLOYEE_ID_KEY) || "";
 
-    shown.forEach((r, i) => {
-      const x = padL + i*(barW + gap);
-      const pct = Math.round(r.percent) + "%";
-      const label = (r.moduleTitle || "").slice(0, 10) + ((r.moduleTitle||"").length>10 ? "…" : "");
+      // Employee may have multiple roles.
+      // For MVP/dev, default cross-trained: Expo + Cashier.
+      const roles = DEV_DEFAULT_ROLES.slice();
 
-      ctx.fillText(pct, x, H - 16);
-      ctx.fillText(label, x, H - 2);
-    });
-
-    // Y axis labels
-    ctx.fillStyle = text;
-    ctx.font = "11px " + getComputedStyle(document.body).fontFamily;
-    ["100%","75%","50%","25%","0%"].forEach((t,i)=>{
-      const y = padT + (plotH * i/4) + 4;
-      ctx.fillText(t, 10, y);
-    });
-  }
-
-  // ---- Assignment modal wiring ----
-  function openAssign(){ $("assignBackdrop").style.display = "flex"; }
-  function closeAssign(){ $("assignBackdrop").style.display = "none"; }
-  function refreshAssigneeVisibility(){
-    const t = $("assigneeType").value;
-    $("rolePickWrap").style.display = (t === "ROLE") ? "block" : "none";
-    $("selectedPickWrap").style.display = (t === "SELECTED") ? "block" : "none";
-  }
-
-  // ---- Main refresh ----
-  async function refresh(){
-    setStatus("Refreshing…");
-    const r = await api("getSnapshot");
-    if (!r.ok){ setStatus("Error"); toast(r.error || "Failed to load"); return; }
-    SNAP = r;
-
-    setStatus(`Ready • v${r.version}`);
-    renderKpis();
-    renderEmployeePicker();
-    renderModulePicker();
-    renderRolePicker();
-    renderSelectedEmployeesMulti();
-    renderAssignments();
-    renderEmployeeAssignments();
-    renderDiagnostics();
-
-    // If analytics is open, refresh it too
-    if ($("analyticsBackdrop").style.display === "flex"){
-      renderAnalyticsPickers();
-      renderOverview();
-      renderModuleDetail();
-      renderActivity();
-      setTimeout(renderChart, 30);
+      return {
+        firstName,
+        lastName,
+        commonName,
+        legalName,
+        displayName,
+        employee_name: legalName,
+        location,
+        employee_id,
+        roles,
+        client_id: getClientId()
+      };
     }
-  }
 
-  // ---- Events ----
-  $("themeBtn").addEventListener("click", toggleTheme);
-  $("refreshBtn").addEventListener("click", refresh);
+    function updateSettingsProfileUI() {
+      const profile = getProfile();
+      document.getElementById("profileFirstNameValue").textContent = profile.firstName || "Fname";
+      document.getElementById("profileLastNameValue").textContent = profile.lastName || "Lname";
+      document.getElementById("profileCommonNameValue").textContent = profile.commonName || "Optional";
+      document.getElementById("profileEmployeeIdValue").textContent = profile.employee_id || "Not set";
 
-  $("seedBtn").addEventListener("click", async () => {
-    setStatus("Seeding…");
-    const r = await api("bootstrapSampleData");
-    if (r.ok){
-      lastSeedCounts = r.counts || null;
-      toast(`Seeded: roles ${r.counts?.roles ?? "?"}, employees ${r.counts?.employees ?? "?"}, modules ${r.counts?.modules ?? "?"}`);
-      await refresh();
-    } else {
-      setStatus("Error");
-      toast(r.error || "Seed failed");
+      const locationSelect = document.getElementById("profileLocationSelect");
+      locationSelect.value = profile.location === "Other" ? "Other" : "Kyle";
     }
-  });
 
-  $("asgFilter").addEventListener("change", renderAssignments);
-  $("employeeSelect").addEventListener("change", renderEmployeeAssignments);
+    // -----------------------------------------------------------------------
+    // BACKEND SYNC (Google Sheets) — unchanged MVP event
+    // -----------------------------------------------------------------------
+    const SHEETS_ENDPOINT =
+      "https://script.google.com/macros/s/AKfycbykPwcIulm6Tjo8JynUyviawqEDAQA7fqBMIN9I8jukZ9PrzYVO4dECESbh2GnEy9QyCw/exec";
 
-  $("assignBtn").addEventListener("click", () => {
-    $("assigneeType").value = (SNAP && SNAP.roles && SNAP.roles.length) ? "ROLE" : "ALL";
-    $("dueDateISO").value = "";
-    $("notes").value = "";
-    refreshAssigneeVisibility();
-    openAssign();
-  });
+    function syncCompletionToSheet(module, completionPct) {
+      const profile = getProfile();
+      const payload = {
+        timestamp: new Date().toISOString(),
+        employee_name: profile.employee_name,
+        display_name: profile.displayName,
+        employee_id: profile.employee_id,
+        location: profile.location,
+        role: profile.roles.join(","),
+        module_id: module.id,
+        module_title: module.title,
+        event_type: "MODULE_COMPLETED",
+        completion_pct: completionPct,
+        client_id: profile.client_id
+      };
 
-  $("closeAssignBtn").addEventListener("click", closeAssign);
-  $("cancelAssignBtn").addEventListener("click", closeAssign);
-  $("assignBackdrop").addEventListener("click", (e) => { if (e.target === $("assignBackdrop")) closeAssign(); });
-  $("assigneeType").addEventListener("change", refreshAssigneeVisibility);
+      fetch(SHEETS_ENDPOINT, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      }).catch((err) => console.error("Sync to Sheets failed:", err));
+    }
 
-  $("createAssignmentBtn").addEventListener("click", async () => {
-    const assigneeType = $("assigneeType").value;
-    const selectedIds = Array.from($("selectedEmployeesMulti").selectedOptions).map(o => o.value);
+    // -----------------------------------------------------------------------
+    // TOAST
+    // -----------------------------------------------------------------------
+    const toastEl = document.getElementById("toast");
+    let toastTimeoutId = null;
 
-    const payload = {
-      moduleId: $("moduleSelect").value,
-      assigneeType,
-      targetRoleId: $("targetRoleId").value,
-      selectedEmployeeIdsCSV: (assigneeType === "SELECTED") ? selectedIds.join(",") : "",
-      dueDateISO: $("dueDateISO").value,
-      notes: $("notes").value,
-      createdBy: $("createdBy").textContent
+    function showToast(message) {
+      toastEl.textContent = message;
+      toastEl.classList.add("show");
+      if (toastTimeoutId) clearTimeout(toastTimeoutId);
+      toastTimeoutId = setTimeout(() => toastEl.classList.remove("show"), 3200);
+    }
+
+    // -----------------------------------------------------------------------
+    // VIEWS & NAV
+    // -----------------------------------------------------------------------
+    const views = {
+      home: document.getElementById("view-home"),
+      modules: document.getElementById("view-modules"),
+      moduleDetail: document.getElementById("view-module-detail"),
+      settings: document.getElementById("view-settings"),
+      assigned: document.getElementById("view-assigned")
     };
 
-    if (!payload.moduleId){ toast("No modules available (seed data)."); return; }
-    if (payload.assigneeType === "ROLE" && !payload.targetRoleId){ toast("Pick a role"); return; }
-    if (payload.assigneeType === "SELECTED" && !payload.selectedEmployeeIdsCSV.trim()){ toast("Select employees"); return; }
+    const headerTitle = document.getElementById("headerTitle");
+    const backButton = document.getElementById("backButton");
+    let currentView = "home";
+    let lastView = "home";
 
-    const r = await api("createAssignment", payload);
-    if (r.ok){ toast("Assignment created"); closeAssign(); await refresh(); }
-    else toast(r.error || "Error creating assignment");
-  });
+    function updateBackButton() {
+      if (currentView === "settings" || currentView === "assigned" || currentView === "moduleDetail") {
+        backButton.style.display = "inline-flex";
+      } else {
+        backButton.style.display = "none";
+      }
+    }
 
-  // Analytics events
-  $("analyticsBtn").addEventListener("click", () => openAnalytics("overview"));
-  $("closeAnalyticsBtn").addEventListener("click", () => closeBackdrop("analyticsBackdrop"));
-  $("closeAnalyticsBtn2").addEventListener("click", () => closeBackdrop("analyticsBackdrop"));
-  $("analyticsBackdrop").addEventListener("click", (e) => { if (e.target === $("analyticsBackdrop")) closeBackdrop("analyticsBackdrop"); });
+    function setView(viewKey, viaBack = false) {
+      if (!viaBack && viewKey !== currentView) lastView = currentView;
+      currentView = viewKey;
 
-  document.querySelectorAll(".tab").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const tab = btn.getAttribute("data-tab");
-      setAnalyticsTab(tab);
-      if (tab === "overview") { renderOverview(); setTimeout(renderChart, 30); }
-      if (tab === "module") { renderModuleDetail(); }
-      if (tab === "activity") { renderActivity(); }
+      Object.values(views).forEach(v => v.classList.remove("active"));
+      if (views[viewKey]) views[viewKey].classList.add("active");
+
+      headerTitle.textContent = "Texican Logo";
+
+      document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
+      if (viewKey === "home") {
+        document.querySelector('.tab-btn[data-tab="home"]').classList.add("active");
+      } else if (viewKey === "modules" || viewKey === "moduleDetail") {
+        document.querySelector('.tab-btn[data-tab="modules"]').classList.add("active");
+      }
+      updateBackButton();
+    }
+
+    backButton.addEventListener("click", () => {
+      const target = lastView || "home";
+      setView(target, true);
+      if (target === "home") renderHome();
+      else if (target === "modules") renderModulesList();
+      else if (target === "assigned") renderAssignedView();
     });
-  });
 
-  $("analyticsModuleSelect").addEventListener("change", renderModuleDetail);
+    // -----------------------------------------------------------------------
+    // ASSIGNMENTS (MVP logic)
+    // - Universal roles ("All") always included
+    // - Employee can have multiple roles (Expo + Cashier default for dev)
+    // - Universal modules surfaced FIRST in the Assigned list
+    // -----------------------------------------------------------------------
+    function getAssignedModules() {
+      const profile = getProfile();
+      const roleSet = new Set(profile.roles || []);
+      const assigned = MODULES.filter(m => {
+        const roles = Array.isArray(m.roles) ? m.roles : [];
+        if (roles.includes("All")) return true;
+        for (const r of roles) if (roleSet.has(r)) return true;
+        return false;
+      });
 
-  // Boot
-  (async function(){
-    setStatus("Connecting…");
-    const ping = await api("ping");
-    if (!ping.ok){ setStatus("Error"); toast(ping.error || "Could not connect"); return; }
-    setStatus(`Connected • v${ping.version}`);
-    await refresh();
-  })();
-</script>
+      // Universal modules first (housekeeping etc.), then alphabetical by category/title
+      assigned.sort((a, b) => {
+        const aUniversal = (a.roles || []).includes("All") ? 0 : 1;
+        const bUniversal = (b.roles || []).includes("All") ? 0 : 1;
+        if (aUniversal !== bUniversal) return aUniversal - bUniversal;
+
+        const catA = (a.category || "").toLowerCase();
+        const catB = (b.category || "").toLowerCase();
+        if (catA !== catB) return catA.localeCompare(catB);
+
+        const tA = (a.title || "").toLowerCase();
+        const tB = (b.title || "").toLowerCase();
+        return tA.localeCompare(tB);
+      });
+
+      return assigned;
+    }
+
+    function getCompletedAssignedCount() {
+      const assigned = getAssignedModules();
+      return assigned.filter(m => !!state.completed[m.id]).length;
+    }
+
+    // -----------------------------------------------------------------------
+    // ACCORDION RENDERING (Assigned)
+    // - Category order: Housekeeping always first if present
+    // -----------------------------------------------------------------------
+    function sortedCategoryKeys(categoriesObj) {
+      const keys = Object.keys(categoriesObj);
+      keys.sort((a, b) => a.localeCompare(b));
+      // Force Housekeeping to top if present
+      const hkIndex = keys.findIndex(k => k.toLowerCase() === "housekeeping");
+      if (hkIndex > 0) {
+        const hk = keys.splice(hkIndex, 1)[0];
+        keys.unshift(hk);
+      }
+      return keys;
+    }
+
+    function renderAssignedAccordion(containerEl, modules) {
+      containerEl.innerHTML = "";
+      if (!modules || modules.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "empty-state";
+        empty.textContent = "No training modules configured.";
+        containerEl.appendChild(empty);
+        return;
+      }
+
+      const accordion = document.createElement("div");
+      accordion.className = "accordion";
+
+      const categories = {};
+      modules.forEach(m => {
+        if (!categories[m.category]) categories[m.category] = [];
+        categories[m.category].push(m);
+      });
+
+      const catKeys = sortedCategoryKeys(categories);
+
+      catKeys.forEach((cat, idx) => {
+        const item = document.createElement("div");
+        item.className = "accordion-item";
+        if (idx === 0) item.classList.add("open");
+
+        const header = document.createElement("button");
+        header.type = "button";
+        header.className = "accordion-header";
+
+        const left = document.createElement("div");
+        left.className = "left";
+
+        const title = document.createElement("span");
+        title.className = "accordion-title";
+        title.textContent = cat;
+
+        const mods = categories[cat].slice();
+        // Within a category: universal modules first, then title
+        mods.sort((a, b) => {
+          const au = (a.roles || []).includes("All") ? 0 : 1;
+          const bu = (b.roles || []).includes("All") ? 0 : 1;
+          if (au !== bu) return au - bu;
+          return (a.title || "").localeCompare(b.title || "");
+        });
+
+        const completedCount = mods.filter(m => !!state.completed[m.id]).length;
+
+        const meta = document.createElement("span");
+        meta.className = "accordion-meta";
+        meta.textContent = `${completedCount}/${mods.length} complete`;
+
+        const chevron = document.createElement("span");
+        chevron.className = "accordion-chevron";
+        chevron.textContent = "▾";
+
+        left.appendChild(title);
+        left.appendChild(meta);
+
+        header.appendChild(left);
+        header.appendChild(chevron);
+
+        const body = document.createElement("div");
+        body.className = "accordion-body";
+
+        const list = document.createElement("div");
+        list.className = "list";
+
+        mods.forEach(m => {
+          const completed = !!state.completed[m.id];
+          const row = document.createElement("div");
+          row.className = "list-item " + (completed ? "status-complete" : "status-required");
+          row.onclick = () => openModuleDetail(m.id);
+          const metaText = completed ? "Complete" : "Required";
+          row.innerHTML = `<span class="label">${m.title}</span><span class="meta">${metaText}</span>`;
+          list.appendChild(row);
+        });
+
+        body.appendChild(list);
+
+        header.addEventListener("click", () => item.classList.toggle("open"));
+
+        item.appendChild(header);
+        item.appendChild(body);
+        accordion.appendChild(item);
+      });
+
+      containerEl.appendChild(accordion);
+    }
+
+    // -----------------------------------------------------------------------
+    // HOME RENDER
+    // -----------------------------------------------------------------------
+    function renderHome() {
+      const assigned = getAssignedModules();
+      const completedCount = getCompletedAssignedCount();
+
+      document.getElementById("progressLabel").textContent =
+        `${completedCount} / ${assigned.length} Modules Completed`;
+
+      const pct = assigned.length === 0 ? 0 : (completedCount / assigned.length) * 100;
+      document.getElementById("progressFill").style.width = pct + "%";
+
+      const alertContainer = document.getElementById("homeAlertContainer");
+      alertContainer.innerHTML = "";
+      const alert = document.createElement("div");
+      alert.className = "alert";
+
+      if (assigned.length === 0) {
+        alert.innerHTML =
+          "<div><strong>No training modules yet.</strong><span class='muted'>Your training plan has not been configured.</span></div>";
+      } else if (completedCount < assigned.length) {
+        const remaining = assigned.length - completedCount;
+        alert.innerHTML =
+          `<div><strong>Training in progress.</strong>You have ${remaining} required module${remaining !== 1 ? "s" : ""} left to complete.</div>`;
+      } else {
+        alert.classList.add("complete");
+        alert.innerHTML =
+          "<div><strong>You have completed all assigned training.</strong><span class='muted'>Check back for new assignments.</span></div>";
+      }
+
+      alertContainer.appendChild(alert);
+      renderAssignedAccordion(document.getElementById("homeAssignedAccordion"), assigned);
+    }
+
+    // -----------------------------------------------------------------------
+    // MODULES VIEW RENDER
+    // - Role accordion
+    // - Inside each role: nested accordion by category (cleaner mobile UI)
+    // -----------------------------------------------------------------------
+    function getModulesForRole(roleId) {
+      if (roleId === "All") {
+        return MODULES.filter(m => (m.roles || []).includes("All"));
+      }
+      return MODULES.filter(m => (m.roles || []).includes(roleId) || (m.roles || []).includes("All"));
+    }
+
+    function renderModulesList() {
+      const container = document.getElementById("modulesList");
+      container.innerHTML = "";
+
+      const outer = document.createElement("div");
+      outer.className = "accordion";
+
+      ROLES.forEach((roleObj, idx) => {
+        const roleModules = getModulesForRole(roleObj.id);
+
+        const item = document.createElement("div");
+        item.className = "accordion-item";
+        if (idx === 0) item.classList.add("open"); // open Universal by default
+
+        const header = document.createElement("button");
+        header.type = "button";
+        header.className = "accordion-header";
+
+        const left = document.createElement("div");
+        left.className = "left";
+
+        const title = document.createElement("span");
+        title.className = "accordion-title";
+        title.textContent = roleObj.label;
+
+        const meta = document.createElement("span");
+        meta.className = "accordion-meta";
+
+        if (roleModules.length === 0) {
+          meta.textContent = "Coming soon";
+        } else {
+          const completedCount = roleModules.filter(m => !!state.completed[m.id]).length;
+          meta.textContent = `${completedCount}/${roleModules.length} complete`;
+        }
+
+        const chevron = document.createElement("span");
+        chevron.className = "accordion-chevron";
+        chevron.textContent = "▾";
+
+        left.appendChild(title);
+        left.appendChild(meta);
+
+        header.appendChild(left);
+        header.appendChild(chevron);
+
+        const body = document.createElement("div");
+        body.className = "accordion-body";
+
+        if (roleModules.length === 0) {
+          const empty = document.createElement("div");
+          empty.className = "empty-state";
+          empty.textContent = `${roleObj.label} modules are coming soon.`;
+          body.appendChild(empty);
+        } else {
+          // Group by category inside role
+          const categories = {};
+          roleModules.forEach(m => {
+            if (!categories[m.category]) categories[m.category] = [];
+            categories[m.category].push(m);
+          });
+
+          const catKeys = sortedCategoryKeys(categories);
+
+          const nested = document.createElement("div");
+          nested.className = "accordion nested-accordion";
+
+          catKeys.forEach((cat, cidx) => {
+            const catItem = document.createElement("div");
+            catItem.className = "accordion-item";
+            if (cidx === 0) catItem.classList.add("open");
+
+            const catHeader = document.createElement("button");
+            catHeader.type = "button";
+            catHeader.className = "accordion-header";
+
+            const catLeft = document.createElement("div");
+            catLeft.className = "left";
+
+            const catTitle = document.createElement("span");
+            catTitle.className = "accordion-title";
+            catTitle.textContent = cat;
+
+            const mods = categories[cat].slice();
+            mods.sort((a, b) => (a.title || "").localeCompare(b.title || ""));
+
+            const catCompleted = mods.filter(m => !!state.completed[m.id]).length;
+
+            const catMeta = document.createElement("span");
+            catMeta.className = "accordion-meta";
+            catMeta.textContent = `${catCompleted}/${mods.length} complete`;
+
+            const catChevron = document.createElement("span");
+            catChevron.className = "accordion-chevron";
+            catChevron.textContent = "▾";
+
+            catLeft.appendChild(catTitle);
+            catLeft.appendChild(catMeta);
+
+            catHeader.appendChild(catLeft);
+            catHeader.appendChild(catChevron);
+
+            const catBody = document.createElement("div");
+            catBody.className = "accordion-body";
+
+            const list = document.createElement("div");
+            list.className = "list";
+
+            mods.forEach(m => {
+              const completed = !!state.completed[m.id];
+              const row = document.createElement("div");
+              row.className = "list-item " + (completed ? "status-complete" : "status-required");
+              row.onclick = () => openModuleDetail(m.id);
+              row.innerHTML = `<span class="label">${m.title}</span><span class="meta">${completed ? "Complete" : "Required"}</span>`;
+              list.appendChild(row);
+            });
+
+            catBody.appendChild(list);
+            catHeader.addEventListener("click", () => catItem.classList.toggle("open"));
+
+            catItem.appendChild(catHeader);
+            catItem.appendChild(catBody);
+            nested.appendChild(catItem);
+          });
+
+          body.appendChild(nested);
+        }
+
+        header.addEventListener("click", () => item.classList.toggle("open"));
+
+        item.appendChild(header);
+        item.appendChild(body);
+        outer.appendChild(item);
+      });
+
+      container.appendChild(outer);
+    }
+
+    // -----------------------------------------------------------------------
+    // MODULE DETAIL & IMAGES
+    // -----------------------------------------------------------------------
+    let currentModuleId = null;
+    let currentCarouselIndex = 0;
+    let currentCarouselImages = [];
+
+    function updateCarouselDisplay() {
+      const mainImg = document.getElementById("moduleMainImage");
+      const counterEl = document.getElementById("moduleCarouselCounter");
+      if (!mainImg || !counterEl || !currentCarouselImages.length) return;
+      mainImg.src = currentCarouselImages[currentCarouselIndex];
+      counterEl.textContent = `${currentCarouselIndex + 1} / ${currentCarouselImages.length}`;
+    }
+
+    function renderModuleImages(module) {
+      const imgContainer = document.getElementById("detailImageContainer");
+      imgContainer.innerHTML = "";
+
+      const wrapper = document.createElement("div");
+      wrapper.className = "module-image-wrapper";
+
+      const main = document.createElement("div");
+      main.className = "module-image-main";
+
+      const hasImages = Array.isArray(module.images) && module.images.length > 0;
+
+      if (hasImages) {
+        const img = document.createElement("img");
+        img.id = "moduleMainImage";
+        img.src = module.images[0];
+        img.alt = module.title;
+        main.appendChild(img);
+      } else {
+        const placeholder = document.createElement("div");
+        placeholder.className = "module-image-placeholder";
+        placeholder.textContent = "Training image coming soon.";
+        main.appendChild(placeholder);
+      }
+
+      wrapper.appendChild(main);
+
+      if (hasImages) {
+        const controls = document.createElement("div");
+        controls.className = "module-carousel-controls";
+
+        const prevBtn = document.createElement("button");
+        prevBtn.type = "button";
+        prevBtn.className = "module-carousel-btn";
+        prevBtn.textContent = "◀ Prev";
+
+        const counter = document.createElement("div");
+        counter.className = "module-carousel-counter";
+        counter.id = "moduleCarouselCounter";
+        counter.textContent = `1 / ${module.images.length}`;
+
+        const nextBtn = document.createElement("button");
+        nextBtn.type = "button";
+        nextBtn.className = "module-carousel-btn";
+        nextBtn.textContent = "Next ▶";
+
+        prevBtn.addEventListener("click", () => {
+          if (!currentCarouselImages.length) return;
+          currentCarouselIndex =
+            (currentCarouselIndex - 1 + currentCarouselImages.length) % currentCarouselImages.length;
+          updateCarouselDisplay();
+        });
+
+        nextBtn.addEventListener("click", () => {
+          if (!currentCarouselImages.length) return;
+          currentCarouselIndex = (currentCarouselIndex + 1) % currentCarouselImages.length;
+          updateCarouselDisplay();
+        });
+
+        controls.appendChild(prevBtn);
+        controls.appendChild(counter);
+        controls.appendChild(nextBtn);
+        wrapper.appendChild(controls);
+      }
+
+      imgContainer.appendChild(wrapper);
+
+      currentCarouselImages = hasImages ? module.images.slice() : [];
+      currentCarouselIndex = 0;
+    }
+
+    function updateCompleteButtonState() {
+      const btn = document.getElementById("completeModuleBtn");
+      btn.classList.remove("completed");
+
+      if (!currentModuleId) {
+        btn.disabled = true;
+        return;
+      }
+
+      const completedAlready = !!state.completed[currentModuleId];
+      if (completedAlready) {
+        btn.disabled = true;
+        btn.textContent = "Module Completed";
+        btn.classList.add("completed");
+        return;
+      }
+
+      const checkboxes = document.querySelectorAll("#detailSteps input[type='checkbox']");
+      if (checkboxes.length === 0) {
+        btn.disabled = true;
+        btn.textContent = "Mark Module Complete";
+        return;
+      }
+
+      const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+      btn.disabled = !allChecked;
+      btn.textContent = allChecked ? "Mark Module Complete" : "Check all steps to complete";
+    }
+
+    function openModuleDetail(id) {
+      const module = MODULES.find(m => m.id === id);
+      if (!module) return;
+
+      currentModuleId = id;
+
+      document.getElementById("detailCategoryPill").textContent = module.category || "Module";
+      document.getElementById("detailTitle").textContent = module.title || "Module";
+      document.getElementById("detailDescription").textContent = module.description || "";
+
+      renderModuleImages(module);
+
+      const stepsContainer = document.getElementById("detailSteps");
+      stepsContainer.innerHTML = "";
+
+      (module.steps || []).forEach((step, index) => {
+        const row = document.createElement("div");
+        row.className = "step-row";
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.dataset.stepIndex = index;
+
+        const textSpan = document.createElement("span");
+        textSpan.textContent = step;
+
+        checkbox.addEventListener("change", updateCompleteButtonState);
+
+        row.addEventListener("click", (e) => {
+          if (e.target === checkbox) return;
+          checkbox.checked = !checkbox.checked;
+          updateCompleteButtonState();
+        });
+
+        row.appendChild(checkbox);
+        row.appendChild(textSpan);
+        stepsContainer.appendChild(row);
+      });
+
+      const completed = !!state.completed[id];
+      const hint = document.getElementById("detailHint");
+      hint.textContent = completed
+        ? "This module is marked complete. You can review steps any time."
+        : "Work through each step, then check all boxes to enable completion.";
+
+      const btn = document.getElementById("completeModuleBtn");
+      btn.disabled = true;
+      btn.classList.remove("completed");
+
+      if (completed) {
+        btn.disabled = true;
+        btn.textContent = "Module Completed";
+        btn.classList.add("completed");
+      } else {
+        btn.textContent = "Check all steps to complete";
+      }
+
+      updateCompleteButtonState();
+      setView("moduleDetail");
+    }
+
+    // -----------------------------------------------------------------------
+    // QUIZ LOGIC
+    // - Alternates per-module between multiple choice and numeric input
+    // - Derived from step text (not just "how many steps")
+    // - Includes one ridiculous/funny answer in every MC question
+    // -----------------------------------------------------------------------
+    const quizOverlay = document.getElementById("quizOverlay");
+    const quizQuestionEl = document.getElementById("quizQuestion");
+    const quizOptionsEl = document.getElementById("quizOptions");
+    const quizNumberInput = document.getElementById("quizNumberInput");
+    const quizErrorEl = document.getElementById("quizError");
+    const quizSubmitBtn = document.getElementById("quizSubmitBtn");
+    const quizCancelBtn = document.getElementById("quizCancelBtn");
+
+    let quizState = {
+      moduleId: null,
+      type: null,   // "mc" | "number"
+      correct: null // string | number
+    };
+
+    const SILLY_DISTRACTORS = [
+      "Teach a tortilla how to salsa dance.",
+      "Politely ask the soup to cool itself down.",
+      "Give an inspirational speech to the floor mats.",
+      "Name each tortilla before service.",
+      "Assign performance reviews to the spoons.",
+      "Challenge the buzzer to a duel at dawn."
+    ];
+
+    function shuffleArray(arr) {
+      const copy = arr.slice();
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function pickSilly() {
+      return SILLY_DISTRACTORS[Math.floor(Math.random() * SILLY_DISTRACTORS.length)];
+    }
+
+    function stepContains(step, keywords) {
+      const s = String(step || "").toLowerCase();
+      return keywords.some(k => s.includes(k));
+    }
+
+    function buildQuizForModule(module) {
+      const steps = Array.isArray(module.steps) ? module.steps.slice() : [];
+      const moduleIndex = MODULES.findIndex(m => m.id === module.id);
+
+      // Alternate: even index = MC, odd = numeric
+      const useMultipleChoice = moduleIndex % 2 === 0;
+
+      if (!steps.length) {
+        return {
+          type: "number",
+          question: "How many steps are listed in this module?",
+          correct: 0,
+          options: null
+        };
+      }
+
+      // --- Multiple Choice (derived) ---
+      if (useMultipleChoice) {
+        const useExceptPattern = moduleIndex % 4 === 0; // occasionally do EXCEPT / NOT
+
+        // Build a pool of plausible distractors by borrowing steps from OTHER modules (same general domain),
+        // plus 1 silly answer guaranteed.
+        const otherStepsPool = MODULES
+          .filter(m => m.id !== module.id)
+          .flatMap(m => (m.steps || []).map(s => ({ step: s, category: m.category, title: m.title })));
+
+        // Create "nearby" distractors: same category if possible; otherwise any.
+        const sameCategoryPool = otherStepsPool.filter(x => (x.category || "") === (module.category || ""));
+        const distractorSource = sameCategoryPool.length >= 6 ? sameCategoryPool : otherStepsPool;
+
+        // Pick correct candidates (one or more steps from THIS module)
+        const correctStep = steps[Math.floor(Math.random() * steps.length)];
+
+        // 1 silly always
+        const silly = pickSilly();
+
+        // Up to 2 realistic distractors from other modules
+        const distractors = [];
+        const shuffledPool = shuffleArray(distractorSource).map(x => x.step);
+        for (const s of shuffledPool) {
+          if (distractors.length >= 2) break;
+          if (steps.includes(s)) continue;
+          if (s === correctStep) continue;
+          distractors.push(s);
+        }
+
+        // A third distractor: either another other-module step, or a "plausible but wrong" variant
+        let thirdDistractor = null;
+        // If the module has a distinctive keyword, invert it slightly for a plausible wrong answer
+        if (stepContains(correctStep, ["hot", "caution"])) {
+          thirdDistractor = "Ignore heat warnings and grab everything bare-handed immediately.";
+        } else if (stepContains(correctStep, ["wash", "hands", "20"])) {
+          thirdDistractor = "Rinse your hands for 2 seconds and call it a day.";
+        } else if (stepContains(correctStep, ["label", "date"])) {
+          thirdDistractor = "Store items without labels so they can surprise you later.";
+        } else if (stepContains(correctStep, ["knock", "door"])) {
+          thirdDistractor = "Burst through doors dramatically to assert dominance.";
+        } else if (stepContains(correctStep, ["count", "drawer", "$"])) {
+          thirdDistractor = "Count the drawer by vibes instead of numbers.";
+        } else {
+          // fallback from other pool
+          thirdDistractor = shuffledPool.find(s => !steps.includes(s) && s !== correctStep) || "Restock imaginary supplies.";
+        }
+
+        if (useExceptPattern) {
+          // EXCEPT pattern: 3 real steps from this module + 1 silly (correct answer)
+          const realSubset = shuffleArray(steps).slice(0, Math.min(3, steps.length));
+          const options = shuffleArray([...realSubset, silly]);
+
+          return {
+            type: "mc",
+            question: "All of the following actions belong in this module EXCEPT:",
+            correct: silly,
+            options
+          };
+        } else {
+          // Positive pattern: pick the step that IS actually in this module
+          // Options = correct + 2 realistic + 1 silly (guaranteed)
+          const options = shuffleArray([correctStep, ...distractors, thirdDistractor, silly].slice(0, 4));
+
+          // Guarantee the silly is included (in case slice removed it)
+          if (!options.includes(silly)) {
+            options[options.length - 1] = silly;
+          }
+          // Ensure correct still included
+          if (!options.includes(correctStep)) {
+            options[0] = correctStep;
+            options = shuffleArray(options);
+          }
+
+          return {
+            type: "mc",
+            question: "Which of the following is actually part of this training module?",
+            correct: correctStep,
+            options
+          };
+        }
+      }
+
+      // --- Numeric (derived from context clues) ---
+      // We'll avoid the boring “how many steps” default.
+      // Pick a numeric question that can be answered from the module’s steps:
+      // - count of steps containing a keyword
+      // - count of “CAUTION / HOT” mentions
+      // - count of times you gather items (steps starting with Gather/Bring/Return)
+      function countMatchingSteps(predicate) {
+        return steps.filter(predicate).length;
+      }
+
+      const candidates = [];
+
+      // Keyword-derived counts
+      const washCount = countMatchingSteps(s => stepContains(s, ["wash hands", "wash your hands", "20 seconds", "soap"]));
+      if (washCount > 0) {
+        candidates.push({
+          q: "How many steps involve handwashing or a specific time duration (like “20 seconds”)?",
+          a: washCount
+        });
+      }
+
+      const cautionCount = countMatchingSteps(s => stepContains(s, ["caution", "hot"]));
+      if (cautionCount > 0) {
+        candidates.push({
+          q: "How many steps include a heat warning (CAUTION / HOT) or mention hot surfaces?",
+          a: cautionCount
+        });
+      }
+
+      const gatherCount = countMatchingSteps(s => {
+        const t = String(s || "").toLowerCase().trim();
+        return t.startsWith("gather") || t.startsWith("bring") || t.startsWith("return");
+      });
+      if (gatherCount > 0) {
+        candidates.push({
+          q: "How many steps are specifically about gathering/bringing/returning items?",
+          a: gatherCount
+        });
+      }
+
+      const checkCount = countMatchingSteps(s => stepContains(s, ["confirm", "verify", "check"]));
+      if (checkCount > 0) {
+        candidates.push({
+          q: "How many steps are “checks” (confirm / verify / check)?",
+          a: checkCount
+        });
+      }
+
+      const labelCount = countMatchingSteps(s => stepContains(s, ["label"]));
+      if (labelCount > 0) {
+        candidates.push({
+          q: "How many steps mention labeling something?",
+          a: labelCount
+        });
+      }
+
+      // Fallback if none matched: number of steps (still valid)
+      if (candidates.length === 0) {
+        candidates.push({
+          q: "If you complete every listed step once, how many actions do you perform in this module?",
+          a: steps.length
+        });
+      }
+
+      const pick = candidates[Math.floor(Math.random() * candidates.length)];
+      return {
+        type: "number",
+        question: pick.q,
+        correct: pick.a,
+        options: null
+      };
+    }
+
+    function openQuizForModule(module) {
+      const quiz = buildQuizForModule(module);
+      quizState.moduleId = module.id;
+      quizState.type = quiz.type;
+      quizState.correct = quiz.correct;
+      quizErrorEl.textContent = "";
+
+      quizQuestionEl.textContent = quiz.question;
+
+      quizOptionsEl.innerHTML = "";
+      quizNumberInput.style.display = "none";
+      quizNumberInput.value = "";
+
+      if (quiz.type === "mc" && quiz.options) {
+        quizOptionsEl.style.display = "flex";
+        quiz.options.forEach((opt, idx) => {
+          const row = document.createElement("label");
+          row.className = "quiz-option-row";
+
+          const input = document.createElement("input");
+          input.type = "radio";
+          input.name = "quiz-option";
+          input.value = opt;
+          if (idx === 0) input.checked = true;
+
+          const span = document.createElement("span");
+          span.textContent = opt;
+
+          row.appendChild(input);
+          row.appendChild(span);
+          quizOptionsEl.appendChild(row);
+        });
+      } else {
+        quizOptionsEl.style.display = "none";
+        quizNumberInput.style.display = "block";
+      }
+
+      quizOverlay.classList.add("show");
+      quizOverlay.setAttribute("aria-hidden", "false");
+    }
+
+    function closeQuiz() {
+      quizOverlay.classList.remove("show");
+      quizOverlay.setAttribute("aria-hidden", "true");
+      quizErrorEl.textContent = "";
+      quizState.moduleId = null;
+      quizState.type = null;
+      quizState.correct = null;
+    }
+
+    quizCancelBtn.addEventListener("click", closeQuiz);
+
+    quizSubmitBtn.addEventListener("click", () => {
+      if (!quizState.moduleId || !quizState.type) return;
+
+      if (quizState.type === "mc") {
+        const selected = document.querySelector('#quizOptions input[name="quiz-option"]:checked');
+        if (!selected) {
+          quizErrorEl.textContent = "Please select an answer.";
+          return;
+        }
+        if (selected.value === quizState.correct) {
+          const module = MODULES.find(m => m.id === quizState.moduleId);
+          closeQuiz();
+          if (module) finalizeModuleCompletion(module);
+        } else {
+          quizErrorEl.textContent = "Not quite. Try again.";
+        }
+      } else {
+        const raw = quizNumberInput.value;
+        if (raw === "") {
+          quizErrorEl.textContent = "Enter a number to continue.";
+          return;
+        }
+        const num = parseInt(raw, 10);
+        if (Number.isNaN(num)) {
+          quizErrorEl.textContent = "That doesn't look like a number. Try again.";
+          return;
+        }
+        if (num === quizState.correct) {
+          const module = MODULES.find(m => m.id === quizState.moduleId);
+          closeQuiz();
+          if (module) finalizeModuleCompletion(module);
+        } else {
+          quizErrorEl.textContent = "Close, but not correct. Try again.";
+        }
+      }
+    });
+
+    // -----------------------------------------------------------------------
+    // FINALIZE COMPLETION
+    // - Quiz gates completion
+    // - Quiz remains available for future completions (assignment framework later)
+    // -----------------------------------------------------------------------
+    function finalizeModuleCompletion(module) {
+      state.completed[module.id] = true;
+      saveState();
+
+      renderHome();
+      renderModulesList();
+
+      const assigned = getAssignedModules();
+      const completedCount = getCompletedAssignedCount();
+      const pct = assigned.length === 0 ? 0 : Math.round((completedCount / assigned.length) * 100);
+
+      syncCompletionToSheet(module, pct);
+
+      const btn = document.getElementById("completeModuleBtn");
+      if (btn) {
+        btn.classList.add("completed");
+        btn.textContent = "Module Completed";
+        btn.disabled = true;
+      }
+
+      setView("home");
+      showToast(`Completed: ${module.title} • ${pct}% of assigned training done`);
+    }
+
+    document.getElementById("completeModuleBtn").addEventListener("click", () => {
+      if (!currentModuleId) return;
+      const btn = document.getElementById("completeModuleBtn");
+      if (btn.disabled) return;
+
+      const module = MODULES.find(m => m.id === currentModuleId);
+      if (!module) return;
+
+      openQuizForModule(module);
+    });
+
+    // -----------------------------------------------------------------------
+    // ASSIGNED VIEW (reserved)
+    // -----------------------------------------------------------------------
+    function renderAssignedView() {
+      renderAssignedAccordion(document.getElementById("assignedAccordion"), getAssignedModules());
+    }
+
+    // -----------------------------------------------------------------------
+    // SETTINGS: PROFILE EDITING
+    // -----------------------------------------------------------------------
+    document.getElementById("profileFirstNameRow").addEventListener("click", () => {
+      const current = getProfile().firstName;
+      const value = prompt("Enter your first name", current || "");
+      if (value && value.trim()) {
+        localStorage.setItem(PROFILE_FIRST_NAME_KEY, value.trim());
+        updateSettingsProfileUI();
+      }
+    });
+
+    document.getElementById("profileLastNameRow").addEventListener("click", () => {
+      const current = getProfile().lastName;
+      const value = prompt("Enter your last name", current || "");
+      if (value && value.trim()) {
+        localStorage.setItem(PROFILE_LAST_NAME_KEY, value.trim());
+        updateSettingsProfileUI();
+      }
+    });
+
+    document.getElementById("profileCommonNameRow").addEventListener("click", () => {
+      const current = getProfile().commonName;
+      const value = prompt("Enter your common name (optional)", current || "");
+      if (value !== null) {
+        localStorage.setItem(PROFILE_COMMON_NAME_KEY, value.trim());
+        updateSettingsProfileUI();
+      }
+    });
+
+    document.getElementById("profileEmployeeIdRow").addEventListener("click", () => {
+      const current = getProfile().employee_id;
+      const value = prompt("Enter your employee ID (optional)", current || "");
+      if (value !== null) {
+        localStorage.setItem(PROFILE_EMPLOYEE_ID_KEY, value.trim());
+        updateSettingsProfileUI();
+      }
+    });
+
+    document.getElementById("profileLocationSelect").addEventListener("change", (e) => {
+      const value = e.target.value === "Other" ? "Other" : "Kyle";
+      localStorage.setItem(PROFILE_LOCATION_KEY, value);
+      updateSettingsProfileUI();
+    });
+
+    // -----------------------------------------------------------------------
+    // NAVIGATION WIRING
+    // -----------------------------------------------------------------------
+    document.querySelectorAll(".tab-btn").forEach(btn => btn.addEventListener("click", () => {
+      const tab = btn.dataset.tab;
+      if (tab === "home") {
+        setView("home");
+        renderHome();
+      } else if (tab === "modules") {
+        setView("modules");
+        renderModulesList();
+      }
+    }));
+
+    document.getElementById("settingsButton").addEventListener("click", () => {
+      updateSettingsProfileUI();
+      setView("settings");
+    });
+
+    // -----------------------------------------------------------------------
+    // SECRET MANAGER HANDSHAKE (RESET)
+    // - 5 taps on header title within 4 seconds
+    // - PIN only (0856)
+    // -----------------------------------------------------------------------
+    let secretTapCount = 0;
+    let secretTapTimer = null;
+    const SECRET_TAP_WINDOW_MS = 4000;
+    const SECRET_REQUIRED_TAPS = 5;
+    const MANAGER_PIN = "0856";
+
+    headerTitle.addEventListener("click", () => {
+      secretTapCount++;
+
+      if (!secretTapTimer) {
+        secretTapTimer = setTimeout(() => {
+          secretTapCount = 0;
+          secretTapTimer = null;
+        }, SECRET_TAP_WINDOW_MS);
+      }
+
+      if (secretTapCount >= SECRET_REQUIRED_TAPS) {
+        clearTimeout(secretTapTimer);
+        secretTapTimer = null;
+        secretTapCount = 0;
+
+        const confirmReset = confirm("Manager reset:\n\nClear all completed modules on this device?");
+        if (!confirmReset) return;
+
+        const pin = prompt("Enter manager PIN to confirm reset:");
+        if (pin === MANAGER_PIN) {
+          state.completed = {};
+          saveState();
+          renderHome();
+          renderModulesList();
+          renderAssignedView();
+          showToast("All module completions have been cleared.");
+        } else if (pin !== null) {
+          showToast("Incorrect PIN. No changes made.");
+        }
+      }
+    });
+
+    // -----------------------------------------------------------------------
+    // INITIAL RENDER
+    // -----------------------------------------------------------------------
+    updateSettingsProfileUI();
+    renderHome();
+    renderModulesList();
+  </script>
 </body>
 </html>
