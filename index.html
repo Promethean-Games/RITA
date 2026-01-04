@@ -91,7 +91,6 @@
       align-items: center;
       justify-content: center;
       color: var(--muted);
-      line-height: 0;
     }
 
     .icon-btn:hover {
@@ -105,6 +104,7 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      font-size: 18px;
     }
 
     main {
@@ -155,7 +155,10 @@
       margin-bottom: 0.5rem;
     }
 
-    .progress-label { font-size: 0.85rem; font-weight: 500; }
+    .progress-label {
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
 
     .progress-bar {
       width: 100%;
@@ -216,8 +219,15 @@
     .list-item span.label { flex: 1; }
     .list-item span.meta { font-size: 0.75rem; color: var(--muted); }
 
-    .list-item.status-required { background: var(--accent-soft); border-color: var(--accentA); }
-    .list-item.status-complete { background: rgba(34, 197, 94, 0.08); border-color: rgba(34, 197, 94, 0.45); }
+    .list-item.status-required {
+      background: var(--accent-soft);
+      border-color: var(--accentA);
+    }
+
+    .list-item.status-complete {
+      background: rgba(34, 197, 94, 0.08);
+      border-color: rgba(34, 197, 94, 0.45);
+    }
 
     .btn {
       border-radius: 999px;
@@ -230,13 +240,13 @@
       justify-content: center;
       gap: 0.3rem;
       margin-top: 0.4rem;
-      width: 100%;
     }
 
     .btn-primary {
       background: linear-gradient(135deg, var(--accentA), var(--accentB));
       color: #111827;
       font-weight: 600;
+      width: 100%;
       transition: background 0.15s ease, opacity 0.15s ease;
     }
 
@@ -246,6 +256,24 @@
       background: linear-gradient(135deg, #22c55e, #4ade80);
       color: #022c22;
     }
+
+    .btn-outline {
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+    }
+
+    .btn-small {
+      padding: 0.45rem 0.7rem;
+      font-size: 0.8rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .btn-small:hover { background: var(--bg-soft); }
 
     .divider { border-top: 1px solid var(--border); margin: 0.5rem 0; }
 
@@ -286,7 +314,11 @@
       background: transparent;
     }
 
-    .tab-btn.active { color: var(--accentA); font-weight: 600; }
+    .tab-btn.active {
+      color: var(--accentA);
+      font-weight: 600;
+    }
+
     .tab-btn.active span.dot { background: var(--accentA); }
 
     .view { display: none; }
@@ -310,7 +342,11 @@
     .step-row input[type="checkbox"] { margin-top: 0.1rem; flex-shrink: 0; }
     .step-row span { flex: 1; }
 
-    .hint { font-size: 0.8rem; color: var(--muted); margin-top: 0.25rem; }
+    .hint {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 0.25rem;
+    }
 
     .settings-group { margin-top: 0.3rem; }
 
@@ -322,6 +358,7 @@
       border-bottom: 1px solid var(--border);
       font-size: 0.85rem;
       cursor: pointer;
+      gap: 0.6rem;
     }
 
     .settings-item.no-click { cursor: default; }
@@ -355,6 +392,7 @@
     }
 
     .module-image-main { width: 100%; }
+
     .module-image-main img {
       width: 100%;
       height: auto;
@@ -398,6 +436,7 @@
     }
 
     .module-carousel-btn:hover { background: var(--bg-soft); color: var(--text); }
+
     .module-carousel-counter { font-size: 0.78rem; color: var(--muted); }
 
     .toast {
@@ -455,36 +494,22 @@
       cursor: pointer;
       font-size: 0.85rem;
       gap: 0.6rem;
-      text-align: left;
     }
 
-    .accordion-header > .left {
-      display: flex;
-      align-items: baseline;
-      gap: 0.4rem;
-      min-width: 0;
-      flex: 1;
-    }
-
-    .accordion-title {
-      font-weight: 600;
-      font-size: 0.86rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+    .accordion-title { font-weight: 600; font-size: 0.86rem; }
 
     .accordion-meta {
       font-size: 0.75rem;
       color: var(--muted);
+      margin-left: 0.4rem;
       white-space: nowrap;
-      flex-shrink: 0;
     }
 
     .accordion-chevron {
       font-size: 0.8rem;
+      margin-left: 0.5rem;
       transition: transform 0.15s ease-out;
-      flex-shrink: 0;
+      white-space: nowrap;
     }
 
     .accordion-body {
@@ -495,10 +520,6 @@
 
     .accordion-item.open .accordion-body { display: block; }
     .accordion-item.open .accordion-chevron { transform: rotate(180deg); }
-
-    .nested-accordion { margin-top: 0.4rem; }
-    .nested-accordion .accordion-header { padding: 0.4rem 0.35rem; }
-    .nested-accordion .accordion-body { padding: 0 0.35rem 0.45rem; }
 
     /* Quiz modal */
     .quiz-overlay {
@@ -533,8 +554,15 @@
       margin-bottom: 0.6rem;
     }
 
-    .quiz-option-row { display: flex; align-items: flex-start; gap: 0.4rem; font-size: 0.85rem; }
-    .quiz-option-row input[type="radio"] { margin-top: 0.15rem; flex-shrink: 0; }
+    .quiz-option-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    .quiz-option-row input[type="radio"] { margin-top: 0.2rem; flex-shrink: 0; }
 
     .quiz-input {
       width: 100%;
@@ -547,7 +575,12 @@
       margin-bottom: 0.4rem;
     }
 
-    .quiz-footer { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 0.25rem; }
+    .quiz-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.5rem;
+      margin-top: 0.25rem;
+    }
 
     .quiz-btn {
       border-radius: 999px;
@@ -571,15 +604,38 @@
       min-height: 1em;
       margin-bottom: 0.2rem;
     }
+
+    /* Tiny “sync” badge row */
+    .mini-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.6rem;
+      margin-top: 0.35rem;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.18rem 0.5rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--bg-elevated);
+      font-size: 0.75rem;
+      color: var(--muted);
+      white-space: nowrap;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   </style>
 </head>
-
 <body>
   <div class="app-shell">
     <header>
       <div class="header-inner">
         <button class="icon-btn" id="backButton" aria-label="Back" style="display:none;">
-          <span class="icon" aria-hidden="true">
+          <span class="icon">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="15 18 9 12 15 6"></polyline>
             </svg>
@@ -592,7 +648,6 @@
 
         <button class="icon-btn" id="settingsButton" aria-label="Settings">
           <span class="icon" aria-hidden="true">
-            <!-- Fixed settings icon (SVG, consistent rendering) -->
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="3"></circle>
               <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 8.9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 8.9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 8.9 4.6 1.65 1.65 0 0 0 10.41 3.1V3a2 2 0 0 1 4 0v.09A1.65 1.65 0 0 0 15.1 4.6a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 8.9 1.65 1.65 0 0 0 20.9 10.41H21a2 2 0 0 1 0 4h-.09A1.65 1.65 0 0 0 19.4 15z"></path>
@@ -607,24 +662,30 @@
       <section id="view-home" class="view active">
         <div class="card">
           <div class="pill">Dashboard</div>
+
           <div class="progress-row">
-            <div>
+            <div style="flex:1;">
               <div class="progress-label" id="progressLabel">0 / 0 Modules Completed</div>
-              <div class="muted" style="font-size:0.78rem;">
-                Your assigned training updates automatically.
+              <div class="muted" style="font-size:0.78rem;" id="progressSubLabel">Assigned training updates automatically.</div>
+
+              <div class="mini-row">
+                <span class="chip" id="whoAmIChip">Employee: —</span>
+                <button class="btn-small" id="syncBtn" type="button">Sync</button>
               </div>
             </div>
           </div>
+
           <div class="progress-bar">
             <div class="progress-fill" id="progressFill"></div>
           </div>
+
           <div id="homeAlertContainer"></div>
         </div>
 
         <div class="card">
           <h3>Assigned Training</h3>
           <p class="muted" style="font-size:0.8rem;">
-            Complete assigned modules for any role you’re currently trained on.
+            Complete all assigned modules. Housekeeping appears first.
           </p>
           <div id="homeAssignedAccordion"></div>
         </div>
@@ -633,9 +694,9 @@
       <!-- MODULES LIST VIEW -->
       <section id="view-modules" class="view">
         <div class="card">
-          <h2>Modules</h2>
+          <h2>Modules by Role</h2>
           <p class="muted" style="font-size:0.8rem;">
-            Browse modules by role, then by category. (Optimized for mobile.)
+            Browse by role for reference. Your Home screen shows what’s assigned to you.
           </p>
           <div class="divider"></div>
           <div id="modulesList"></div>
@@ -647,16 +708,12 @@
         <div class="card">
           <div class="pill" id="detailCategoryPill">Category</div>
           <h2 id="detailTitle">Module Title</h2>
-          <p class="muted" id="detailDescription" style="font-size:0.8rem;">
-            Description goes here.
-          </p>
+          <p class="muted" id="detailDescription" style="font-size:0.8rem;">Description goes here.</p>
 
           <div id="detailImageContainer"></div>
 
           <div class="steps" id="detailSteps"></div>
-          <button class="btn btn-primary" id="completeModuleBtn" disabled>
-            Mark Module Complete
-          </button>
+          <button class="btn btn-primary" id="completeModuleBtn" disabled>Mark Module Complete</button>
           <p class="hint" id="detailHint"></p>
         </div>
       </section>
@@ -665,19 +722,23 @@
       <section id="view-settings" class="view">
         <div class="card">
           <h2>Settings</h2>
+
           <div class="settings-group">
-            <div class="settings-item" id="profileFirstNameRow">
+            <div class="settings-item" id="profileEmployeeIdRow">
+              <span>Employee ID</span>
+              <span class="muted" id="profileEmployeeIdValue" style="font-size:0.8rem;">Not set</span>
+            </div>
+
+            <div class="settings-item no-click">
               <span>First Name</span>
-              <span class="muted" id="profileFirstNameValue" style="font-size:0.8rem;">Fname</span>
+              <span class="muted" id="profileFirstNameValue" style="font-size:0.8rem;">—</span>
             </div>
-            <div class="settings-item" id="profileLastNameRow">
+
+            <div class="settings-item no-click">
               <span>Last Name</span>
-              <span class="muted" id="profileLastNameValue" style="font-size:0.8rem;">Lname</span>
+              <span class="muted" id="profileLastNameValue" style="font-size:0.8rem;">—</span>
             </div>
-            <div class="settings-item" id="profileCommonNameRow">
-              <span>Common Name</span>
-              <span class="muted" id="profileCommonNameValue" style="font-size:0.8rem;">Optional</span>
-            </div>
+
             <div class="settings-item no-click">
               <span>Location</span>
               <select id="profileLocationSelect" class="settings-select">
@@ -685,25 +746,17 @@
                 <option value="Other">Other...</option>
               </select>
             </div>
-            <div class="settings-item" id="profileEmployeeIdRow">
-              <span>Employee ID</span>
-              <span class="muted" id="profileEmployeeIdValue" style="font-size:0.8rem;">Not set</span>
-            </div>
+
             <div class="settings-item no-click">
               <span>Notifications</span>
               <span class="muted" style="font-size:0.8rem;">Coming later</span>
             </div>
-          </div>
-        </div>
-      </section>
 
-      <!-- ASSIGNED MODULES VIEW (reserved) -->
-      <section id="view-assigned" class="view">
-        <div class="card">
-          <h2>Assigned Modules</h2>
-          <p class="muted" style="font-size:0.8rem;">All assigned training appears on Home.</p>
-          <div class="divider"></div>
-          <div id="assignedAccordion"></div>
+            <div class="settings-item" id="forceSyncRow">
+              <span>Refresh assignments</span>
+              <span class="muted" style="font-size:0.8rem;">Tap to sync now</span>
+            </div>
+          </div>
         </div>
       </section>
     </main>
@@ -740,13 +793,39 @@
   </div>
 
   <script>
-    // -----------------------------------------------------------------------
-    // MODULES
-    // - roles: array for multi-role employees (incl cross-training)
-    // - "All" = universally assigned (always surfaces first in Assigned list)
-    // -----------------------------------------------------------------------
+    // ============================================================
+    //  RITA Employee Portal — Atomic build with latest updates
+    //  - Multi-role / multi-assignment ready
+    //  - Expo Basic vs Expo Advanced split (Opening/Closing = Advanced)
+    //  - Housekeeping always assigned to All
+    //  - Assigned view: Housekeeping category pinned to top
+    //  - Employee lookup key: 4-digit employee ID (first/last from script)
+    //  - Not everyone is cashier by default
+    //  - Secret handshake reset w/ PIN 0856
+    // ============================================================
+
+    // ---------- Script endpoint (assignments + employee info) ---------------
+    const ASSIGNMENTS_ENDPOINT =
+      "https://script.google.com/macros/s/AKfycbwuTFfeaxawtMTUi8kOpL9Numg1IdKRhtSSJK5x-AzR-hp0tfBFeLU9WgBoU3wxSHhd6g/exec";
+
+    // ---------- Roles -------------------------------------------------------
+    // ExpoBasic is effectively “universal expo training”
+    // ExpoAdvanced is Opening + Closing duties (Expo-only true team members)
+    const ROLES = [
+      { id: "ExpoBasic", label: "Expo (Basic)" },
+      { id: "ExpoAdvanced", label: "Expo (Advanced)" },
+      { id: "Cashier", label: "Cashier" },
+      { id: "Server", label: "Server" },
+      { id: "Bar", label: "Bar" },
+      { id: "Dish", label: "Dish" },
+      { id: "Kitchen", label: "Kitchen" }
+    ];
+
+    // ---------- Modules -----------------------------------------------------
+    // New schema: modules can have multiple roles
+    // roles: ["All"] for universally assigned modules
     const MODULES = [
-      // Housekeeping (universal)
+      // Housekeeping (general for all positions)
       {
         id: "housekeeping_communication_basics",
         title: "Housekeeping — Communication & Floor Awareness",
@@ -762,12 +841,12 @@
         ]
       },
 
-      // Opening (Expo) — treated as Expo Basic (universal Expo training) in current MVP
+      // Opening — Expo Advanced only
       {
         id: "opening_expo_station_setup",
         title: "Opening — Expo & Front Station Setup",
         category: "Opening Process",
-        roles: ["Expo"], // Expo (basic)
+        roles: ["ExpoAdvanced"],
         description:
           "Start your shift prepared: clock in, gear up, and stage the Expo station so service can start smoothly.",
         steps: [
@@ -787,7 +866,7 @@
         id: "opening_tortillas_and_soup_prep",
         title: "Opening — Tortillas & Soup Service Prep",
         category: "Opening Process",
-        roles: ["Expo"], // Expo (basic)
+        roles: ["ExpoAdvanced"],
         description:
           "Prepare tortillas and soup so the line is ready for guests as soon as doors open.",
         steps: [
@@ -806,15 +885,20 @@
         ]
       },
 
-      // Expo modules
+      // Expo Basic (universal expo training)
       {
         id: "prep_ice_cream_balls",
         title: "Prep — Ice Cream Balls",
         category: "Prep",
-        roles: ["Expo"],
+        roles: ["ExpoBasic"],
         description:
           "Prepare and restock Ice Cream Balls during prep so servers can plate desserts quickly.",
-        images: ["icb-setup.png", "icb-weight.png", "icb-label.png", "icb-cleanup.png"],
+        images: [
+          "icb-setup.png",
+          "icb-weight.png",
+          "icb-label.png",
+          "icb-cleanup.png"
+        ],
         steps: [
           "Gather ice cream, scale, plastic wrap, corn flakes, and gloves.",
           "Scoop 12 oz. ice cream balls using plastic wrap over scale surface.",
@@ -829,10 +913,16 @@
         id: "prep_tortilla_trays",
         title: "Prep — Tortilla Trays",
         category: "Prep",
-        roles: ["Expo"],
+        roles: ["ExpoBasic"],
         description:
           "Press and stage tortillas so the line never runs out during service.",
-        images: ["tt-setup.png", "tt-count.png", "tt-label.png", "tt-cover.png", "tt-tie.png"],
+        images: [
+          "tt-setup.png",
+          "tt-count.png",
+          "tt-label.png",
+          "tt-cover.png",
+          "tt-tie.png"
+        ],
         steps: [
           "Gather tortilla dough balls, clean trays, parchment sheets, and a scoop.",
           "Place parchment sheets on trays.",
@@ -845,10 +935,12 @@
         id: "prep_polish_utensils",
         title: "Prep — Polish Utensils",
         category: "Prep",
-        roles: ["Expo"],
+        roles: ["ExpoBasic"],
         description:
           "Polish and stage utensils so servers can roll silverware quickly.",
-        images: ["polish-setup.png"], /* image added */
+        images: [
+          "polish-setup.png"
+        ],
         steps: [
           "Sort utensils from dish (steak knives and spoons only).",
           "Place utensils in plastic pitcher filled with hot water.",
@@ -861,7 +953,7 @@
         id: "prep_make_sauces",
         title: "Prep — Make Sauces",
         category: "Prep",
-        roles: ["Expo"],
+        roles: ["ExpoBasic"],
         description:
           "Batch and label sauces needed on the line: spicy salsa, chipotle ranch, ranch, and others.",
         steps: [
@@ -876,21 +968,25 @@
         id: "sauces_overview",
         title: "Sauces Overview",
         category: "Sauces",
-        roles: ["Expo"],
+        roles: ["ExpoBasic"],
         description:
           "Know which sauces pair with which dishes and where they are stored.",
-        images: ["ketchup.png"],
+        images: [
+          "ketchup.png"
+        ],
         steps: [
           "Review each house sauce and its primary dishes.",
           "Locate each sauce on the line and in backup storage.",
           "Check labels and dates before service."
         ]
       },
+
+      // Closing — Expo Advanced only
       {
         id: "closing_duties_basic",
         title: "Closing Duties — Expo Line",
         category: "Closing Duties",
-        roles: ["Expo"],
+        roles: ["ExpoAdvanced"],
         description:
           "Clean and reset the Expo line so the next shift starts ready to go.",
         steps: [
@@ -907,7 +1003,7 @@
         id: "closing_light_close",
         title: "Closing Duties — Light Close",
         category: "Closing Duties",
-        roles: ["Expo"],
+        roles: ["ExpoAdvanced"],
         description:
           "Perform essential end-of-shift tasks to reset the Expo and tortilla preparation areas for the following day.",
         steps: [
@@ -924,7 +1020,7 @@
         id: "closing_tortilla_machine",
         title: "Closing Duties — Tortilla Machine",
         category: "Closing Duties",
-        roles: ["Expo"],
+        roles: ["ExpoAdvanced"],
         description:
           "Shut down, clean, and reset the tortilla machine so it’s safe, sanitary, and ready for the next shift.",
         steps: [
@@ -940,61 +1036,23 @@
         ]
       },
 
-      // Cashier (MVP: only this for now)
-      {
-        id: "cashier_closing_pm",
-        title: "Cashier — Closing Duties (PM)",
-        category: "Cashier",
-        roles: ["Cashier"],
-        description:
-          "Close the cashier station: break down, return the buzzer, finalize orders, and secure drawer/receipts.",
-        steps: [
-          "Consolidate and store small and large containers and lids.",
-          "Wipe all surfaces with soap and water.",
-          "Remove debris with steel wool (dry storage).",
-          "Return the guest buzzer to the charging station (host stand).",
-          "Confirm the buzzer is seated correctly and charging.",
-          "Confirm all in-person, online, and scheduled orders have been fulfilled or properly handed off.",
-          "Verify there are no open tickets remaining in the point-of-sale system.",
-          "Organize receipts in chronological order (oldest on top). No receipts for cash transactions.",
-          "Print Close Out and staple to combined receipts.",
-          "Remove the cash drawer and count all bills and coins.",
-          "Confirm totals match expected amounts.",
-          "If the drawer is short or over: recount once.",
-          "Notify a manager immediately if count is still over/under.",
-          "Secure the drawer and receipts according to closing procedure (manager hand-off and verification)."
-        ]
-      }
+      // Cashier modules are NOT assigned by default (and you said we’re not building more right now),
+      // so we intentionally do not include them in assigned logic unless the script assigns them.
     ];
 
-    // Roles list (for Modules browsing)
-    const ROLES = [
-      { id: "All", label: "All (Universal)" },
-      { id: "Expo", label: "Expo" },
-      { id: "Cashier", label: "Cashier" },
-      { id: "Server", label: "Server" },
-      { id: "Bar", label: "Bar" },
-      { id: "Dish", label: "Dish" },
-      { id: "Kitchen", label: "Kitchen" }
-    ];
+    // ---------- Local state keys -------------------------------------------
+    const STORAGE_KEY = "ritaEmployeeState_v20";
+    const PROFILE_LOCATION_KEY = "ritaProfileLocation";
+    const PROFILE_EMPLOYEE_ID_KEY = "ritaEmployeeId";
+    const PROFILE_FIRST_NAME_KEY = "ritaFirstName";
+    const PROFILE_LAST_NAME_KEY = "ritaLastName";
 
-    // -----------------------------------------------------------------------
-    // STATE & PROFILE
-    // - Default roles for dev: Expo + Cashier (cross-trained)
-    // - Completed state is per-device MVP
-    // -----------------------------------------------------------------------
-    const STORAGE_KEY = "ritaEmployeeTrainingState_v13";
-    const PROFILE_NAME_KEY = "expoTrainingName"; // legacy fallback
-    const PROFILE_FIRST_NAME_KEY = "expoTrainingFirstName";
-    const PROFILE_LAST_NAME_KEY = "expoTrainingLastName";
-    const PROFILE_COMMON_NAME_KEY = "expoTrainingCommonName";
-    const PROFILE_LOCATION_KEY = "expoTrainingLocation";
-    const PROFILE_EMPLOYEE_ID_KEY = "expoTrainingEmployeeId";
-    const CLIENT_ID_KEY = "expoTrainingClientId";
+    const CLIENT_ID_KEY = "ritaClientId";
 
-    // Dev: cross-trained defaults (until role selection/assignments framework lands)
-    const DEV_DEFAULT_ROLES = ["Expo", "Cashier"];
+    const SERVER_CACHE_KEY = "ritaServerCache_v1";
+    const SERVER_CACHE_TS_KEY = "ritaServerCacheTs_v1";
 
+    // Completion is stored per module_id (device-local for MVP)
     function loadState() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
@@ -1005,12 +1063,8 @@
         return { completed: {} };
       }
     }
-
     let state = loadState();
-
-    function saveState() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    }
+    function saveState() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
 
     function getClientId() {
       let id = localStorage.getItem(CLIENT_ID_KEY);
@@ -1021,87 +1075,84 @@
       return id;
     }
 
+    // ---------- Profile -----------------------------------------------------
     function getProfile() {
-      const firstName = localStorage.getItem(PROFILE_FIRST_NAME_KEY) || "";
-      const lastName = localStorage.getItem(PROFILE_LAST_NAME_KEY) || "";
-      const commonName = localStorage.getItem(PROFILE_COMMON_NAME_KEY) || "";
-
-      const legacyFull = localStorage.getItem(PROFILE_NAME_KEY) || "Fname Lname";
-
-      let legalName = (firstName + " " + lastName).trim();
-      if (!legalName) legalName = legacyFull;
-
-      let displayName = legalName;
-      if (commonName && commonName.trim()) displayName = commonName.trim();
-
+      const employee_id = (localStorage.getItem(PROFILE_EMPLOYEE_ID_KEY) || "").trim();
+      const firstName = (localStorage.getItem(PROFILE_FIRST_NAME_KEY) || "").trim();
+      const lastName = (localStorage.getItem(PROFILE_LAST_NAME_KEY) || "").trim();
       const location = localStorage.getItem(PROFILE_LOCATION_KEY) || "Kyle";
-      const employee_id = localStorage.getItem(PROFILE_EMPLOYEE_ID_KEY) || "";
 
-      // Employee may have multiple roles.
-      // For MVP/dev, default cross-trained: Expo + Cashier.
-      const roles = DEV_DEFAULT_ROLES.slice();
+      // For display (MVP)
+      const displayName = (firstName || lastName) ? `${firstName} ${lastName}`.trim() : "—";
 
       return {
+        employee_id,
         firstName,
         lastName,
-        commonName,
-        legalName,
         displayName,
-        employee_name: legalName,
         location,
-        employee_id,
-        roles,
         client_id: getClientId()
       };
     }
 
+    function setProfileFromServer(employee) {
+      if (!employee || typeof employee !== "object") return;
+
+      const empId =
+        (employee.employee_id || employee.emp_id || employee.id || employee.employeeId || "").toString().trim();
+      const first =
+        (employee.first_name || employee.firstName || employee.fname || employee.first || "").toString().trim();
+      const last =
+        (employee.last_name || employee.lastName || employee.lname || employee.last || "").toString().trim();
+      const loc =
+        (employee.location || employee.site || employee.store || "").toString().trim();
+
+      if (empId) localStorage.setItem(PROFILE_EMPLOYEE_ID_KEY, empId);
+      if (first) localStorage.setItem(PROFILE_FIRST_NAME_KEY, first);
+      if (last) localStorage.setItem(PROFILE_LAST_NAME_KEY, last);
+      if (loc) localStorage.setItem(PROFILE_LOCATION_KEY, loc);
+    }
+
     function updateSettingsProfileUI() {
       const profile = getProfile();
-      document.getElementById("profileFirstNameValue").textContent = profile.firstName || "Fname";
-      document.getElementById("profileLastNameValue").textContent = profile.lastName || "Lname";
-      document.getElementById("profileCommonNameValue").textContent = profile.commonName || "Optional";
-      document.getElementById("profileEmployeeIdValue").textContent = profile.employee_id || "Not set";
+
+      document.getElementById("profileEmployeeIdValue").textContent =
+        profile.employee_id ? profile.employee_id : "Not set";
+
+      document.getElementById("profileFirstNameValue").textContent =
+        profile.firstName || "—";
+      document.getElementById("profileLastNameValue").textContent =
+        profile.lastName || "—";
 
       const locationSelect = document.getElementById("profileLocationSelect");
       locationSelect.value = profile.location === "Other" ? "Other" : "Kyle";
+
+      const whoChip = document.getElementById("whoAmIChip");
+      whoChip.textContent = profile.employee_id
+        ? `Employee: ${profile.displayName} • ID ${profile.employee_id}`
+        : `Employee: ${profile.displayName} • ID not set`;
     }
 
-    // -----------------------------------------------------------------------
-    // BACKEND SYNC (Google Sheets) — unchanged MVP event
-    // -----------------------------------------------------------------------
-    const SHEETS_ENDPOINT =
-      "https://script.google.com/macros/s/AKfycbykPwcIulm6Tjo8JynUyviawqEDAQA7fqBMIN9I8jukZ9PrzYVO4dECESbh2GnEy9QyCw/exec";
-
-    function syncCompletionToSheet(module, completionPct) {
+    function promptForEmployeeIdIfMissing(force = false) {
       const profile = getProfile();
-      const payload = {
-        timestamp: new Date().toISOString(),
-        employee_name: profile.employee_name,
-        display_name: profile.displayName,
-        employee_id: profile.employee_id,
-        location: profile.location,
-        role: profile.roles.join(","),
-        module_id: module.id,
-        module_title: module.title,
-        event_type: "MODULE_COMPLETED",
-        completion_pct: completionPct,
-        client_id: profile.client_id
-      };
+      if (!force && profile.employee_id) return true;
 
-      fetch(SHEETS_ENDPOINT, {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      }).catch((err) => console.error("Sync to Sheets failed:", err));
+      const value = prompt("Enter your 4-digit Employee ID:", profile.employee_id || "");
+      if (value === null) return false;
+
+      const cleaned = value.trim();
+      if (!/^\d{4}$/.test(cleaned)) {
+        showToast("Employee ID must be 4 digits.");
+        return false;
+      }
+      localStorage.setItem(PROFILE_EMPLOYEE_ID_KEY, cleaned);
+      updateSettingsProfileUI();
+      return true;
     }
 
-    // -----------------------------------------------------------------------
-    // TOAST
-    // -----------------------------------------------------------------------
+    // ---------- Toast -------------------------------------------------------
     const toastEl = document.getElementById("toast");
     let toastTimeoutId = null;
-
     function showToast(message) {
       toastEl.textContent = message;
       toastEl.classList.add("show");
@@ -1109,24 +1160,22 @@
       toastTimeoutId = setTimeout(() => toastEl.classList.remove("show"), 3200);
     }
 
-    // -----------------------------------------------------------------------
-    // VIEWS & NAV
-    // -----------------------------------------------------------------------
+    // ---------- Views & Nav -------------------------------------------------
     const views = {
       home: document.getElementById("view-home"),
       modules: document.getElementById("view-modules"),
       moduleDetail: document.getElementById("view-module-detail"),
-      settings: document.getElementById("view-settings"),
-      assigned: document.getElementById("view-assigned")
+      settings: document.getElementById("view-settings")
     };
 
     const headerTitle = document.getElementById("headerTitle");
     const backButton = document.getElementById("backButton");
+
     let currentView = "home";
     let lastView = "home";
 
     function updateBackButton() {
-      if (currentView === "settings" || currentView === "assigned" || currentView === "moduleDetail") {
+      if (currentView === "settings" || currentView === "moduleDetail") {
         backButton.style.display = "inline-flex";
       } else {
         backButton.style.display = "none";
@@ -1137,17 +1186,19 @@
       if (!viaBack && viewKey !== currentView) lastView = currentView;
       currentView = viewKey;
 
-      Object.values(views).forEach(v => v.classList.remove("active"));
-      if (views[viewKey]) views[viewKey].classList.add("active");
+      Object.values(views).forEach((v) => v.classList.remove("active"));
+      const view = views[viewKey];
+      if (view) view.classList.add("active");
 
-      headerTitle.textContent = "Texican Logo";
+      if (headerTitle) headerTitle.textContent = "Texican Logo";
 
-      document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
+      document.querySelectorAll(".tab-btn").forEach((btn) => btn.classList.remove("active"));
       if (viewKey === "home") {
         document.querySelector('.tab-btn[data-tab="home"]').classList.add("active");
       } else if (viewKey === "modules" || viewKey === "moduleDetail") {
         document.querySelector('.tab-btn[data-tab="modules"]').classList.add("active");
       }
+
       updateBackButton();
     }
 
@@ -1156,62 +1207,229 @@
       setView(target, true);
       if (target === "home") renderHome();
       else if (target === "modules") renderModulesList();
-      else if (target === "assigned") renderAssignedView();
     });
 
-    // -----------------------------------------------------------------------
-    // ASSIGNMENTS (MVP logic)
-    // - Universal roles ("All") always included
-    // - Employee can have multiple roles (Expo + Cashier default for dev)
-    // - Universal modules surfaced FIRST in the Assigned list
-    // -----------------------------------------------------------------------
-    function getAssignedModules() {
+    // ---------- Completion Sync (existing endpoint retained) -----------------
+    // (You can keep this, or later shift it to the new script’s logging.)
+    const COMPLETION_LOG_ENDPOINT =
+      "https://script.google.com/macros/s/AKfycbykPwcIulm6Tjo8JynUyviawqEDAQA7fqBMIN9I8jukZ9PrzYVO4dECESbh2GnEy9QyCw/exec";
+
+    function syncCompletionToSheet(module, completionPct) {
       const profile = getProfile();
-      const roleSet = new Set(profile.roles || []);
-      const assigned = MODULES.filter(m => {
-        const roles = Array.isArray(m.roles) ? m.roles : [];
-        if (roles.includes("All")) return true;
-        for (const r of roles) if (roleSet.has(r)) return true;
+      const payload = {
+        timestamp: new Date().toISOString(),
+        employee_name: `${profile.firstName} ${profile.lastName}`.trim(),
+        display_name: `${profile.firstName} ${profile.lastName}`.trim(),
+        employee_id: profile.employee_id,
+        location: profile.location,
+        role: (getAssignmentsState().roles || []).join(", "),
+        module_id: module.id,
+        module_title: module.title,
+        event_type: "MODULE_COMPLETED",
+        completion_pct: completionPct,
+        client_id: profile.client_id
+      };
+
+      fetch(COMPLETION_LOG_ENDPOINT, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      }).catch((err) => console.error("Sync completion failed:", err));
+    }
+
+    // ---------- Assignment state (from server or derived) -------------------
+    // This is what the UI uses as the source of truth for "Assigned Training".
+    let assignmentsState = {
+      source: "fallback",        // "server" | "cache" | "fallback"
+      roles: ["ExpoBasic"],      // minimal safe default if not yet synced
+      assignedModuleIds: null,   // if server returns explicit assignments
+      employee: null,            // server employee object
+      lastSync: null
+    };
+
+    function getAssignmentsState() { return assignmentsState; }
+
+    function cacheServerData(data) {
+      try {
+        localStorage.setItem(SERVER_CACHE_KEY, JSON.stringify(data));
+        localStorage.setItem(SERVER_CACHE_TS_KEY, new Date().toISOString());
+      } catch (e) {}
+    }
+
+    function readCachedServerData() {
+      try {
+        const raw = localStorage.getItem(SERVER_CACHE_KEY);
+        if (!raw) return null;
+        return JSON.parse(raw);
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function normalizeServerPayload(data) {
+      // Goal: support a bunch of shapes, since we don’t know your exact script contract.
+      // We try hard to extract:
+      // - employee: { employee_id, first_name, last_name, location }
+      // - roles: ["ExpoBasic", ...]
+      // - assignments: [{module_id}] or ["module_id", ...]
+      const normalized = {
+        employee: null,
+        roles: [],
+        assignedModuleIds: null
+      };
+
+      if (!data || typeof data !== "object") return normalized;
+
+      // Employee
+      const employee =
+        data.employee ||
+        data.profile ||
+        data.user ||
+        data.employeeRecord ||
+        null;
+
+      if (employee && typeof employee === "object") normalized.employee = employee;
+
+      // Roles
+      const roles =
+        data.roles ||
+        (employee && (employee.roles || employee.role_list || employee.roleList)) ||
+        data.role ||
+        data.role_id ||
+        null;
+
+      if (Array.isArray(roles)) {
+        normalized.roles = roles.map(String).map((s) => s.trim()).filter(Boolean);
+      } else if (typeof roles === "string") {
+        // accept comma-separated
+        normalized.roles = roles.split(",").map((s) => s.trim()).filter(Boolean);
+      } else if (roles) {
+        normalized.roles = [String(roles).trim()].filter(Boolean);
+      }
+
+      // Assignments
+      const assignments =
+        data.assignments ||
+        data.assigned ||
+        data.assigned_modules ||
+        data.assignedModules ||
+        (employee && (employee.assignments || employee.assigned_modules)) ||
+        null;
+
+      if (Array.isArray(assignments)) {
+        if (assignments.length && typeof assignments[0] === "object") {
+          const ids = assignments
+            .map((a) => a.module_id || a.moduleId || a.id || a.module || "")
+            .map(String).map((s) => s.trim()).filter(Boolean);
+          normalized.assignedModuleIds = ids.length ? ids : null;
+        } else {
+          const ids = assignments.map(String).map((s) => s.trim()).filter(Boolean);
+          normalized.assignedModuleIds = ids.length ? ids : null;
+        }
+      }
+
+      return normalized;
+    }
+
+    async function fetchAssignmentsFromServer() {
+      const ok = promptForEmployeeIdIfMissing(false);
+      if (!ok) return false;
+
+      const profile = getProfile();
+
+      const qs = new URLSearchParams();
+      // We don’t know the param name your script expects, so we include several common ones.
+      qs.set("employee_id", profile.employee_id);
+      qs.set("employeeId", profile.employee_id);
+      qs.set("empId", profile.employee_id);
+      qs.set("id", profile.employee_id);
+      qs.set("client_id", profile.client_id);
+
+      const url = `${ASSIGNMENTS_ENDPOINT}?${qs.toString()}`;
+
+      try {
+        const res = await fetch(url, { method: "GET" });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+
+        cacheServerData(data);
+
+        const norm = normalizeServerPayload(data);
+        if (norm.employee) setProfileFromServer(norm.employee);
+
+        assignmentsState = {
+          source: "server",
+          roles: norm.roles && norm.roles.length ? norm.roles : ["ExpoBasic"],
+          assignedModuleIds: norm.assignedModuleIds,
+          employee: norm.employee || null,
+          lastSync: new Date().toISOString()
+        };
+
+        updateSettingsProfileUI();
+        renderHome();
+        renderModulesList();
+
+        showToast("Assignments synced.");
+        return true;
+      } catch (e) {
+        console.warn("Assignment fetch failed:", e);
+        showToast("Sync failed. Using last saved assignments.");
+        // Fallback to cache if possible
+        const cached = readCachedServerData();
+        if (cached) {
+          const norm = normalizeServerPayload(cached);
+          if (norm.employee) setProfileFromServer(norm.employee);
+
+          assignmentsState = {
+            source: "cache",
+            roles: norm.roles && norm.roles.length ? norm.roles : ["ExpoBasic"],
+            assignedModuleIds: norm.assignedModuleIds,
+            employee: norm.employee || null,
+            lastSync: localStorage.getItem(SERVER_CACHE_TS_KEY) || null
+          };
+
+          updateSettingsProfileUI();
+          renderHome();
+          renderModulesList();
+          return true;
+        }
         return false;
-      });
+      }
+    }
 
-      // Universal modules first (housekeeping etc.), then alphabetical by category/title
-      assigned.sort((a, b) => {
-        const aUniversal = (a.roles || []).includes("All") ? 0 : 1;
-        const bUniversal = (b.roles || []).includes("All") ? 0 : 1;
-        if (aUniversal !== bUniversal) return aUniversal - bUniversal;
+    // ---------- Assigned modules logic -------------------------------------
+    function moduleMatchesRoles(module, roles) {
+      const mr = Array.isArray(module.roles) ? module.roles : [];
+      if (mr.includes("All")) return true;
+      if (!roles || !roles.length) return false;
+      return roles.some((r) => mr.includes(r));
+    }
 
-        const catA = (a.category || "").toLowerCase();
-        const catB = (b.category || "").toLowerCase();
-        if (catA !== catB) return catA.localeCompare(catB);
+    function getAssignedModules() {
+      const as = getAssignmentsState();
 
-        const tA = (a.title || "").toLowerCase();
-        const tB = (b.title || "").toLowerCase();
-        return tA.localeCompare(tB);
-      });
+      // If server explicitly assigns modules, use that list (plus All)
+      if (Array.isArray(as.assignedModuleIds) && as.assignedModuleIds.length) {
+        const idSet = new Set(as.assignedModuleIds);
+        return MODULES.filter((m) => idSet.has(m.id) || (Array.isArray(m.roles) && m.roles.includes("All")));
+      }
 
-      return assigned;
+      // Otherwise derive from roles
+      const roles = (as.roles && as.roles.length) ? as.roles : ["ExpoBasic"];
+      return MODULES.filter((m) => moduleMatchesRoles(m, roles));
     }
 
     function getCompletedAssignedCount() {
       const assigned = getAssignedModules();
-      return assigned.filter(m => !!state.completed[m.id]).length;
+      return assigned.filter((m) => !!state.completed[m.id]).length;
     }
 
-    // -----------------------------------------------------------------------
-    // ACCORDION RENDERING (Assigned)
-    // - Category order: Housekeeping always first if present
-    // -----------------------------------------------------------------------
-    function sortedCategoryKeys(categoriesObj) {
-      const keys = Object.keys(categoriesObj);
-      keys.sort((a, b) => a.localeCompare(b));
-      // Force Housekeeping to top if present
-      const hkIndex = keys.findIndex(k => k.toLowerCase() === "housekeeping");
-      if (hkIndex > 0) {
-        const hk = keys.splice(hkIndex, 1)[0];
-        keys.unshift(hk);
-      }
-      return keys;
+    // ---------- Accordion Rendering ----------------------------------------
+    function categorySortKey(cat) {
+      // Housekeeping first (universal modules)
+      if (cat === "Housekeeping") return "0_" + cat;
+      return "1_" + cat;
     }
 
     function renderAssignedAccordion(containerEl, modules) {
@@ -1219,7 +1437,7 @@
       if (!modules || modules.length === 0) {
         const empty = document.createElement("div");
         empty.className = "empty-state";
-        empty.textContent = "No training modules configured.";
+        empty.textContent = "No assigned training found for this Employee ID.";
         containerEl.appendChild(empty);
         return;
       }
@@ -1227,13 +1445,18 @@
       const accordion = document.createElement("div");
       accordion.className = "accordion";
 
+      // Group by category
       const categories = {};
-      modules.forEach(m => {
+      modules.forEach((m) => {
         if (!categories[m.category]) categories[m.category] = [];
         categories[m.category].push(m);
       });
 
-      const catKeys = sortedCategoryKeys(categories);
+      const catKeys = Object.keys(categories).sort((a, b) => {
+        const ka = categorySortKey(a);
+        const kb = categorySortKey(b);
+        return ka.localeCompare(kb);
+      });
 
       catKeys.forEach((cat, idx) => {
         const item = document.createElement("div");
@@ -1245,33 +1468,21 @@
         header.className = "accordion-header";
 
         const left = document.createElement("div");
-        left.className = "left";
-
         const title = document.createElement("span");
         title.className = "accordion-title";
         title.textContent = cat;
+        left.appendChild(title);
 
-        const mods = categories[cat].slice();
-        // Within a category: universal modules first, then title
-        mods.sort((a, b) => {
-          const au = (a.roles || []).includes("All") ? 0 : 1;
-          const bu = (b.roles || []).includes("All") ? 0 : 1;
-          if (au !== bu) return au - bu;
-          return (a.title || "").localeCompare(b.title || "");
-        });
-
-        const completedCount = mods.filter(m => !!state.completed[m.id]).length;
-
+        const mods = categories[cat];
+        const completedCount = mods.filter((m) => !!state.completed[m.id]).length;
         const meta = document.createElement("span");
         meta.className = "accordion-meta";
         meta.textContent = `${completedCount}/${mods.length} complete`;
+        left.appendChild(meta);
 
         const chevron = document.createElement("span");
         chevron.className = "accordion-chevron";
         chevron.textContent = "▾";
-
-        left.appendChild(title);
-        left.appendChild(meta);
 
         header.appendChild(left);
         header.appendChild(chevron);
@@ -1282,14 +1493,14 @@
         const list = document.createElement("div");
         list.className = "list";
 
-        mods.forEach(m => {
+        mods.forEach((m) => {
           const completed = !!state.completed[m.id];
-          const row = document.createElement("div");
-          row.className = "list-item " + (completed ? "status-complete" : "status-required");
-          row.onclick = () => openModuleDetail(m.id);
+          const itemRow = document.createElement("div");
+          itemRow.className = "list-item " + (completed ? "status-complete" : "status-required");
+          itemRow.onclick = () => openModuleDetail(m.id);
           const metaText = completed ? "Complete" : "Required";
-          row.innerHTML = `<span class="label">${m.title}</span><span class="meta">${metaText}</span>`;
-          list.appendChild(row);
+          itemRow.innerHTML = `<span class="label">${m.title}</span><span class="meta">${metaText}</span>`;
+          list.appendChild(itemRow);
         });
 
         body.appendChild(list);
@@ -1304,18 +1515,23 @@
       containerEl.appendChild(accordion);
     }
 
-    // -----------------------------------------------------------------------
-    // HOME RENDER
-    // -----------------------------------------------------------------------
+    // ---------- Home Rendering ---------------------------------------------
     function renderHome() {
       const assigned = getAssignedModules();
       const completedCount = getCompletedAssignedCount();
 
-      document.getElementById("progressLabel").textContent =
-        `${completedCount} / ${assigned.length} Modules Completed`;
+      const label = document.getElementById("progressLabel");
+      label.textContent = `${completedCount} / ${assigned.length} Modules Completed`;
 
+      const as = getAssignmentsState();
+      const sub = document.getElementById("progressSubLabel");
+      const last = as.lastSync ? new Date(as.lastSync).toLocaleString() : "—";
+      const src = as.source === "server" ? "Live" : (as.source === "cache" ? "Saved" : "Default");
+      sub.textContent = `Assignments: ${src} • Last sync: ${last}`;
+
+      const progressFill = document.getElementById("progressFill");
       const pct = assigned.length === 0 ? 0 : (completedCount / assigned.length) * 100;
-      document.getElementById("progressFill").style.width = pct + "%";
+      progressFill.style.width = pct + "%";
 
       const alertContainer = document.getElementById("homeAlertContainer");
       alertContainer.innerHTML = "";
@@ -1324,74 +1540,62 @@
 
       if (assigned.length === 0) {
         alert.innerHTML =
-          "<div><strong>No training modules yet.</strong><span class='muted'>Your training plan has not been configured.</span></div>";
+          "<div><strong>No assigned training found.</strong><span class='muted'>Check your Employee ID or tap Sync.</span></div>";
       } else if (completedCount < assigned.length) {
         const remaining = assigned.length - completedCount;
-        alert.innerHTML =
-          `<div><strong>Training in progress.</strong>You have ${remaining} required module${remaining !== 1 ? "s" : ""} left to complete.</div>`;
+        alert.innerHTML = `<div><strong>Training in progress.</strong>You have ${remaining} required module${remaining !== 1 ? "s" : ""} left to complete.</div>`;
       } else {
         alert.classList.add("complete");
         alert.innerHTML =
           "<div><strong>You have completed all assigned training.</strong><span class='muted'>Check back for new assignments.</span></div>";
       }
-
       alertContainer.appendChild(alert);
-      renderAssignedAccordion(document.getElementById("homeAssignedAccordion"), assigned);
+
+      const homeAssignedAccordion = document.getElementById("homeAssignedAccordion");
+      renderAssignedAccordion(homeAssignedAccordion, assigned);
+
+      updateSettingsProfileUI();
     }
 
-    // -----------------------------------------------------------------------
-    // MODULES VIEW RENDER
-    // - Role accordion
-    // - Inside each role: nested accordion by category (cleaner mobile UI)
-    // -----------------------------------------------------------------------
-    function getModulesForRole(roleId) {
-      if (roleId === "All") {
-        return MODULES.filter(m => (m.roles || []).includes("All"));
-      }
-      return MODULES.filter(m => (m.roles || []).includes(roleId) || (m.roles || []).includes("All"));
-    }
-
+    // ---------- Modules View Rendering (cleaner accordion) ------------------
     function renderModulesList() {
       const container = document.getElementById("modulesList");
       container.innerHTML = "";
 
-      const outer = document.createElement("div");
-      outer.className = "accordion";
+      const accordion = document.createElement("div");
+      accordion.className = "accordion";
 
       ROLES.forEach((roleObj, idx) => {
-        const roleModules = getModulesForRole(roleObj.id);
-
         const item = document.createElement("div");
         item.className = "accordion-item";
-        if (idx === 0) item.classList.add("open"); // open Universal by default
+        if (idx === 0) item.classList.add("open");
 
         const header = document.createElement("button");
         header.type = "button";
         header.className = "accordion-header";
 
         const left = document.createElement("div");
-        left.className = "left";
-
         const title = document.createElement("span");
         title.className = "accordion-title";
         title.textContent = roleObj.label;
+        left.appendChild(title);
+
+        const roleModules = MODULES.filter((m) => {
+          const mr = Array.isArray(m.roles) ? m.roles : [];
+          return mr.includes("All") || mr.includes(roleObj.id);
+        });
+
+        const completedCount = roleModules.filter((m) => !!state.completed[m.id]).length;
 
         const meta = document.createElement("span");
         meta.className = "accordion-meta";
-
-        if (roleModules.length === 0) {
-          meta.textContent = "Coming soon";
-        } else {
-          const completedCount = roleModules.filter(m => !!state.completed[m.id]).length;
-          meta.textContent = `${completedCount}/${roleModules.length} complete`;
-        }
+        meta.textContent =
+          roleModules.length > 0 ? `${completedCount}/${roleModules.length} complete` : "Coming soon";
+        left.appendChild(meta);
 
         const chevron = document.createElement("span");
         chevron.className = "accordion-chevron";
         chevron.textContent = "▾";
-
-        left.appendChild(title);
-        left.appendChild(meta);
 
         header.appendChild(left);
         header.appendChild(chevron);
@@ -1405,92 +1609,50 @@
           empty.textContent = `${roleObj.label} modules are coming soon.`;
           body.appendChild(empty);
         } else {
-          // Group by category inside role
+          // Group by category inside each role folder
           const categories = {};
-          roleModules.forEach(m => {
+          roleModules.forEach((m) => {
             if (!categories[m.category]) categories[m.category] = [];
             categories[m.category].push(m);
           });
 
-          const catKeys = sortedCategoryKeys(categories);
+          Object.keys(categories)
+            .sort((a, b) => categorySortKey(a).localeCompare(categorySortKey(b)))
+            .forEach((cat) => {
+              const catLabel = document.createElement("p");
+              catLabel.textContent = cat;
+              catLabel.className = "muted";
+              catLabel.style.fontSize = "0.78rem";
+              catLabel.style.margin = "0.1rem 0 0.1rem";
+              body.appendChild(catLabel);
 
-          const nested = document.createElement("div");
-          nested.className = "accordion nested-accordion";
+              const list = document.createElement("div");
+              list.className = "list";
 
-          catKeys.forEach((cat, cidx) => {
-            const catItem = document.createElement("div");
-            catItem.className = "accordion-item";
-            if (cidx === 0) catItem.classList.add("open");
+              categories[cat].forEach((m) => {
+                const completed = !!state.completed[m.id];
+                const itemRow = document.createElement("div");
+                itemRow.className = "list-item " + (completed ? "status-complete" : "status-required");
+                itemRow.onclick = () => openModuleDetail(m.id);
+                const metaText = completed ? "Complete" : "Required";
+                itemRow.innerHTML = `<span class="label">${m.title}</span><span class="meta">${metaText}</span>`;
+                list.appendChild(itemRow);
+              });
 
-            const catHeader = document.createElement("button");
-            catHeader.type = "button";
-            catHeader.className = "accordion-header";
-
-            const catLeft = document.createElement("div");
-            catLeft.className = "left";
-
-            const catTitle = document.createElement("span");
-            catTitle.className = "accordion-title";
-            catTitle.textContent = cat;
-
-            const mods = categories[cat].slice();
-            mods.sort((a, b) => (a.title || "").localeCompare(b.title || ""));
-
-            const catCompleted = mods.filter(m => !!state.completed[m.id]).length;
-
-            const catMeta = document.createElement("span");
-            catMeta.className = "accordion-meta";
-            catMeta.textContent = `${catCompleted}/${mods.length} complete`;
-
-            const catChevron = document.createElement("span");
-            catChevron.className = "accordion-chevron";
-            catChevron.textContent = "▾";
-
-            catLeft.appendChild(catTitle);
-            catLeft.appendChild(catMeta);
-
-            catHeader.appendChild(catLeft);
-            catHeader.appendChild(catChevron);
-
-            const catBody = document.createElement("div");
-            catBody.className = "accordion-body";
-
-            const list = document.createElement("div");
-            list.className = "list";
-
-            mods.forEach(m => {
-              const completed = !!state.completed[m.id];
-              const row = document.createElement("div");
-              row.className = "list-item " + (completed ? "status-complete" : "status-required");
-              row.onclick = () => openModuleDetail(m.id);
-              row.innerHTML = `<span class="label">${m.title}</span><span class="meta">${completed ? "Complete" : "Required"}</span>`;
-              list.appendChild(row);
+              body.appendChild(list);
             });
-
-            catBody.appendChild(list);
-            catHeader.addEventListener("click", () => catItem.classList.toggle("open"));
-
-            catItem.appendChild(catHeader);
-            catItem.appendChild(catBody);
-            nested.appendChild(catItem);
-          });
-
-          body.appendChild(nested);
         }
 
         header.addEventListener("click", () => item.classList.toggle("open"));
-
         item.appendChild(header);
         item.appendChild(body);
-        outer.appendChild(item);
+        accordion.appendChild(item);
       });
 
-      container.appendChild(outer);
+      container.appendChild(accordion);
     }
 
-    // -----------------------------------------------------------------------
-    // MODULE DETAIL & IMAGES
-    // -----------------------------------------------------------------------
+    // ---------- Module Detail & Completion Gating ---------------------------
     let currentModuleId = null;
     let currentCarouselIndex = 0;
     let currentCarouselImages = [];
@@ -1598,19 +1760,19 @@
         return;
       }
 
-      const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+      const allChecked = Array.from(checkboxes).every((cb) => cb.checked);
       btn.disabled = !allChecked;
       btn.textContent = allChecked ? "Mark Module Complete" : "Check all steps to complete";
     }
 
     function openModuleDetail(id) {
-      const module = MODULES.find(m => m.id === id);
+      const module = MODULES.find((m) => m.id === id);
       if (!module) return;
 
       currentModuleId = id;
 
-      document.getElementById("detailCategoryPill").textContent = module.category || "Module";
-      document.getElementById("detailTitle").textContent = module.title || "Module";
+      document.getElementById("detailCategoryPill").textContent = module.category;
+      document.getElementById("detailTitle").textContent = module.title;
       document.getElementById("detailDescription").textContent = module.description || "";
 
       renderModuleImages(module);
@@ -1651,25 +1813,14 @@
       const btn = document.getElementById("completeModuleBtn");
       btn.disabled = true;
       btn.classList.remove("completed");
-
-      if (completed) {
-        btn.disabled = true;
-        btn.textContent = "Module Completed";
-        btn.classList.add("completed");
-      } else {
-        btn.textContent = "Check all steps to complete";
-      }
+      btn.textContent = completed ? "Module Completed" : "Check all steps to complete";
+      if (completed) btn.classList.add("completed");
 
       updateCompleteButtonState();
       setView("moduleDetail");
     }
 
-    // -----------------------------------------------------------------------
-    // QUIZ LOGIC
-    // - Alternates per-module between multiple choice and numeric input
-    // - Derived from step text (not just "how many steps")
-    // - Includes one ridiculous/funny answer in every MC question
-    // -----------------------------------------------------------------------
+    // ---------- Quiz Logic --------------------------------------------------
     const quizOverlay = document.getElementById("quizOverlay");
     const quizQuestionEl = document.getElementById("quizQuestion");
     const quizOptionsEl = document.getElementById("quizOptions");
@@ -1678,19 +1829,21 @@
     const quizSubmitBtn = document.getElementById("quizSubmitBtn");
     const quizCancelBtn = document.getElementById("quizCancelBtn");
 
-    let quizState = {
-      moduleId: null,
-      type: null,   // "mc" | "number"
-      correct: null // string | number
-    };
+    let quizState = { moduleId: null, type: null, correct: null };
+
+    const GENERIC_DISTRACTORS = [
+      "Ask guests if they want dessert menus before they sit down.",
+      "Rearrange all the tables just to change the vibe.",
+      "Start a team huddle to discuss tonight’s karaoke playlist.",
+      "Offer every guest a complimentary sombrero fitting."
+    ];
 
     const SILLY_DISTRACTORS = [
       "Teach a tortilla how to salsa dance.",
       "Politely ask the soup to cool itself down.",
       "Give an inspirational speech to the floor mats.",
       "Name each tortilla before service.",
-      "Assign performance reviews to the spoons.",
-      "Challenge the buzzer to a duel at dawn."
+      "Assign performance reviews to the spoons."
     ];
 
     function shuffleArray(arr) {
@@ -1702,82 +1855,28 @@
       return copy;
     }
 
-    function pickSilly() {
-      return SILLY_DISTRACTORS[Math.floor(Math.random() * SILLY_DISTRACTORS.length)];
-    }
-
-    function stepContains(step, keywords) {
-      const s = String(step || "").toLowerCase();
-      return keywords.some(k => s.includes(k));
-    }
-
     function buildQuizForModule(module) {
       const steps = Array.isArray(module.steps) ? module.steps.slice() : [];
-      const moduleIndex = MODULES.findIndex(m => m.id === module.id);
-
-      // Alternate: even index = MC, odd = numeric
-      const useMultipleChoice = moduleIndex % 2 === 0;
 
       if (!steps.length) {
         return {
           type: "number",
-          question: "How many steps are listed in this module?",
+          question: "If you complete every step once, how many actions did you just take in this module?",
           correct: 0,
           options: null
         };
       }
 
-      // --- Multiple Choice (derived) ---
+      const moduleIndex = MODULES.findIndex((m) => m.id === module.id);
+      const useMultipleChoice = moduleIndex % 2 === 0; // alternate MC / number
+
       if (useMultipleChoice) {
-        const useExceptPattern = moduleIndex % 4 === 0; // occasionally do EXCEPT / NOT
-
-        // Build a pool of plausible distractors by borrowing steps from OTHER modules (same general domain),
-        // plus 1 silly answer guaranteed.
-        const otherStepsPool = MODULES
-          .filter(m => m.id !== module.id)
-          .flatMap(m => (m.steps || []).map(s => ({ step: s, category: m.category, title: m.title })));
-
-        // Create "nearby" distractors: same category if possible; otherwise any.
-        const sameCategoryPool = otherStepsPool.filter(x => (x.category || "") === (module.category || ""));
-        const distractorSource = sameCategoryPool.length >= 6 ? sameCategoryPool : otherStepsPool;
-
-        // Pick correct candidates (one or more steps from THIS module)
-        const correctStep = steps[Math.floor(Math.random() * steps.length)];
-
-        // 1 silly always
-        const silly = pickSilly();
-
-        // Up to 2 realistic distractors from other modules
-        const distractors = [];
-        const shuffledPool = shuffleArray(distractorSource).map(x => x.step);
-        for (const s of shuffledPool) {
-          if (distractors.length >= 2) break;
-          if (steps.includes(s)) continue;
-          if (s === correctStep) continue;
-          distractors.push(s);
-        }
-
-        // A third distractor: either another other-module step, or a "plausible but wrong" variant
-        let thirdDistractor = null;
-        // If the module has a distinctive keyword, invert it slightly for a plausible wrong answer
-        if (stepContains(correctStep, ["hot", "caution"])) {
-          thirdDistractor = "Ignore heat warnings and grab everything bare-handed immediately.";
-        } else if (stepContains(correctStep, ["wash", "hands", "20"])) {
-          thirdDistractor = "Rinse your hands for 2 seconds and call it a day.";
-        } else if (stepContains(correctStep, ["label", "date"])) {
-          thirdDistractor = "Store items without labels so they can surprise you later.";
-        } else if (stepContains(correctStep, ["knock", "door"])) {
-          thirdDistractor = "Burst through doors dramatically to assert dominance.";
-        } else if (stepContains(correctStep, ["count", "drawer", "$"])) {
-          thirdDistractor = "Count the drawer by vibes instead of numbers.";
-        } else {
-          // fallback from other pool
-          thirdDistractor = shuffledPool.find(s => !steps.includes(s) && s !== correctStep) || "Restock imaginary supplies.";
-        }
+        const useExceptPattern = moduleIndex % 4 === 0 && steps.length >= 3;
 
         if (useExceptPattern) {
-          // EXCEPT pattern: 3 real steps from this module + 1 silly (correct answer)
-          const realSubset = shuffleArray(steps).slice(0, Math.min(3, steps.length));
+          const realStepsShuffled = shuffleArray(steps);
+          const realSubset = realStepsShuffled.slice(0, 3);
+          const silly = SILLY_DISTRACTORS[Math.floor(Math.random() * SILLY_DISTRACTORS.length)];
           const options = shuffleArray([...realSubset, silly]);
 
           return {
@@ -1787,19 +1886,19 @@
             options
           };
         } else {
-          // Positive pattern: pick the step that IS actually in this module
-          // Options = correct + 2 realistic + 1 silly (guaranteed)
-          const options = shuffleArray([correctStep, ...distractors, thirdDistractor, silly].slice(0, 4));
+          const correctStep = steps[Math.floor(Math.random() * steps.length)];
 
-          // Guarantee the silly is included (in case slice removed it)
-          if (!options.includes(silly)) {
-            options[options.length - 1] = silly;
+          const distractors = [];
+          const genericPool = GENERIC_DISTRACTORS.slice();
+          const silly = SILLY_DISTRACTORS[Math.floor(Math.random() * SILLY_DISTRACTORS.length)];
+          distractors.push(silly);
+
+          while (distractors.length < 3 && genericPool.length) {
+            const idx = Math.floor(Math.random() * genericPool.length);
+            distractors.push(genericPool.splice(idx, 1)[0]);
           }
-          // Ensure correct still included
-          if (!options.includes(correctStep)) {
-            options[0] = correctStep;
-            options = shuffleArray(options);
-          }
+
+          const options = shuffleArray([correctStep, ...distractors]);
 
           return {
             type: "mc",
@@ -1810,75 +1909,10 @@
         }
       }
 
-      // --- Numeric (derived from context clues) ---
-      // We'll avoid the boring “how many steps” default.
-      // Pick a numeric question that can be answered from the module’s steps:
-      // - count of steps containing a keyword
-      // - count of “CAUTION / HOT” mentions
-      // - count of times you gather items (steps starting with Gather/Bring/Return)
-      function countMatchingSteps(predicate) {
-        return steps.filter(predicate).length;
-      }
-
-      const candidates = [];
-
-      // Keyword-derived counts
-      const washCount = countMatchingSteps(s => stepContains(s, ["wash hands", "wash your hands", "20 seconds", "soap"]));
-      if (washCount > 0) {
-        candidates.push({
-          q: "How many steps involve handwashing or a specific time duration (like “20 seconds”)?",
-          a: washCount
-        });
-      }
-
-      const cautionCount = countMatchingSteps(s => stepContains(s, ["caution", "hot"]));
-      if (cautionCount > 0) {
-        candidates.push({
-          q: "How many steps include a heat warning (CAUTION / HOT) or mention hot surfaces?",
-          a: cautionCount
-        });
-      }
-
-      const gatherCount = countMatchingSteps(s => {
-        const t = String(s || "").toLowerCase().trim();
-        return t.startsWith("gather") || t.startsWith("bring") || t.startsWith("return");
-      });
-      if (gatherCount > 0) {
-        candidates.push({
-          q: "How many steps are specifically about gathering/bringing/returning items?",
-          a: gatherCount
-        });
-      }
-
-      const checkCount = countMatchingSteps(s => stepContains(s, ["confirm", "verify", "check"]));
-      if (checkCount > 0) {
-        candidates.push({
-          q: "How many steps are “checks” (confirm / verify / check)?",
-          a: checkCount
-        });
-      }
-
-      const labelCount = countMatchingSteps(s => stepContains(s, ["label"]));
-      if (labelCount > 0) {
-        candidates.push({
-          q: "How many steps mention labeling something?",
-          a: labelCount
-        });
-      }
-
-      // Fallback if none matched: number of steps (still valid)
-      if (candidates.length === 0) {
-        candidates.push({
-          q: "If you complete every listed step once, how many actions do you perform in this module?",
-          a: steps.length
-        });
-      }
-
-      const pick = candidates[Math.floor(Math.random() * candidates.length)];
       return {
         type: "number",
-        question: pick.q,
-        correct: pick.a,
+        question: "If you complete every listed step once, how many actions do you perform in this module?",
+        correct: steps.length,
         options: null
       };
     }
@@ -1945,7 +1979,7 @@
           return;
         }
         if (selected.value === quizState.correct) {
-          const module = MODULES.find(m => m.id === quizState.moduleId);
+          const module = MODULES.find((m) => m.id === quizState.moduleId);
           closeQuiz();
           if (module) finalizeModuleCompletion(module);
         } else {
@@ -1963,21 +1997,19 @@
           return;
         }
         if (num === quizState.correct) {
-          const module = MODULES.find(m => m.id === quizState.moduleId);
+          const module = MODULES.find((m) => m.id === quizState.moduleId);
           closeQuiz();
           if (module) finalizeModuleCompletion(module);
         } else {
-          quizErrorEl.textContent = "Close, but not correct. Try again.";
+          quizErrorEl.textContent = "That's not the right number. Try again.";
         }
       }
     });
 
-    // -----------------------------------------------------------------------
-    // FINALIZE COMPLETION
-    // - Quiz gates completion
-    // - Quiz remains available for future completions (assignment framework later)
-    // -----------------------------------------------------------------------
+    // ---------- Finalize Completion ----------------------------------------
     function finalizeModuleCompletion(module) {
+      if (!module) return;
+
       state.completed[module.id] = true;
       saveState();
 
@@ -2006,88 +2038,59 @@
       const btn = document.getElementById("completeModuleBtn");
       if (btn.disabled) return;
 
-      const module = MODULES.find(m => m.id === currentModuleId);
+      const module = MODULES.find((m) => m.id === currentModuleId);
       if (!module) return;
 
       openQuizForModule(module);
     });
 
-    // -----------------------------------------------------------------------
-    // ASSIGNED VIEW (reserved)
-    // -----------------------------------------------------------------------
-    function renderAssignedView() {
-      renderAssignedAccordion(document.getElementById("assignedAccordion"), getAssignedModules());
-    }
-
-    // -----------------------------------------------------------------------
-    // SETTINGS: PROFILE EDITING
-    // -----------------------------------------------------------------------
-    document.getElementById("profileFirstNameRow").addEventListener("click", () => {
-      const current = getProfile().firstName;
-      const value = prompt("Enter your first name", current || "");
-      if (value && value.trim()) {
-        localStorage.setItem(PROFILE_FIRST_NAME_KEY, value.trim());
-        updateSettingsProfileUI();
-      }
-    });
-
-    document.getElementById("profileLastNameRow").addEventListener("click", () => {
-      const current = getProfile().lastName;
-      const value = prompt("Enter your last name", current || "");
-      if (value && value.trim()) {
-        localStorage.setItem(PROFILE_LAST_NAME_KEY, value.trim());
-        updateSettingsProfileUI();
-      }
-    });
-
-    document.getElementById("profileCommonNameRow").addEventListener("click", () => {
-      const current = getProfile().commonName;
-      const value = prompt("Enter your common name (optional)", current || "");
-      if (value !== null) {
-        localStorage.setItem(PROFILE_COMMON_NAME_KEY, value.trim());
-        updateSettingsProfileUI();
-      }
-    });
-
-    document.getElementById("profileEmployeeIdRow").addEventListener("click", () => {
-      const current = getProfile().employee_id;
-      const value = prompt("Enter your employee ID (optional)", current || "");
-      if (value !== null) {
-        localStorage.setItem(PROFILE_EMPLOYEE_ID_KEY, value.trim());
-        updateSettingsProfileUI();
-      }
-    });
-
-    document.getElementById("profileLocationSelect").addEventListener("change", (e) => {
-      const value = e.target.value === "Other" ? "Other" : "Kyle";
-      localStorage.setItem(PROFILE_LOCATION_KEY, value);
-      updateSettingsProfileUI();
-    });
-
-    // -----------------------------------------------------------------------
-    // NAVIGATION WIRING
-    // -----------------------------------------------------------------------
-    document.querySelectorAll(".tab-btn").forEach(btn => btn.addEventListener("click", () => {
-      const tab = btn.dataset.tab;
-      if (tab === "home") {
-        setView("home");
-        renderHome();
-      } else if (tab === "modules") {
-        setView("modules");
-        renderModulesList();
-      }
-    }));
+    // ---------- Navigation Wiring ------------------------------------------
+    document.querySelectorAll(".tab-btn").forEach((btn) =>
+      btn.addEventListener("click", () => {
+        const tab = btn.dataset.tab;
+        if (tab === "home") {
+          setView("home");
+          renderHome();
+        } else if (tab === "modules") {
+          setView("modules");
+          renderModulesList();
+        }
+      })
+    );
 
     document.getElementById("settingsButton").addEventListener("click", () => {
       updateSettingsProfileUI();
       setView("settings");
     });
 
-    // -----------------------------------------------------------------------
-    // SECRET MANAGER HANDSHAKE (RESET)
-    // - 5 taps on header title within 4 seconds
-    // - PIN only (0856)
-    // -----------------------------------------------------------------------
+    document.getElementById("syncBtn").addEventListener("click", async () => {
+      const ok = promptForEmployeeIdIfMissing(false);
+      if (!ok) return;
+      await fetchAssignmentsFromServer();
+    });
+
+    document.getElementById("forceSyncRow").addEventListener("click", async () => {
+      const ok = promptForEmployeeIdIfMissing(false);
+      if (!ok) return;
+      await fetchAssignmentsFromServer();
+    });
+
+    // Settings: Employee ID edit
+    document.getElementById("profileEmployeeIdRow").addEventListener("click", async () => {
+      const ok = promptForEmployeeIdIfMissing(true);
+      if (!ok) return;
+      await fetchAssignmentsFromServer();
+    });
+
+    document.getElementById("profileLocationSelect").addEventListener("change", (e) => {
+      const value = e.target.value === "Other" ? "Other" : "Kyle";
+      localStorage.setItem(PROFILE_LOCATION_KEY, value);
+      updateSettingsProfileUI();
+      renderHome();
+    });
+
+    // ---------- Secret Manager Handshake (Reset) ----------------------------
+    // 5 taps on header title within 4 seconds, then PIN
     let secretTapCount = 0;
     let secretTapTimer = null;
     const SECRET_TAP_WINDOW_MS = 4000;
@@ -2118,7 +2121,6 @@
           saveState();
           renderHome();
           renderModulesList();
-          renderAssignedView();
           showToast("All module completions have been cleared.");
         } else if (pin !== null) {
           showToast("Incorrect PIN. No changes made.");
@@ -2126,12 +2128,39 @@
       }
     });
 
-    // -----------------------------------------------------------------------
-    // INITIAL RENDER
-    // -----------------------------------------------------------------------
-    updateSettingsProfileUI();
-    renderHome();
-    renderModulesList();
+    // ---------- Boot --------------------------------------------------------
+    async function boot() {
+      updateSettingsProfileUI();
+      renderModulesList();
+      renderHome();
+
+      // If we have cache, load it immediately for a smoother startup.
+      const cached = readCachedServerData();
+      if (cached) {
+        const norm = normalizeServerPayload(cached);
+        if (norm.employee) setProfileFromServer(norm.employee);
+        assignmentsState = {
+          source: "cache",
+          roles: norm.roles && norm.roles.length ? norm.roles : ["ExpoBasic"],
+          assignedModuleIds: norm.assignedModuleIds,
+          employee: norm.employee || null,
+          lastSync: localStorage.getItem(SERVER_CACHE_TS_KEY) || null
+        };
+        updateSettingsProfileUI();
+        renderHome();
+      }
+
+      // If an Employee ID exists, attempt a live sync in the background.
+      const profile = getProfile();
+      if (profile.employee_id && /^\d{4}$/.test(profile.employee_id)) {
+        fetchAssignmentsFromServer(); // no await — allow UI to render instantly
+      } else {
+        // Encourage setting ID early (but don’t block usage)
+        showToast("Set your Employee ID in Settings to load assignments.");
+      }
+    }
+
+    boot();
   </script>
 </body>
 </html>
